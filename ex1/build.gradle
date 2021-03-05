@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+group 'ch.unibas.dmi'
+
+// STUDENTS: Update version to exercise number: 1, 2, 3, ...
+version 'EXERCISE_NUMBER'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+test {
+    dependsOn cleanTest
+    testLogging.showStandardStreams = true
+    testLogging.events "passed", "skipped", "failed", "standardOut", "standardError"
+}
+
+// STUDENTS: Generate code archive for submission to courses using this gradle task.
+// In the root directory of this project run: ./gradlew -q generateArchive
+// The archive to upload can be found in the folder 'archive'. Do NOT rename this ZIP-file.
+task generateArchive(type: Zip) {
+    from project.sourceSets.main.allSource
+    from 'theoriefragen/'
+    destinationDir file("archive")
+    baseName = "sourcecode"
+}
+
+task generateGroundTruth{
+    copy{
+        from project.sourceSets.main.allSource
+        into 'archive/ground_truth'
+    }
+}

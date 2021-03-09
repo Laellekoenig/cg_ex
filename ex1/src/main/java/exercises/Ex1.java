@@ -74,10 +74,13 @@ public class Ex1 {
 
     //save image
     try {
-      ImageUtils.write(img, "aufgabe1.png");
+      ImageUtils.write(img, "a1.png");
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    //flip image
+    flipImageUpsideDown(img);
 
     return img;
   }
@@ -85,8 +88,23 @@ public class Ex1 {
   public static Image<RGBA> flipImageUpsideDown(Image<RGBA> img) {
 
     Image<RGBA> out = img.clone();
+    int w = out.cols();
+    int h = out.rows();
 
     //TODO: Blatt 1, Aufgabe 1
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < w; j++) {
+        RGBA color = img.get(j, h - i); //take opposite color, mirrored horizontally
+        out.set(j, i, color);
+      }
+    }
+
+    //save image
+    try {
+      ImageUtils.write(out, "mirror.png");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
     return out;
   }

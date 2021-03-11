@@ -33,10 +33,13 @@ public class BarycentricCoordinateTransform {
 
     lambdaX = 1 - lambdaY - lambdaZ;
 
-    assert(lambdaX + lambdaY + lambdaZ == 0);
+    //assert(lambdaX + lambdaY + lambdaZ == 1);
 
-    System.out.printf("Should be: (%f, %f), is actually (%f, %f) \n", x, y, lambdaX * a.x + lambdaY * b.x + lambdaZ * c.x
-            , lambdaX * a.y + lambdaY * b.y + lambdaZ * c.y);
+    //assert(x == lambdaX * a.x + lambdaY * b.x + lambdaZ * c.x);
+    //assert(y == lambdaX * a.y + lambdaY * b.y + lambdaZ * c.y);
+
+    //System.out.printf("Should be: (%f, %f), is actually (%f, %f) \n", x, y, lambdaX * a.x + lambdaY * b.x + lambdaZ * c.x
+    //        , lambdaX * a.y + lambdaY * b.y + lambdaZ * c.y);
 
     return new BarycentricCoordinates(lambdaX, lambdaY, lambdaZ);
   }

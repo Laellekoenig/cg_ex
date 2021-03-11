@@ -5,6 +5,8 @@ import image.ImageUtils;
 import image.RGBA;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
+
 import org.junit.Before;
 import org.junit.Test;
 import renderer.SimpleRenderer;
@@ -77,6 +79,8 @@ public class TriangleTest {
         renderer.drawPlainTriangle(triangle2, null);
       }
     }
+
+    renderer.drawPlainLine(new Vector2[]{new Vector2(40, 40), new Vector2(180, 200)}, new RGBA(1, 0, 0));
 
     Image<RGBA> img = renderer.getImg();
     String imgName = "plastered.png";

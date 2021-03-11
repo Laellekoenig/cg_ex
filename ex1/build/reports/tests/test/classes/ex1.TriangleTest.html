@@ -23,7 +23,7 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">3</div>
+<div class="counter">1</div>
 <p>tests</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.205s</div>
+<div class="counter">0.006s</div>
 <p>duration</p>
 </div>
 </td>
@@ -51,7 +51,7 @@
 </td>
 <td>
 <div class="infoBox failures" id="successRate">
-<div class="percent">66%</div>
+<div class="percent">0%</div>
 <p>successful</p>
 </div>
 </td>
@@ -66,9 +66,6 @@
 <li>
 <a href="#tab1">Tests</a>
 </li>
-<li>
-<a href="#tab2">Standard output</a>
-</li>
 </ul>
 <div id="tab0" class="tab">
 <h2>Failed tests</h2>
@@ -76,11 +73,13 @@
 <a name="testPlasteredImage"></a>
 <h3 class="failures">testPlasteredImage</h3>
 <span class="code">
-<pre>java.lang.AssertionError: Plastered image contains gaps.
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.assertTrue(Assert.java:41)
-	at org.junit.Assert.assertNotNull(Assert.java:712)
-	at ex1.TriangleTest.testPlasteredImage(TriangleTest.java:90)
+<pre>java.lang.ArrayIndexOutOfBoundsException: Index -250 out of bounds for length 60000
+	at image.Image.set(Image.java:41)
+	at shader.AdditiveColorShader.handleTrianglePixel(AdditiveColorShader.java:21)
+	at rasterization.TriangleRasterizer.rasterTriangle(TriangleRasterizer.java:51)
+	at renderer.SimpleRenderer.drawTriangle(SimpleRenderer.java:62)
+	at renderer.SimpleRenderer.drawPlainTriangle(SimpleRenderer.java:40)
+	at ex1.TriangleTest.testPlasteredImage(TriangleTest.java:75)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -144,103 +143,11 @@
 </tr>
 </thead>
 <tr>
-<td class="success">testBarycentricCoordinatesOfCornersInside</td>
-<td class="success">0.015s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">testBarycentricCoordinatesOfEdgeInside</td>
-<td class="success">0.023s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
 <td class="failures">testPlasteredImage</td>
-<td class="failures">0.167s</td>
+<td class="failures">0.006s</td>
 <td class="failures">failed</td>
 </tr>
 </table>
-</div>
-<div id="tab2" class="tab">
-<h2>Standard output</h2>
-<span class="code">
-<pre>1.0
-Should be: (0.000000, 0.000000), is actually (0.000000, 0.000000) 
-1.0
-Should be: (20.000000, 30.000000), is actually (20.000000, 30.000000) 
-1.0
-Should be: (30.000000, -5.000000), is actually (30.000000, -5.000000) 
-1.0
-Should be: (0.000000, 0.000000), is actually (0.000000, 0.000000) 
-1.0
-Should be: (10.000000, -20.000000), is actually (10.000000, -20.000000) 
-1.0
-Should be: (30.000000, -5.000000), is actually (30.000000, -5.000000) 
-1.0
-Should be: (0.000000, 0.000000), is actually (0.000000, 0.000000) 
-1.0
-Should be: (1.000000, -0.166667), is actually (1.000000, -0.166667) 
-1.0
-Should be: (2.000000, -0.333333), is actually (2.000000, -0.333333) 
-1.0
-Should be: (3.000000, -0.500000), is actually (3.000000, -0.500000) 
-1.0
-Should be: (4.000000, -0.666667), is actually (4.000000, -0.666667) 
-1.0
-Should be: (5.000000, -0.833333), is actually (5.000000, -0.833333) 
-1.0
-Should be: (6.000000, -1.000000), is actually (6.000000, -1.000000) 
-1.0
-Should be: (7.000000, -1.166667), is actually (7.000000, -1.166667) 
-1.0
-Should be: (8.000000, -1.333333), is actually (8.000000, -1.333333) 
-1.0
-Should be: (9.000000, -1.500000), is actually (9.000000, -1.500000) 
-1.0
-Should be: (10.000000, -1.666667), is actually (10.000000, -1.666667) 
-1.0
-Should be: (11.000000, -1.833333), is actually (11.000000, -1.833333) 
-1.0
-Should be: (12.000000, -2.000000), is actually (12.000000, -2.000000) 
-1.0
-Should be: (13.000000, -2.166667), is actually (13.000000, -2.166667) 
-1.0
-Should be: (14.000000, -2.333333), is actually (14.000000, -2.333333) 
-1.0
-Should be: (15.000000, -2.500000), is actually (15.000000, -2.500000) 
-1.0
-Should be: (16.000000, -2.666667), is actually (16.000000, -2.666667) 
-1.0
-Should be: (17.000000, -2.833333), is actually (17.000000, -2.833333) 
-1.0
-Should be: (18.000000, -3.000000), is actually (18.000000, -3.000000) 
-1.0
-Should be: (19.000000, -3.166667), is actually (19.000000, -3.166667) 
-1.0
-Should be: (20.000000, -3.333333), is actually (20.000000, -3.333333) 
-1.0
-Should be: (21.000000, -3.500000), is actually (21.000000, -3.500000) 
-1.0
-Should be: (22.000000, -3.666667), is actually (22.000000, -3.666667) 
-1.0
-Should be: (23.000000, -3.833333), is actually (23.000000, -3.833333) 
-1.0
-Should be: (24.000000, -4.000000), is actually (24.000000, -4.000000) 
-1.0
-Should be: (25.000000, -4.166667), is actually (25.000000, -4.166667) 
-1.0
-Should be: (25.000000, -4.166667), is actually (25.000000, -4.166667) 
-1.0
-Should be: (26.000000, -4.333333), is actually (26.000000, -4.333333) 
-1.0
-Should be: (27.000000, -4.500000), is actually (27.000000, -4.500000) 
-1.0
-Should be: (28.000000, -4.666667), is actually (28.000000, -4.666667) 
-1.0
-Should be: (29.000000, -4.833333), is actually (29.000000, -4.833333) 
-1.0
-Should be: (30.000000, -5.000000), is actually (30.000000, -5.000000) 
-</pre>
-</span>
 </div>
 </div>
 <div id="footer">
@@ -250,7 +157,7 @@ Should be: (30.000000, -5.000000), is actually (30.000000, -5.000000)
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 5.2.1</a> at 11 Mar 2021, 11:38:09</p>
+<a href="http://www.gradle.org">Gradle 5.2.1</a> at 11 Mar 2021, 14:39:38</p>
 </div>
 </div>
 </body>

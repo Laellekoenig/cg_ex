@@ -27,6 +27,44 @@ public class TriangleRasterizer {
       return;
     }
 
+    int xMin = (int) Math.round(va.x), xMax = (int) Math.round(va.x), yMin = (int) Math.round(va.y)
+            , yMax = (int) Math.round(va.y);
+
+    for(Vector2 v : new Vector2[]{vb, vc}) {
+      if(v.x < xMin) {
+        xMin = (int) Math.round(v.x);
+      }
+
+      if(v.x > xMax) {
+        xMax = (int) Math.round(v.x);
+      }
+
+      if(v.y < yMin) {
+        yMin = (int) Math.round(v.y);
+      }
+
+      if(v.y > yMax) {
+        yMax = (int) Math.round(v.y);
+      }
+    }
+
+    handler.handleTrianglePixel(xMin, yMin, bct.getBarycentricCoordinates(xMin, yMin));
+
+    //System.out.printf("yMin: %d, yMax: %d, \n", yMin, yMax);
+
+    BarycentricCoordinates bc;
+
+    for(int y = yMin; y <= yMax; y++) {
+      for(int x = xMin; x <= xMax; x++) {
+        bc = bct.getBarycentricCoordinates(x, y);
+        if((0 < bc.x && bc.x < 1) && (0 < bc.y && bc.y < 1) && (0 < bc.z && bc.z < 1)) {
+          handler.handleTrianglePixel(x, y, bc);
+        } else {
+          //System.out.printf("(%d, %d) \n", x, y);
+        }
+      }
+    }
+
     //TODO: Blatt 1, Aufgabe 4
   }
 }

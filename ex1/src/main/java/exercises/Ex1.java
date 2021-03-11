@@ -94,8 +94,8 @@ public class Ex1 {
     //TODO: Blatt 1, Aufgabe 1
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {
-        RGBA color = img.get(j, h - i); //take opposite color, mirrored horizontally
-        out.set(j, i, color);
+        RGBA color = img.get(j, i);
+        out.set(j, h - 1 - i, color);
       }
     }
 

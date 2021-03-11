@@ -28,7 +28,7 @@ public class InterpolatedColorShader extends PixelShader {
     //TODO: Blatt 1, Aufgabe 5
 
 
-    triCoords.interpolate()
+    //triCoords.interpolate();
   }
 
   @Override

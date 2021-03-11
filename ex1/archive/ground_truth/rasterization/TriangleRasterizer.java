@@ -57,13 +57,15 @@ public class TriangleRasterizer {
     for(int y = yMin; y <= yMax; y++) {
       for(int x = xMin; x <= xMax; x++) {
         bc = bct.getBarycentricCoordinates(x, y);
-        if((0 < bc.x && bc.x < 1) && (0 < bc.y && bc.y < 1) && (0 < bc.z && bc.z < 1)) {
+        if(bc.isInside()) {
           handler.handleTrianglePixel(x, y, bc);
         } else {
           //System.out.printf("(%d, %d) \n", x, y);
         }
       }
     }
+
+    //(0 < bc.x && bc.x < 1) && (0 < bc.y && bc.y < 1) && (0 < bc.z && bc.z < 1)
 
     //TODO: Blatt 1, Aufgabe 4
   }

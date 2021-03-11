@@ -14,6 +14,8 @@ public class InterpolatedColorShader extends PixelShader {
   @Override
   public void handleLinePixel(int x, int y, Vector2 startPoint, Vector2 endPoint) {
     //TODO: Blatt 1, Aufgabe 5
+
+
   }
 
   /**
@@ -24,6 +26,9 @@ public class InterpolatedColorShader extends PixelShader {
   public void handleTrianglePixel(int x, int y,
       BarycentricCoordinates triCoords) {
     //TODO: Blatt 1, Aufgabe 5
+
+
+    triCoords.interpolate()
   }
 
   @Override

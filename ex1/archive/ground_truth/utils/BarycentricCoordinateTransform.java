@@ -25,7 +25,7 @@ public class BarycentricCoordinateTransform {
 
     //TODO: Blatt 1, Aufgabe 3
 
-    lambdaZ = ((a.y - b.y) * x + (b.x - a.x) * y + a.x * b.y - b.x * a.y) / ((a.y - c.y) * b.x + (c.x - a.x)
+    lambdaZ = (-1) * ((a.y - b.y) * x + (b.x - a.x) * y + a.x * b.y - b.x * a.y) / ((a.y - c.y) * b.x + (c.x - a.x)
             * b.y + a.x * c.y - c.x * a.y);
 
     lambdaY = ((a.y - c.y) * x + (c.x - a.x) * y + a.x * c.y - c.x * a.y) / ((a.y - c.y) * b.x + (c.x - a.x)
@@ -33,7 +33,9 @@ public class BarycentricCoordinateTransform {
 
     lambdaX = 1 - lambdaY - lambdaZ;
 
-    System.out.printf("Should be: (%f, %f), is actually (%f, %f)", x, y, lambdaX * a.x + lambdaY * b.x + lambdaZ * c.x
+    System.out.println(lambdaX + lambdaY + lambdaZ);
+
+    System.out.printf("Should be: (%f, %f), is actually (%f, %f) \n", x, y, lambdaX * a.x + lambdaY * b.x + lambdaZ * c.x
             , lambdaX * a.y + lambdaY * b.y + lambdaZ * c.y);
 
     return new BarycentricCoordinates(lambdaX, lambdaY, lambdaZ);

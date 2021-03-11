@@ -115,6 +115,8 @@ public class Ex1 {
     SimpleRenderer simpleRenderer = new SimpleRenderer(width, height, new ConstantColorShader());
 
     //TODO: Blatt 1, Aufgabe 2
+    //draw lines, starting from center, going to the edge every 22,5°
+    //-> check all possible positive and negative slopes above and below m = 1
     Vector2 start = new Vector2(250, 240);
     Vector2 end = new Vector2(499, 479);
     Vector2 end2 = new Vector2(499, 240);
@@ -133,8 +135,6 @@ public class Ex1 {
     Vector2 end15 = new Vector2(125, 0);
     Vector2 end16 = new Vector2(125, 479);
 
-
-
     Vector2[] line = {start, end};
     Vector2[] line2 = {start, end2};
     Vector2[] line3 = {start, end3};
@@ -152,7 +152,6 @@ public class Ex1 {
     Vector2[] line15 = {start, end15};
     Vector2[] line16 = {start, end16};
 
-
     simpleRenderer.drawPlainLine(line, RGBA.red);
     simpleRenderer.drawPlainLine(line2, RGBA.red);
     simpleRenderer.drawPlainLine(line3, RGBA.red);
@@ -169,7 +168,6 @@ public class Ex1 {
     simpleRenderer.drawPlainLine(line14, RGBA.red);
     simpleRenderer.drawPlainLine(line15, RGBA.red);
     simpleRenderer.drawPlainLine(line16, RGBA.red);
-
 
     try {
       ImageUtils.write(simpleRenderer.getImg(), "lineRasterExample.png");

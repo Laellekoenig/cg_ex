@@ -20,6 +20,7 @@ public class LineRasterizer {
     }
   }
 
+  /*
   int clippingBinaryCode(Vector2 vector) {
     int result = 0;
 
@@ -41,6 +42,7 @@ public class LineRasterizer {
 
     return result;
   }
+   */
 
   private void bresenham(Vector2 startPoint, Vector2 endPoint) {
 
@@ -212,11 +214,20 @@ public class LineRasterizer {
      */
   }
 
+  /**
+   * used to transform coordinates of a vector by rotation
+   * @param v: the vector that is to be rotated
+   * @param rad: the ammount of rotation, in radiants
+   * @return the rotated input vector
+   */
   private Vector2 rotateClock(Vector2 v, double rad) {
     //x' = x * cos(rad) + y * sin(rad)
     double xPrime = v.x * Math.cos(rad) + v.y * Math.sin(rad);
     //y' = -x * sin(rad) + y * cos(rad)
     double yPrime = -1 * v.x * Math.sin(rad) + v.y * Math.cos(rad);
+    //round to avoid (int) cast rounding mistakes:
+    // (int) 3.999999 = 3
+    // (int) Math.round(3.99999) = 4
     xPrime = Math.round(xPrime);
     yPrime = Math.round(yPrime);
     return new Vector2(xPrime, yPrime);

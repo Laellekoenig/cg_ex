@@ -46,18 +46,96 @@ public class LineRasterizer {
 
     //TODO: Blatt 1, Aufgabe 2
 
-
     if (startPoint.x > endPoint.x) {
       Vector2 temp = startPoint;
       startPoint = endPoint;
       endPoint = temp;
     }
 
-    double deltaY = Math.abs(endPoint.y - startPoint.y);
-    double deltaX = Math.abs(endPoint.x - startPoint.x);
-    double m = deltaY / deltaX;
-    double b = startPoint.y - m * startPoint.x;
+    double deltaX = endPoint.x - startPoint.x;
+    double deltaY = endPoint.y - startPoint.y;
 
+    double m;
+    if (deltaX == 0) {
+      if (deltaY < 0) {
+        m = -999999999; //-inf
+      } else {
+        m = 999999999; //inf
+      }
+    } else {
+      m = deltaY / deltaX;
+    }
+
+    boolean rotated = false;
+    double rad = 0;
+    if (m > 1) {
+      rotated = true;
+      rad = Math.PI / 2;
+      startPoint = rotateClock(startPoint, rad);
+      endPoint = rotateClock(endPoint, rad);
+      deltaX = endPoint.x - startPoint.x;
+      deltaY = endPoint.y - startPoint.y;
+      m = deltaY / deltaX;
+    }
+
+    if (m < -1) {
+      rotated = true;
+      rad = -1 * Math.PI / 2;
+      startPoint = rotateClock(startPoint, rad);
+      endPoint = rotateClock(endPoint, rad);
+      deltaX = endPoint.x - startPoint.x;
+      deltaY = endPoint.y - startPoint.y;
+      m = deltaY / deltaX;
+    }
+
+    boolean mirrored = false;
+    if (m < 0) {
+      mirrored = true;
+      startPoint = new Vector2(startPoint.x, -1 * startPoint.y);
+      endPoint = new Vector2(endPoint.x, -1 * endPoint.y);
+      deltaX = endPoint.x - startPoint.x;
+      deltaY = endPoint.y - startPoint.y;
+    }
+
+    System.out.println(m);
+
+    //how many iterations?
+    int iter = (int) Math.abs(deltaX);
+    if (Math.abs(deltaX) < Math.abs(deltaY)) iter = (int) Math.abs(deltaY);
+
+    int currentX = (int) startPoint.x;
+    int currentY = (int) startPoint.y;
+    double e = deltaY - (deltaX / 2);
+
+    for (int i = 0; i <= iter; i++) {
+      //check if in bounds
+      int printX = currentX;
+      int printY = currentY;
+
+      if (mirrored) {
+        printY *= -1;
+      }
+
+      if (rotated) {
+        Vector2 v = new Vector2(printX, printY);
+        v = rotateClock(v, -1 * rad); //revert rotation
+        printX = (int) Math.round(v.x);
+        printY = (int) Math.round(v.y);
+      }
+
+      if (printX >= 0 && printX < w && printY >= 0 && printY < h) {
+        handler.handleLinePixel(printX, printY, startPoint, endPoint);
+      }
+
+      if (e <= 0) {
+        currentX += 1;
+        e += deltaY;
+      } else {
+        currentX += 1;
+        currentY += 1;
+        e += deltaY - deltaX;
+      }
+    }
 
     /**
      *  The following commented-out code should work, yet because my implementation can't draw vertical lines yet,
@@ -95,6 +173,7 @@ public class LineRasterizer {
       System.out.println("it");
     }*/
 
+    /*
     int x = (int) startPoint.x;
     int y = (int) startPoint.y;
 
@@ -118,5 +197,16 @@ public class LineRasterizer {
         handler.handleLinePixel(x, y, startPoint, endPoint);
       }
     }
+     */
+  }
+
+  private Vector2 rotateClock(Vector2 v, double rad) {
+    //x' = x * cos(rad) + y * sin(rad)
+    double xPrime = v.x * Math.cos(rad) + v.y * Math.sin(rad);
+    //y' = -x * sin(rad) + y * cos(rad)
+    double yPrime = -1 * v.x * Math.sin(rad) + v.y * Math.cos(rad);
+    xPrime = Math.round(xPrime);
+    yPrime = Math.round(yPrime);
+    return new Vector2(xPrime, yPrime);
   }
 }

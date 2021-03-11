@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ex1.BresenhamTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2021-03-11T07:14:48" hostname="mpb.home" time="0.011">
+  <properties/>
+  <testcase name="testLeftToRightDescendingLargeGradient" classname="ex1.BresenhamTest" time="0.005"/>
+  <testcase name="testVerticalAscending" classname="ex1.BresenhamTest" time="0.0"/>
+  <testcase name="testLeftToRightAscendingSmallGradient" classname="ex1.BresenhamTest" time="0.001"/>
+  <testcase name="testRightToLeftDescendingSmallGradient" classname="ex1.BresenhamTest" time="0.0"/>
+  <testcase name="testClippingHorizontalLine" classname="ex1.BresenhamTest" time="0.0"/>
+  <testcase name="testHorizontalRightToLeft" classname="ex1.BresenhamTest" time="0.0"/>
+  <testcase name="testVerticalDescending" classname="ex1.BresenhamTest" time="0.0"/>
+  <testcase name="testRightToLeftAscendingSmallGradient" classname="ex1.BresenhamTest" time="0.001"/>
+  <testcase name="testLeftToRightAscendingLargeGradient" classname="ex1.BresenhamTest" time="0.0"/>
+  <testcase name="testRightToLeftDescendingLargeGradient" classname="ex1.BresenhamTest" time="0.001"/>
+  <testcase name="testClippingCountOfShaderCalls" classname="ex1.BresenhamTest" time="0.0"/>
+  <testcase name="testRightToLeftAscendingLargeGradient" classname="ex1.BresenhamTest" time="0.0"/>
+  <testcase name="testLeftToRightDescendingSmallGradient" classname="ex1.BresenhamTest" time="0.0"/>
+  <testcase name="testHorizontalLeftToRight" classname="ex1.BresenhamTest" time="0.0"/>
+  <testcase name="testClippingVerticalLine" classname="ex1.BresenhamTest" time="0.0"/>
+  <system-out><![CDATA[-0.494949494949495
+0.0
+-0.1919191919191919
+-0.1919191919191919
+0.0
+0.0
+0.0
+0.1919191919191919
+0.494949494949495
+0.494949494949495
+0.0
+0.0
+-0.494949494949495
+0.1919191919191919
+0.0
+0.0
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

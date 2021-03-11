@@ -1,5 +1,7 @@
-/build
-/.idea
+**/build/
+**/.idea/
 .gradle
 *.png
 *.icloud
+!src/**/build/
+gradle-app.setting

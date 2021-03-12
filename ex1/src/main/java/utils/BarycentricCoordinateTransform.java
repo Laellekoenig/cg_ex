@@ -22,8 +22,8 @@ public class BarycentricCoordinateTransform {
 
     //TODO: Blatt 1, Aufgabe 3
     //round
-    x = Math.round(x);
-    y = Math.round(y);
+    //x = Math.round(x);
+    //y = Math.round(y);
 
     double lambdaX = 0, lambdaY = 0, lambdaZ = 0;
 

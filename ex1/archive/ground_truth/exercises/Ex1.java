@@ -182,6 +182,15 @@ public class Ex1 {
     SimpleRenderer simpleRenderer = new SimpleRenderer(width, height, new ConstantColorShader());
 
     //TODO: Blatt 1, Aufgabe 4
+    Vector2[] tri1 = {new Vector2(-50, -20), new Vector2(20, 50), new Vector2(67, 10)};
+    Vector2[] tri2 = {new Vector2(250, 120), new Vector2(125, 360), new Vector2(375, 360)};
+    Vector2[] tri3 = {new Vector2(500, 700), new Vector2(400, 400), new Vector2(100, 400)};
+
+
+    simpleRenderer.drawPlainTriangle(tri1, RGBA.green);
+    simpleRenderer.drawPlainTriangle(tri2, RGBA.blue);
+    simpleRenderer.drawPlainTriangle(tri3, RGBA.blue);
+
 
     simpleRenderer.drawPlainTriangle(new Vector2[]{new Vector2(30, 30), new Vector2(30, 150), new Vector2(150, 300)}, RGBA.red);
 

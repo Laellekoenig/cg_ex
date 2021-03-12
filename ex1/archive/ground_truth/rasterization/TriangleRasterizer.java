@@ -39,18 +39,22 @@ public class TriangleRasterizer {
     int xMin = (int) va.x;  //assumption
     if (vb.x < xMin) xMin = (int) vb.x;
     if (vc.x < xMin) xMin = (int) vc.x;
+    if (xMin < 0)    xMin = 0;
 
     int xMax = (int) va.x;  //assumption
     if (vb.x > xMax) xMax = (int) vb.x;
     if (vc.x > xMax) xMax = (int) vc.x;
+    if (xMax >= w)   xMax = w - 1;
 
     int yMin = (int) va.y;  //assumption
     if (vb.y < yMin) yMin = (int) vb.y;
     if (vc.y < yMin) yMin = (int) vc.y;
+    if (yMin < 0)    yMin = 0;
 
     int yMax = (int) va.y;  //assumption
     if (vb.y > yMax) yMax = (int) vb.y;
     if (vc.y > yMax) yMax = (int) vc.y;
+    if (yMax >= h)   yMax = h - 1;
 
     BarycentricCoordinates bc;
 
@@ -58,10 +62,7 @@ public class TriangleRasterizer {
       for (int j = xMin; j <= xMax; j++) {
         bc = bct.getBarycentricCoordinates(j, i);
         if (bc.isInside()) {
-          //check if out of bounds
-          if (j >= 0 && j < w && i >= 0 && i < h) {
-            handler.handleTrianglePixel(j, i, bc);
-          }
+          handler.handleTrianglePixel(j, i, bc);
         }
       }
     }

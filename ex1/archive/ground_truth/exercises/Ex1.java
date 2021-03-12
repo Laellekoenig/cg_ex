@@ -183,6 +183,8 @@ public class Ex1 {
 
     //TODO: Blatt 1, Aufgabe 4
 
+    simpleRenderer.drawPlainTriangle(new Vector2[]{new Vector2(30, 30), new Vector2(30, 150), new Vector2(150, 300)}, RGBA.red);
+
     try {
       ImageUtils.write(simpleRenderer.getImg(), "triangleRasterExample.png");
     } catch (IOException e) {
@@ -195,6 +197,17 @@ public class Ex1 {
 
     //TODO: Blatt 1, Aufgabe 5
 
+    renderer.drawTriangle(new Vector2[]{new Vector2(250, 120), new Vector2(125, 360)
+            , new Vector2(375, 361)}, new RGBA[]{RGBA.red, RGBA.green, RGBA.blue});
+
+    renderer.drawLine(new Vector2[]{new Vector2(250, 50), new Vector2(250, 400)}
+            , new RGBA[]{RGBA.red, RGBA.blue});
+
+    renderer.drawLine(new Vector2[]{new Vector2(50, 300), new Vector2(400, 300)}
+            , new RGBA[]{RGBA.red, RGBA.blue});
+
+    renderer.drawLine(new Vector2[]{new Vector2(1, 1), new Vector2(10, 1)}
+            , new RGBA[]{RGBA.red, RGBA.blue});
     try {
       ImageUtils.write(renderer.getImg(), "interpolated.png");
     } catch (IOException e) {

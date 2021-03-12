@@ -48,11 +48,14 @@ public class LineRasterizer {
 
     //TODO: Blatt 1, Aufgabe 2
 
+    boolean switched = false;
+
     //only go from left to right
     if (startPoint.x > endPoint.x) {
       Vector2 temp = startPoint;
       startPoint = endPoint;
       endPoint = temp;
+      switched = true;
     }
 
     double deltaX = endPoint.x - startPoint.x;
@@ -116,6 +119,22 @@ public class LineRasterizer {
     //calculate starting error, from slide
     double e = deltaY - (deltaX / 2);
 
+    if (mirrored) {
+      startPoint = new Vector2(startPoint.x, (-1) * startPoint.y);
+      endPoint = new Vector2(startPoint.x, (-1) * endPoint.y);
+    }
+
+    if (rotated) {
+      startPoint = rotateClock(startPoint, (-1) * rad);
+      endPoint = rotateClock(endPoint, (-1) *  rad);
+    }
+
+    if (switched) {
+      Vector2 temp = endPoint;
+      endPoint = startPoint;
+      startPoint = temp;
+    }
+
     //go through points
     for (int i = 0; i <= iter; i++) {
       //printing variables, necessary in case of transformation -> don't change current variables
@@ -150,68 +169,6 @@ public class LineRasterizer {
         e += deltaY - deltaX;
       }
     }
-
-    /**
-     *  The following commented-out code should work, yet because my implementation can't draw vertical lines yet,
-     *  the code enters an infinite loop when tested in that regard. Hence it being commented-out.
-     */
-    /*int startPointBin = clippingBinaryCode(startPoint);
-    int endPointBin = clippingBinaryCode(endPoint);
-
-    while (clippingBinaryCode(startPoint) != 0 || clippingBinaryCode(endPoint) != 0) {
-      if ((startPointBin & endPointBin) != 0) {
-        return;
-      }
-
-      if (startPointBin >= 8 || endPointBin >= 8) {
-        Vector2 cutYmin = new Vector2((-1) * b / m, 0);
-        startPoint = cutYmin;
-        System.out.println("cutymin");
-      } else if (startPointBin >= 4 || endPointBin >= 4) {
-        Vector2 cutYmax = new Vector2((h - b) / m, h);
-        endPoint = cutYmax;
-        System.out.println("cutymax");
-      } else if (startPointBin >= 2 || endPointBin >= 2) {
-        Vector2 cutXmax = new Vector2(w, (m * w) + b);
-        endPoint = cutXmax;
-        System.out.println("cutxmax,  (" + w + ", " + ((m * w) + b) + ")");
-      } else {
-        Vector2 cutXmin = new Vector2(0, b);
-        startPoint = cutXmin;
-        System.out.println("cutxmin");
-      }
-
-      startPointBin = clippingBinaryCode(startPoint);
-      endPointBin = clippingBinaryCode(endPoint);
-
-      System.out.println("it");
-    }*/
-
-    /*
-    int x = (int) startPoint.x;
-    int y = (int) startPoint.y;
-
-    handler.handleLinePixel(x, y, startPoint, endPoint);
-
-    if (deltaX >= deltaY) {
-      double E = 2 * deltaY - deltaX;
-      for (int i = 0; i < deltaX; i++) {
-        if (E < 0) {
-          x++;
-          E = E + (2 * deltaY);
-        } else {
-          x++;
-          if (endPoint.y > startPoint.y) {
-            y++;
-          } {
-            y--;
-          }
-          E = E + (2 * deltaY) - (2 * deltaX);
-        }
-        handler.handleLinePixel(x, y, startPoint, endPoint);
-      }
-    }
-     */
   }
 
   /**

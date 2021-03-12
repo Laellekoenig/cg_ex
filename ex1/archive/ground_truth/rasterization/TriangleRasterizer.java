@@ -25,9 +25,11 @@ public class TriangleRasterizer {
     Vector2 vc = trianglePoints[2];
 
     //round coordinates
+    /*
     va = new Vector2(Math.round(va.x), Math.round(va.y));
     vb = new Vector2(Math.round(vb.x), Math.round(vb.y));
     vc = new Vector2(Math.round(vc.x), Math.round(vc.y));
+    */
 
     //check if valid triangle
     BarycentricCoordinateTransform bct = new BarycentricCoordinateTransform(va, vb, vc);

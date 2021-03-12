@@ -21,6 +21,10 @@ public class BarycentricCoordinateTransform {
   public BarycentricCoordinates getBarycentricCoordinates(double x, double y) {
 
     //TODO: Blatt 1, Aufgabe 3
+    //round
+    x = Math.round(x);
+    y = Math.round(y);
+
     double lambdaX = 0, lambdaY = 0, lambdaZ = 0;
 
     assert (!isDegenerate());

@@ -19,11 +19,10 @@ public class BarycentricCoordinates {
   }
 
   public boolean isInside() {
-    return x >= 0 && x <= 1.f &&
-        y >= 0 && y <= 1.f &&
-        z >= 0 && z <= 1.f;
+    return  x >= 0 && x <= 1.f &&
+            y >= 0 && y <= 1.f &&
+            z >= 0 && z <= 1.f;
   }
-
 }
 
 

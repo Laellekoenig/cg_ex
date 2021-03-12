@@ -18,55 +18,52 @@ public class TriangleRasterizer {
   }
 
   public void rasterTriangle(Vector2[] trianglePoints) {
+
+    //TODO: Blatt 1, Aufgabe 4
     Vector2 va = trianglePoints[0];
     Vector2 vb = trianglePoints[1];
     Vector2 vc = trianglePoints[2];
 
+    //round coordinates
+    va = new Vector2(Math.round(va.x), Math.round(va.y));
+    vb = new Vector2(Math.round(vb.x), Math.round(vb.y));
+    vc = new Vector2(Math.round(vc.x), Math.round(vc.y));
+
+    //check if valid triangle
     BarycentricCoordinateTransform bct = new BarycentricCoordinateTransform(va, vb, vc);
     if (bct.isDegenerate()) {
       return;
     }
 
-    int xMin = (int) Math.round(va.x), xMax = (int) Math.round(va.x), yMin = (int) Math.round(va.y)
-            , yMax = (int) Math.round(va.y);
+    //determine min and max X and Y values
+    int xMin = (int) va.x;  //assumption
+    if (vb.x < xMin) xMin = (int) vb.x;
+    if (vc.x < xMin) xMin = (int) vc.x;
 
-    for(Vector2 v : new Vector2[]{vb, vc}) {
-      if(v.x < xMin) {
-        xMin = (int) Math.round(v.x);
-      }
+    int xMax = (int) va.x;  //assumption
+    if (vb.x > xMax) xMax = (int) vb.x;
+    if (vc.x > xMax) xMax = (int) vc.x;
 
-      if(v.x > xMax) {
-        xMax = (int) Math.round(v.x);
-      }
+    int yMin = (int) va.y;  //assumption
+    if (vb.y < yMin) yMin = (int) vb.y;
+    if (vc.y < yMin) yMin = (int) vc.y;
 
-      if(v.y < yMin) {
-        yMin = (int) Math.round(v.y);
-      }
-
-      if(v.y > yMax) {
-        yMax = (int) Math.round(v.y);
-      }
-    }
-
-    handler.handleTrianglePixel(xMin, yMin, bct.getBarycentricCoordinates(xMin, yMin));
-
-    //System.out.printf("yMin: %d, yMax: %d, \n", yMin, yMax);
+    int yMax = (int) va.y;  //assumption
+    if (vb.y > yMax) yMax = (int) vb.y;
+    if (vc.y > yMax) yMax = (int) vc.y;
 
     BarycentricCoordinates bc;
 
-    for(int y = yMin; y <= yMax; y++) {
-      for(int x = xMin; x <= xMax; x++) {
-        bc = bct.getBarycentricCoordinates(x, y);
-        if(bc.isInside()) {
-          handler.handleTrianglePixel(x, y, bc);
-        } else {
-          //System.out.printf("(%d, %d) \n", x, y);
+    for (int i = yMin; i <= yMax; i++) {
+      for (int j = xMin; j <= xMax; j++) {
+        bc = bct.getBarycentricCoordinates(j, i);
+        if (bc.isInside()) {
+          //check if out of bounds
+          if (j >= 0 && j < w && i >= 0 && i < h) {
+            handler.handleTrianglePixel(j, i, bc);
+          }
         }
       }
     }
-
-    //(0 < bc.x && bc.x < 1) && (0 < bc.y && bc.y < 1) && (0 < bc.z && bc.z < 1)
-
-    //TODO: Blatt 1, Aufgabe 4
   }
 }

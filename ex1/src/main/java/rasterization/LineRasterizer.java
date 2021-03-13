@@ -20,33 +20,11 @@ public class LineRasterizer {
     }
   }
 
-  /*
-  int clippingBinaryCode(Vector2 vector) {
-    int result = 0;
-
-    if (vector.x < 0) {
-      result += 1;
-    }
-
-    if (vector.x > w) {
-      result += 2;
-    }
-
-    if (vector.y < 0) {
-      result += 4;
-    }
-
-    if (vector.y > h) {
-      result += 8;
-    }
-
-    return result;
-  }
-   */
-
   private void bresenham(Vector2 startPoint, Vector2 endPoint) {
-
-    //TODO: Blatt 1, Aufgabe 2
+    //Blatt 1, Aufgabe 2
+    //used for printing later
+    Vector2 originalStart = startPoint;
+    Vector2 originalEnd = endPoint;
 
     boolean switched = false;
 
@@ -119,22 +97,6 @@ public class LineRasterizer {
     //calculate starting error, from slide
     double e = deltaY - (deltaX / 2);
 
-    if (mirrored) {
-      startPoint = new Vector2(startPoint.x, (-1) * startPoint.y);
-      endPoint = new Vector2(startPoint.x, (-1) * endPoint.y);
-    }
-
-    if (rotated) {
-      startPoint = rotateClock(startPoint, (-1) * rad);
-      endPoint = rotateClock(endPoint, (-1) *  rad);
-    }
-
-    if (switched) {
-      Vector2 temp = endPoint;
-      endPoint = startPoint;
-      startPoint = temp;
-    }
-
     //go through points
     for (int i = 0; i <= iter; i++) {
       //printing variables, necessary in case of transformation -> don't change current variables
@@ -156,7 +118,7 @@ public class LineRasterizer {
 
       //check if in bounds of image, then print
       if (printX >= 0 && printX < w && printY >= 0 && printY < h) {
-        handler.handleLinePixel(printX, printY, startPoint, endPoint);
+        handler.handleLinePixel(printX, printY, originalStart, originalEnd);
       }
 
       //advance e, currentX and currentY
@@ -182,6 +144,7 @@ public class LineRasterizer {
     double xPrime = v.x * Math.cos(rad) + v.y * Math.sin(rad);
     //y' = -x * sin(rad) + y * cos(rad)
     double yPrime = -1 * v.x * Math.sin(rad) + v.y * Math.cos(rad);
+
     //round to avoid (int) cast rounding mistakes:
     // (int) 3.999999 = 3
     // (int) Math.round(3.99999) = 4

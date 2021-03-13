@@ -13,30 +13,26 @@ public class BarycentricCoordinateTransform {
     det = a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y);
   }
 
-
   public boolean isDegenerate() {
     return det == 0;
   }
 
   public BarycentricCoordinates getBarycentricCoordinates(double x, double y) {
+    //Blatt 1, Aufgabe 3
 
-    //TODO: Blatt 1, Aufgabe 3
-    //round
-    //x = Math.round(x);
-    //y = Math.round(y);
-
-    double lambdaX = 0, lambdaY = 0, lambdaZ = 0;
+    double alpha = 0, beta = 0, gamma = 0;
 
     assert (!isDegenerate());
 
-    lambdaZ = (-1) * ((a.y - b.y) * x   + (b.x - a.x) * y   + a.x * b.y - b.x * a.y) /
-                     ((a.y - c.y) * b.x + (c.x - a.x) * b.y + a.x * c.y - c.x * a.y);
+    //formula from lecture
+    gamma = (-1) * ((a.y - b.y) * x   + (b.x - a.x) * y   + a.x * b.y - b.x * a.y) /
+                   ((a.y - c.y) * b.x + (c.x - a.x) * b.y + a.x * c.y - c.x * a.y);
 
-    lambdaY =        ((a.y - c.y) * x   + (c.x - a.x) * y   + a.x * c.y - c.x * a.y) /
-                     ((a.y - c.y) * b.x + (c.x - a.x) * b.y + a.x * c.y - c.x * a.y);
+    beta =         ((a.y - c.y) * x   + (c.x - a.x) * y   + a.x * c.y - c.x * a.y) /
+                   ((a.y - c.y) * b.x + (c.x - a.x) * b.y + a.x * c.y - c.x * a.y);
 
-    lambdaX = 1 - lambdaY - lambdaZ;
+    alpha = 1 - beta - gamma;
 
-    return new BarycentricCoordinates(lambdaX, lambdaY, lambdaZ);
+    return new BarycentricCoordinates(alpha, beta, gamma);
   }
 }

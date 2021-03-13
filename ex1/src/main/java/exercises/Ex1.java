@@ -3,13 +3,12 @@ package exercises;
 import image.Image;
 import image.ImageUtils;
 import image.RGBA;
-
-import java.io.IOException;
-
 import renderer.SimpleRenderer;
 import shader.ConstantColorShader;
 import shader.InterpolatedColorShader;
 import utils.Vector2;
+
+import java.io.IOException;
 
 public class Ex1 {
 
@@ -33,12 +32,11 @@ public class Ex1 {
   }
 
   public static Image<RGBA> createAndSaveImage() {
-
-    //TODO: Blatt1, Aufgabe 1
-    //create new image, 300x300 pixels, white background
+    //Blatt1, Aufgabe 1
+    //create new image, 300x300 pixels, black background
     int width = 300;
     int height = 300;
-    Image<RGBA> img = new Image<RGBA>(width, height, RGBA.white);
+    Image<RGBA> img = new Image<RGBA>(width, height, RGBA.black);
 
     //draw pixels near origin
     img.set(0, 0, RGBA.black);
@@ -86,16 +84,15 @@ public class Ex1 {
   }
 
   public static Image<RGBA> flipImageUpsideDown(Image<RGBA> img) {
-
     Image<RGBA> out = img.clone();
     int w = out.cols();
     int h = out.rows();
 
-    //TODO: Blatt 1, Aufgabe 1
+    //Blatt 1, Aufgabe 1
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {
         RGBA color = img.get(j, i);
-        out.set(j, h - 1 - i, color);
+        out.set(j, h - 1 - i, color); //get color of opposite y pixel
       }
     }
 
@@ -114,7 +111,7 @@ public class Ex1 {
     int height = 480;
     SimpleRenderer simpleRenderer = new SimpleRenderer(width, height, new ConstantColorShader());
 
-    //TODO: Blatt 1, Aufgabe 2
+    //Blatt 1, Aufgabe 2
     //draw lines, starting from center, going to the edge every 22,5°
     //-> check all possible positive and negative slopes above and below m = 1
     Vector2 start = new Vector2(250, 240);
@@ -181,18 +178,17 @@ public class Ex1 {
     int height = 480;
     SimpleRenderer simpleRenderer = new SimpleRenderer(width, height, new ConstantColorShader());
 
-    //TODO: Blatt 1, Aufgabe 4
+    //Blatt 1, Aufgabe 4
     Vector2[] tri1 = {new Vector2(-50, -20), new Vector2(20, 50), new Vector2(67, 10)};
     Vector2[] tri2 = {new Vector2(250, 120), new Vector2(125, 360), new Vector2(375, 360)};
     Vector2[] tri3 = {new Vector2(500, 700), new Vector2(400, 400), new Vector2(100, 400)};
 
-
     simpleRenderer.drawPlainTriangle(tri1, RGBA.green);
     simpleRenderer.drawPlainTriangle(tri2, RGBA.blue);
     simpleRenderer.drawPlainTriangle(tri3, RGBA.red);
-
-
-    simpleRenderer.drawPlainTriangle(new Vector2[]{new Vector2(30, 30), new Vector2(30, 150), new Vector2(150, 300)}, RGBA.red);
+    simpleRenderer.drawPlainTriangle(new Vector2[]{new Vector2(30, 30),
+                                                   new Vector2(30, 150),
+                                                   new Vector2(150, 300)}, RGBA.yellow);
 
     try {
       ImageUtils.write(simpleRenderer.getImg(), "triangleRasterExample.png");
@@ -204,19 +200,32 @@ public class Ex1 {
   public static void drawInterpolatedTriangles() {
     SimpleRenderer renderer = new SimpleRenderer(500, 480, new InterpolatedColorShader());
 
-    //TODO: Blatt 1, Aufgabe 5
+    //Blatt 1, Aufgabe 5
+    //triangle
+    renderer.drawTriangle(new Vector2[]{new Vector2(250, 120),
+                                        new Vector2(125, 360),
+                                        new Vector2(375, 361)},
+                          new RGBA[]{RGBA.red, RGBA.green, RGBA.blue});
 
-    renderer.drawTriangle(new Vector2[]{new Vector2(250, 120), new Vector2(125, 360)
-            , new Vector2(375, 361)}, new RGBA[]{RGBA.red, RGBA.green, RGBA.blue});
+    //triangle
+    renderer.drawTriangle(new Vector2[]{new Vector2(40, 270),
+                                        new Vector2(140, 20),
+                                        new Vector2(190, 220)},
+                          new RGBA[]{RGBA.grey, RGBA.yellow, RGBA.black});
 
-    renderer.drawLine(new Vector2[]{new Vector2(250, 50), new Vector2(250, 400)}
-            , new RGBA[]{RGBA.red, RGBA.blue});
+    //line
+    renderer.drawLine(new Vector2[]{new Vector2(400, 50),
+                                    new Vector2(400, 400)},
+                      new RGBA[]{RGBA.black, RGBA.white});
+    //line
+    renderer.drawLine(new Vector2[]{new Vector2(50, 400),
+                                    new Vector2(400, 400)},
+                      new RGBA[]{RGBA.magenta, RGBA.cyan});
 
-    renderer.drawLine(new Vector2[]{new Vector2(50, 300), new Vector2(400, 300)}
-            , new RGBA[]{RGBA.red, RGBA.blue});
-
-    renderer.drawLine(new Vector2[]{new Vector2(1, 1), new Vector2(10, 1)}
-            , new RGBA[]{RGBA.red, RGBA.blue});
+    //line
+    renderer.drawLine(new Vector2[]{new Vector2(10, 469),
+                                    new Vector2(489, 420)},
+                      new RGBA[]{RGBA.green, RGBA.yellow});
     try {
       ImageUtils.write(renderer.getImg(), "interpolated.png");
     } catch (IOException e) {

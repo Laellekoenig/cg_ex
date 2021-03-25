@@ -18,14 +18,14 @@ public class MeanConvolution extends Convolution {
 
     Image<Float> kernelNew = new Image<Float>(size, size, 0.0f);
 
-    //TODO: Blatt 2, Aufgabe 1 a)
+    //Blatt 2, Aufgabe 1 a)
 
     for (int i = 0; i < kernelNew.size(); i++) {
+      // average: 1 / numPixels
       kernelNew.set(i, (float) 1 / (size * size));
     }
 
     this.kernel = kernelNew;
     return kernelNew;
   }
-
 }

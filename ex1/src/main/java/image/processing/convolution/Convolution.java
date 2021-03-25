@@ -24,11 +24,9 @@ public abstract class Convolution implements ImageAlgorithm, Kernel {
 
     // determine the center of the kernel
     int kernelSize = kernel.cols();       // kernel must be a square
-    // check if kernel even
-    boolean even = kernelSize % 2 == 0;
+    // check if kernel odd (has a perfect center)
+    boolean odd = kernelSize % 2 != 0;
     int kernelWidth = kernelSize / 2;    // center at (kernelWidth/kernelWidth)
-
-    printKernel();
 
     // go through original image
     for (int x = 0; x < w; x++) {
@@ -38,17 +36,16 @@ public abstract class Convolution implements ImageAlgorithm, Kernel {
         int i = 0;  // for going through kernel
 
         // calculate bottom and right bounds of kernel
-        // different if kernel is even (not in exact center)
+        // different if kernel is even (not in exact center), avoid out of bounds error
         int yBound = y + kernelWidth;
         int xBound = x + kernelWidth;
-        if (!even) {
+        if (odd) {
           // go one step further if kernel has a perfect center
           yBound++;
           xBound++;
         }
 
         // apply kernel to portion of image
-        // this will not work for even kernel sizes (index out of bounds)
         for (int ky = y - kernelWidth; ky < yBound; ky++) {
           for (int kx = x - kernelWidth; kx < xBound; kx++) {
 
@@ -109,5 +106,4 @@ public abstract class Convolution implements ImageAlgorithm, Kernel {
 
     System.out.println(builder.toString());
   }
-
 }

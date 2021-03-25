@@ -34,11 +34,11 @@ public abstract class Convolution implements ImageAlgorithm, Kernel {
       }
     }
 
-    /*try {
+    try {
       ImageUtils.write(outImg, "test.png");
     } catch (IOException e) {
       e.printStackTrace();
-    }*/
+    }
 
     return outImg;
   }

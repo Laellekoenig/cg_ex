@@ -16,6 +16,16 @@ public class SobelHConvolution extends Convolution {
 
     //TODO: Blatt 2, Aufgabe 1 d)
 
+    kernelNew.set(0, 1f);
+    kernelNew.set(1, 2f);
+    kernelNew.set(2, 1f);
+    kernelNew.set(3, 0f);
+    kernelNew.set(4, 0f);
+    kernelNew.set(5, 0f);
+    kernelNew.set(6, -1f);
+    kernelNew.set(7, -2f);
+    kernelNew.set(8, -1f);
+
     this.kernel = kernelNew;
     return kernelNew;
   }

@@ -19,6 +19,13 @@ public class LaplaceConvolution extends Convolution {
 
     //TODO: Blatt 2, Aufgabe 1 d)
 
+    for (int i = 0; i < 9; i++) {
+      kernelNew.set(i, -1f/8);
+    }
+
+    kernelNew.set(1, 1, 1f);
+
+
     this.kernel = kernelNew;
     return kernelNew;
   }

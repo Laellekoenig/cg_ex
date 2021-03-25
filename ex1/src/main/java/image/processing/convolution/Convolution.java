@@ -18,19 +18,53 @@ public abstract class Convolution implements ImageAlgorithm, Kernel {
 
     //TODO: Blatt 2, Aufgabe 1 b)
 
-    RGBA value = new RGBA(0, 0, 0, 1);
+    // get width and height of image
+    int w = img.cols();
+    int h = img.rows();
 
-    for (int x = 0; x < img.cols(); x++) {
-      for (int y = 0; y < img.rows(); y++) {
-        for (int s = (-1) * (kernel.cols() - 1) / 2; s <= (kernel.cols() - 1) / 2; s++) {
-          for (int t = (-1) * (kernel.rows() - 1) / 2; t <= (kernel.rows() - 1) / 2; t++) {
-            value = value.plus((img.get(x - s, y - t)).times(kernel.get(s + ((kernel.cols() - 1) / 2)
-                    , t + ((kernel.rows() - 1) / 2))));
+    // determine the center of the kernel
+    int kernelSize = kernel.cols();       // kernel must be a square
+    // check if kernel even
+    boolean even = kernelSize % 2 == 0;
+    int kernelWidth = kernelSize / 2;    // center at (kernelWidth/kernelWidth)
+
+    printKernel();
+
+    // go through original image
+    for (int x = 0; x < w; x++) {
+      for (int y = 0; y < h; y++) {
+
+        RGBA color = new RGBA(0, 0, 0); // final color for new image
+        int i = 0;  // for going through kernel
+
+        // calculate bottom and right bounds of kernel
+        // different if kernel is even (not in exact center)
+        int yBound = y + kernelWidth;
+        int xBound = x + kernelWidth;
+        if (!even) {
+          // go one step further if kernel has a perfect center
+          yBound++;
+          xBound++;
+        }
+
+        // apply kernel to portion of image
+        // this will not work for even kernel sizes (index out of bounds)
+        for (int ky = y - kernelWidth; ky < yBound; ky++) {
+          for (int kx = x - kernelWidth; kx < xBound; kx++) {
+
+            // get current color
+            RGBA current = img.get(kx, ky);
+            // get kernel value of same pixel and advance i for next
+            float mult = kernel.get(i++);
+            // apply multiplication to current pixel
+            current = current.times(mult);
+            // add result to the sum of all results
+            color = color.plus(current);
           }
         }
-        //System.out.println(value.toString());
-        outImg.set(x, y, value);
-        value = new RGBA(0, 0, 0, 1);
+
+        //set the calculated color in new image
+        outImg.set(x, y, color);
       }
     }
 

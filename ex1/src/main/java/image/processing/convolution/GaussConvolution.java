@@ -13,8 +13,13 @@ public class GaussConvolution extends Convolution {
     this.sigma = sigma;
   }
 
-  private float gauss(int x, int y) {
-    return (float) ((1 / (2 * Math.PI * sigma * sigma)) * Math.exp(-(x * x + y * y) / (2.0 * sigma * sigma)));
+  private double gauss(int x, int y) {
+    // components of equation
+    double mainFraction = 1 / (2 * Math.PI * Math.pow(sigma, 2));
+    double exponent = (-1) * (Math.pow(x, 2) + Math.pow(y, 2)) / (2 * Math.pow(sigma, 2));
+
+    // return value from full equation
+    return mainFraction * Math.exp(exponent);
   }
 
   public Image<Float> getKernel() {
@@ -26,14 +31,28 @@ public class GaussConvolution extends Convolution {
 
     //TODO: Blatt 2, Aufgabe 1 a)
 
+    // array for calculated values, norm afterwards
+    double[] gaussianVals = new double[size * size];
+    double sum = 0;  // for norming later
+    int i = 0;
+
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < size; y++) {
-        kernelNew.set(x, y, gauss(x - ((size - 1) / 2), y - ((size - 1) / 2)));
+        // calculate gauss and add to array
+        double g = gauss(x, y);
+        gaussianVals[i++] = g;
+        // add to sum
+        sum += g;
       }
+    }
+
+    //norm values and set to image
+    for (int j = 0; j < gaussianVals.length; j++) {
+      double norm = gaussianVals[j] / sum;
+      kernelNew.set(j, (float) norm);
     }
 
     this.kernel = kernelNew;
     return kernelNew;
   }
-
 }

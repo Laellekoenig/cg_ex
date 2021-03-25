@@ -44,6 +44,7 @@ public class KernelTest {
   @Test
   public void testMeanKernelOfSize1() {
     Image<RGBA> img = new MeanConvolution(1).perform(chess);
+    System.out.println("arrived");
     for (int x = 0; x < chess.cols(); ++x) {
       for (int y = 0; y < chess.rows(); ++y) {
         assertEquals(chess.get(x, y), img.get(x, y));

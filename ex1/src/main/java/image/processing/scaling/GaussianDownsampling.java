@@ -23,8 +23,8 @@ public class GaussianDownsampling implements ImageAlgorithm {
 
     int i = 0;  // keep track of progress in outImg
     // skip every second x and y value
-    for (int x = 0; x < img.cols(); x += 2) {
-      for (int y = 0; y < img.rows(); y += 2) {
+    for (int y = 0; y < img.rows(); y += 2) {
+      for (int x = 0; x < img.cols(); x += 2) {
         outImg.set(i++, img.get(x, y));
       }
     }

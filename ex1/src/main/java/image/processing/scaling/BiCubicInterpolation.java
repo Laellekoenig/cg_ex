@@ -60,7 +60,6 @@ public class BiCubicInterpolation implements Interpolation {
     percentage = (decimalProgress + 1) / 3;
 
     // now interpolate over interpolated values
-
     res = interpolateCubically(a, b, c, d, percentage);
     return res;
   }
@@ -76,6 +75,8 @@ public class BiCubicInterpolation implements Interpolation {
     RGBA res = new RGBA(0.0f, 0.0f, 0.0f);
 
     //TODO: Blatt 2, Aufgabe 2 c)
+
+    //maybe something wrong here
 
     // calculate components
     RGBA p = (c3.minus(c2)).minus(c0.minus(c1));

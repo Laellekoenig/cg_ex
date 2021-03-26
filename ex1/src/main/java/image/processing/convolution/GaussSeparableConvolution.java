@@ -13,6 +13,12 @@ public class GaussSeparableConvolution extends SeparableConvolution {
     this.sigma = sigma;
   }
 
+  private float gauss(int x) {
+    double fraction = 1 / (sigma * Math.sqrt(2 * Math.PI));
+    double exponent = -1 * Math.pow(x, 2) / 2 * Math.pow(sigma, 2);
+    return (float) (fraction * Math.exp(exponent));
+  }
+
   @Override
   public Image<Float> getKernel() {
     if (this.kernel != null) {
@@ -22,6 +28,18 @@ public class GaussSeparableConvolution extends SeparableConvolution {
     Image<Float> kernel = new Image<Float>(size, 1, 0.0f);
 
     //TODO: Blatt 2, Aufgabe 1 c)
+    float[] vals = new float[size];
+    float sum = 0;
+
+    for (int i = 0; i < size; i++) {
+      float g = gauss(i);
+      vals[i] = g;
+      sum += g;
+    }
+
+    for (int i = 0; i < size; i++) {
+      kernel.set(i, vals[i] / sum);
+    }
 
     this.kernel = kernel;
     return kernel;

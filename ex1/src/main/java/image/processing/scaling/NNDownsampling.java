@@ -19,6 +19,13 @@ public class NNDownsampling implements ImageAlgorithm {
 
     //TODO: Blatt 2, Aufgabe 2 a)
 
+    int i = 0;
+    for (int x = 0; x < img.cols(); x += 2) {
+      for (int y = 0; y < img.rows(); y += 2) {
+        outImg.set(i++, img.get(x, y));
+      }
+    }
+
     return outImg;
   }
 }

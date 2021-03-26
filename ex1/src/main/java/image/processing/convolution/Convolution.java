@@ -14,19 +14,16 @@ public abstract class Convolution implements ImageAlgorithm, Kernel {
     Image<RGBA> outImg = new Image<RGBA>(img.cols(), img.rows());
     Image<Float> kernel = getKernel();
 
-    printKernel();
-
     //TODO: Blatt 2, Aufgabe 1 b)
 
     // get width and height of image
     int w = img.cols();
     int h = img.rows();
-
     int kernelHalf = kernel.cols() / 2;    // center at (kernelHalf/kernelHalf)
 
     // go through original image
-    for (int x = 0; x < w; x++) {
-      for (int y = 0; y < h; y++) {
+    for (int y = 0; y < h; y++) {
+      for (int x = 0; x < w; x++) {
 
         // get the starting location relative to the kernel
         int xStart = x - kernelHalf;

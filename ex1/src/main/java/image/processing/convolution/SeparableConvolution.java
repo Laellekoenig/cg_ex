@@ -21,7 +21,7 @@ public abstract class SeparableConvolution extends Convolution {
 
     // apply to rows
     for (int y = 0; y < img.rows(); y++) {
-      for (int x = 0; x < img.rows(); x++) {
+      for (int x = 0; x < img.cols(); x++) {
 
         RGBA newColor = new RGBA(0, 0, 0);
 
@@ -37,7 +37,7 @@ public abstract class SeparableConvolution extends Convolution {
     }
 
     // apply to cols
-    for (int x = 0; x < img.rows(); x++) {
+    for (int x = 0; x < img.cols(); x++) {
       for (int y = 0; y < img.rows(); y++) {
 
         RGBA newColor = new RGBA(0, 0, 0);

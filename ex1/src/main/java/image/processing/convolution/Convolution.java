@@ -22,46 +22,43 @@ public abstract class Convolution implements ImageAlgorithm, Kernel {
     int w = img.cols();
     int h = img.rows();
 
-    // determine the center of the kernel
-    int kernelSize = kernel.cols();       // kernel must be a square
-    // check if kernel odd (has a perfect center)
-    boolean odd = kernelSize % 2 != 0;
-    int kernelWidth = kernelSize / 2;    // center at (kernelWidth/kernelWidth)
+    int kernelHalf = kernel.cols() / 2;    // center at (kernelHalf/kernelHalf)
 
     // go through original image
     for (int x = 0; x < w; x++) {
       for (int y = 0; y < h; y++) {
 
-        RGBA color = new RGBA(0, 0, 0); // final color for new image
-        int i = 0;  // for going through kernel
+        // get the starting location relative to the kernel
+        int xStart = x - kernelHalf;
+        int yStart = y - kernelHalf;
 
-        // calculate bottom and right bounds of kernel
-        // different if kernel is even (not in exact center), avoid out of bounds error
-        int yBound = y + kernelWidth;
-        int xBound = x + kernelWidth;
-        if (odd) {
-          // go one step further if kernel has a perfect center
-          yBound++;
-          xBound++;
+        // color to be filled in
+        RGBA finalColor = new RGBA(0, 0, 0);
+
+        // go through kernel
+        for (int i = 0; i < kernel.size(); i++) {
+
+          // get entry in kernel
+          float multiplier = kernel.get(i);
+
+          // calculate relative offset for original image
+          int xOffset = i % kernel.cols();
+          int yOffset = i / kernel.cols();
+
+          // apply offset
+          int xCurrent = xStart + xOffset;
+          int yCurrent = yStart + yOffset;
+
+          // get color from original image
+          RGBA currentColor = img.get(xCurrent, yCurrent);
+
+          // apply kernel to it and add it to the final color
+          currentColor = currentColor.times(multiplier);
+          finalColor = finalColor.plus(currentColor);
         }
 
-        // apply kernel to portion of image
-        for (int ky = y - kernelWidth; ky < yBound; ky++) {
-          for (int kx = x - kernelWidth; kx < xBound; kx++) {
-
-            // get current color
-            RGBA current = img.get(kx, ky);
-            // get kernel value of same pixel and advance i for next
-            float mult = kernel.get(i++);
-            // apply multiplication to current pixel
-            current = current.times(mult);
-            // add result to the sum of all results
-            color = color.plus(current);
-          }
-        }
-
-        //set the calculated color in new image
-        outImg.set(x, y, color);
+        // set pixel
+        outImg.set(x, y, finalColor);
       }
     }
 

@@ -14,8 +14,11 @@ public class GaussSeparableConvolution extends SeparableConvolution {
   }
 
   private float gauss(int x) {
+    // components of equation
     double fraction = 1 / Math.sqrt(2 * Math.PI * Math.pow(sigma, 2));
-    double exponent = -1 * Math.pow(x, 2) / 2 * Math.pow(sigma, 2);
+    double exponent = (-1) * Math.pow(x, 2) / 2 * Math.pow(sigma, 2);
+
+    // return value from full equation
     return (float) (fraction * Math.exp(exponent));
   }
 
@@ -29,18 +32,24 @@ public class GaussSeparableConvolution extends SeparableConvolution {
     Image<Float> kernel = new Image<Float>(size, 1, 0.0f);
 
     //TODO: Blatt 2, Aufgabe 1 c)
-    float[] vals = new float[size];
-    float sum = 0;
+
+    // array for calculated values, norm afterwards
+    float[] gaussianVals = new float[size];
+    float sum = 0;  // for norming
+    // calculate offset for placing gaussian bell in the middle of kernel
     int gaussStart = -(size / 2);
 
     for (int i = 0; i < size; i++) {
+      // calculate gauss with offset and add to array
       float g = gauss(gaussStart + i);
-      vals[i] = g;
+      gaussianVals[i] = g;
+      // add to sum
       sum += g;
     }
 
+    //norm values and set to kernel
     for (int i = 0; i < size; i++) {
-      kernel.set(i, vals[i] / sum);
+      kernel.set(i, gaussianVals[i] / sum);
     }
 
     this.kernel = kernel;

@@ -36,10 +36,12 @@ public class GaussConvolution extends Convolution {
     double sum = 0;  // for norming later
     int i = 0;
 
+    int gaussStart = -(size / 2);
+
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < size; y++) {
         // calculate gauss and add to array
-        double g = gauss(x, y);
+        double g = gauss(gaussStart + x, gaussStart + y);
         gaussianVals[i++] = g;
         // add to sum
         sum += g;

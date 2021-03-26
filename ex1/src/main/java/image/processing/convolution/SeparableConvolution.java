@@ -53,6 +53,8 @@ public abstract class SeparableConvolution extends Convolution {
       }
     }
 
+    printKernel();
+
     return outImg;
   }
 

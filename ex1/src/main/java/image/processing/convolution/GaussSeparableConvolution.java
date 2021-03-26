@@ -14,13 +14,14 @@ public class GaussSeparableConvolution extends SeparableConvolution {
   }
 
   private float gauss(int x) {
-    double fraction = 1 / (sigma * Math.sqrt(2 * Math.PI));
+    double fraction = 1 / Math.sqrt(2 * Math.PI * Math.pow(sigma, 2));
     double exponent = -1 * Math.pow(x, 2) / 2 * Math.pow(sigma, 2);
     return (float) (fraction * Math.exp(exponent));
   }
 
   @Override
   public Image<Float> getKernel() {
+
     if (this.kernel != null) {
       return this.kernel; //for faster access
     }
@@ -30,9 +31,10 @@ public class GaussSeparableConvolution extends SeparableConvolution {
     //TODO: Blatt 2, Aufgabe 1 c)
     float[] vals = new float[size];
     float sum = 0;
+    int gaussStart = -(size / 2);
 
     for (int i = 0; i < size; i++) {
-      float g = gauss(i);
+      float g = gauss(gaussStart + i);
       vals[i] = g;
       sum += g;
     }

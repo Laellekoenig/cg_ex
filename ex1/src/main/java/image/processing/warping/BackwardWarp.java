@@ -28,6 +28,12 @@ public class BackwardWarp implements ImageAlgorithm {
 
     //TODO: Blatt 2, Aufgabe 3 a)
 
+    for (int x = 0; x < outImg.cols(); x++) {
+      for (int y = 0; y < outImg.rows(); y++) {
+        outImg.set(x, y, method.access((x + flowField.get(x, y).x), (y + flowField.get(x, y).y)));
+      }
+    }
+
     return outImg;
   }
 

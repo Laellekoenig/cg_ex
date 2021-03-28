@@ -28,23 +28,37 @@ public class Morphing {
 
     //TODO: Blatt 2, Aufgabe 3 c)
 
-    for (int y = 0; y < imgA.rows(); y++) {
-      for (int x = 0; x < imgA.cols(); x++) {
+    // apply lambda to vector field a2b
+    for (int i = 0; i < a2b.size(); i++) {
+      Vector2 vector = a2b.get(i);
+      vector = vector.times(lambda);
+      a2b.set(i, vector);
+    }
 
-        // get current coordinate as vector and corresponding color, image A
-        Vector2 aVector = new Vector2(x, y);
-        RGBA aColor = imgA.get(x, y);
+    // apply lambda to vector field b2a
+    for (int i = 0; i < b2a.size(); i++) {
+      Vector2 vector = b2a.get(i);
+      vector = vector.times(1 - lambda);
+      b2a.set(i, vector);
+    }
 
-        // get equivalent data from image B
-        Vector2 bVector = a2b.get(x, y);
-        RGBA bColor = imgB.get((int) bVector.x, (int) bVector.y);
+    // apply new vector fields to images A and B, "morph into same position"
+    BackwardWarp backwardWarp = new BackwardWarp(a2b);
+    imgA = backwardWarp.perform(imgA);
+    backwardWarp = new BackwardWarp(b2a);
+    imgB = backwardWarp.perform(imgB);
 
-        // lambda * A + (1 - lambda) * B
-        RGBA colorMix = aColor.times(lambda).plus(bColor.times(1 - lambda));
-        Vector2 locationMix = aVector.times(lambda).plus(bVector.times(1 - lambda));
+    // go through output image
+    for (int i = 0; i < outImage.size(); i++) {
+      // get corresponding warped pixels from images A and B
+      RGBA colorA = imgA.get(i);
+      RGBA colorB = imgB.get(i);
 
-        outImage.set((int) locationMix.x, (int) locationMix.y, colorMix);
-      }
+      // morph colors -> determine output pixel color
+      colorA = colorA.times(lambda);
+      colorB = colorB.times(1 - lambda);
+
+      outImage.set(i, colorA.plus(colorB));
     }
 
     return outImage;

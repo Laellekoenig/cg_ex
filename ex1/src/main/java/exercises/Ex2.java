@@ -77,7 +77,7 @@ public class Ex2 {
 
     backwardWarp();
 
-    forwardWarp();
+    //forwardWarp();
 
     morph();
   }

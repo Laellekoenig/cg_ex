@@ -1,5 +1,7 @@
 package image.processing.warping;
 
+import java.beans.VetoableChangeListener;
+
 import image.Image;
 import image.RGBA;
 import image.processing.ImageAlgorithm;
@@ -26,35 +28,30 @@ public class ForwardWarp implements ImageAlgorithm {
 
     //TODO: Blatt 2, Aufgabe 3 b)
 
-    for (int i = 0; i < img.size(); i += 3) {
-      // get three original colors
-      RGBA a = img.get(i);
-      RGBA b = img.get(i + 1);
-      RGBA c = img.get(i + 2);
+    for (int y = 0; y < img.rows(); y += 3) {
+      for (int x = 0; x < img.cols(); x++) {
+        // get colors
+        RGBA colorA = img.get(x, y);
+        RGBA colorB = img.get(x, y + 1);
+        RGBA colorC = img.get(x, y + 2);
 
-      // get 2d coordinates
-      int x1 = i % img.cols();
-      int y1 = i / img.cols();
-      int x2 = (i + 1) % img.cols();
-      int y2 = (i + 1) / img.cols();
-      int x3 = (i + 2) % img.cols();
-      int y3 = (i + 2) / img.cols();
+        // create vectors from coordinates
+        Vector2 pixelA = new Vector2(x, y);
+        Vector2 pixelB = new Vector2(x, y + 1);
+        Vector2 pixelC = new Vector2(x, y + 2);
 
-      // apply transformation
-      Vector2 aVect =  flowField.get(x1, y1);
-      Vector2 bVect =  flowField.get(x2, y2);
-      Vector2 cVect =  flowField.get(x3, y3);
-      x1 += aVect.x;
-      y1 += aVect.y;
-      x2 += bVect.x;
-      y2 += bVect.y;
-      x3 += cVect.x;
-      y3 += cVect.y;
+        // apply warp
+        pixelA = pixelA.plus(flowField.get(x, y));
+        pixelB = pixelB.plus(flowField.get(x, y + 1));
+        pixelC = pixelC.plus(flowField.get(x, y + 2));
 
-      Vector2[] triangle = {new Vector2(x1, y1), new Vector2(x2, y2), new Vector2(x3, y3)};
-      RGBA[] colors = {a, b, c};
-      r.drawTriangle(triangle, colors);
+        // draw resulting triangle
+        RGBA[] colors = {colorA, colorB, colorC};
+        Vector2[] triangle = {pixelA, pixelB, pixelC};
+        r.drawTriangle(triangle, colors);
+      }
     }
+
     return r.getImg();
   }
 

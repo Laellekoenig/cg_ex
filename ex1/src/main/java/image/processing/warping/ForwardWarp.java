@@ -28,7 +28,7 @@ public class ForwardWarp implements ImageAlgorithm {
 
     //TODO: Blatt 2, Aufgabe 3 b)
 
-    for (int y = 0; y < img.rows(); y += 3) {
+    for (int y = 0; y < img.rows(); y++) {
       for (int x = 0; x < img.cols(); x++) {
         // get colors
         RGBA colorA = img.get(x, y);

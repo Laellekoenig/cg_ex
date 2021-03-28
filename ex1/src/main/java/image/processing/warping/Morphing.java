@@ -28,6 +28,25 @@ public class Morphing {
 
     //TODO: Blatt 2, Aufgabe 3 c)
 
+    for (int y = 0; y < imgA.rows(); y++) {
+      for (int x = 0; x < imgA.cols(); x++) {
+
+        // get current coordinate as vector and corresponding color, image A
+        Vector2 aVector = new Vector2(x, y);
+        RGBA aColor = imgA.get(x, y);
+
+        // get equivalent data from image B
+        Vector2 bVector = a2b.get(x, y);
+        RGBA bColor = imgB.get((int) bVector.x, (int) bVector.y);
+
+        // lambda * A + (1 - lambda) * B
+        RGBA colorMix = aColor.times(lambda).plus(bColor.times(1 - lambda));
+        Vector2 locationMix = aVector.times(lambda).plus(bVector.times(1 - lambda));
+
+        outImage.set((int) locationMix.x, (int) locationMix.y, colorMix);
+      }
+    }
+
     return outImage;
   }
 }

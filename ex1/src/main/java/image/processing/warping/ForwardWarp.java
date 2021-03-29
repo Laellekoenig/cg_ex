@@ -28,22 +28,22 @@ public class ForwardWarp implements ImageAlgorithm {
 
     //TODO: Blatt 2, Aufgabe 3 b)
 
-    for (int y = 0; y < img.rows(); y++) {
-      for (int x = 0; x < img.cols(); x++) {
+    for (int y = 0; y < img.rows() - 1; y++) {
+      for (int x = 0; x < img.cols() - 1; x++) {
         // get colors
         RGBA colorA = img.get(x, y);
         RGBA colorB = img.get(x, y + 1);
-        RGBA colorC = img.get(x, y + 2);
+        RGBA colorC = img.get(x + 1, y);
 
         // create vectors from coordinates
         Vector2 pixelA = new Vector2(x, y);
         Vector2 pixelB = new Vector2(x, y + 1);
-        Vector2 pixelC = new Vector2(x, y + 2);
+        Vector2 pixelC = new Vector2(x + 1, y);
 
         // apply warp
         pixelA = pixelA.plus(flowField.get(x, y));
         pixelB = pixelB.plus(flowField.get(x, y + 1));
-        pixelC = pixelC.plus(flowField.get(x, y + 2));
+        pixelC = pixelC.plus(flowField.get(x + 1, y));
 
         // draw resulting triangle
         RGBA[] colors = {colorA, colorB, colorC};

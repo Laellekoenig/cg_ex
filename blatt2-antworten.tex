@@ -1,0 +1,110 @@
+\documentclass{article} %% Bestimmt die allgemeine Formatierung der Abgabe.
+\usepackage{a4wide} %% Papierformat: A4.
+\usepackage[utf8]{inputenc} %% Datei wird im UTF-8 Format geschrieben.
+%% Unter Windows werden Dateien je nach Editor nicht in diesem Format
+%% gespeichert und Umlaute werden dann nicht richtig erkannt.
+%% Versucht in diesem Fall "utf8" auf "latin1" (ISO 8859-1) wechseln.
+\usepackage[T1]{fontenc} %% Format der Zeichen im erstellten PDF.
+\usepackage[english]{babel} %% Regeln für automatische Worttrennung.
+\usepackage{fancyhdr} %% Paket um einen Header auf jeder Seite zu erstellen.
+\usepackage{lastpage} %% Wird für "Seite X von Y" im Header benötigt.
+                      %% Damit das funktioniert, muss pdflatex zweimal
+                      %% aufgerufen werden.
+\usepackage{enumerate} %% Hiermit kann der Stil der Aufzählungen
+                       %% verändert werden (siehe unten).
+
+\usepackage{amssymb} %% Definitionen für mathematische Symbole.
+\usepackage{amsmath} %% Definitionen für mathematische Symbole.
+\usepackage{amsthm}
+
+\usepackage{stmaryrd}
+
+\usepackage{tikz}  %% Paket für Grafiken (Graphen, Automaten, etc.)
+\usetikzlibrary{automata} %% Tikz-Bibliothek für Automaten
+\usetikzlibrary{arrows}   %% Tikz-Bibliothek für Pfeilspitzen
+
+
+%% Linke Seite des Headers
+\lhead{\course\\\semester\\Übungsblatt \homeworkNumber}
+%% Rechte Seite des Headers
+\rhead{\authorname\\Seite \thepage\ von \pageref{LastPage}}
+%% Höhe des Headers
+\usepackage[headheight=36pt]{geometry}
+%% Seitenstil, der den Header verwendet.
+\pagestyle{fancy}
+
+\newcommand{\authorname}{Max Jappert, Maximilian Barth}
+\newcommand{\semester}{Frühjahrssemester 2021}
+\newcommand{\course}{Computergrafik}
+\newcommand{\homeworkNumber}{2}
+
+
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+
+\usepackage{color}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lhead{\course\\\semester\\Übungsblatt \homeworkNumber}
+\rhead{\authorname\\Seite \thepage\ von \pageref{LastPage}}
+
+\usepackage{listings}
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+\begin{document}
+\section{Seperierbare Filter}
+\subsection{2D Faltung}
+
+Wir können den 2D-Kernel Algorithmus folgen grob in Code schreiben:\\ \\
+Bild der Grösse $M \times N$ und Filtermaske der Grösse $k \times k$.
+
+\begin{lstlisting}
+for (int i = 0; i < M; i++) {
+	for (int j = 0; j < N; j++) {
+		for (int p = 0; p < k * k; p++) {
+			applyFilter(i, j, p);
+		}
+	}
+}
+\end{lstlisting}
+
+Dabei muss durch jedes Pixel im Originalbild gegangen werden und jeweils $k \cdot k$ Operationen pro Pixel durchgeführt werden (Inhalt des Filter-Kernels). In $\mathcal{O}$-Notation sieht das folgend aus: \\
+$M \cdot N \cdot k^2 = \mathcal{O}(k^2)$
+
+\subsection{1D Faltung}
+
+\begin{lstlisting}
+for (int i = 0; i < M; i++) {
+	for (int j = 0; j < N; j++) {
+		for (int p = 0; p < k; p++) {
+			applyFilter(i, j, p);
+		}
+	}
+}
+
+for (int i = 0; i < M; i++) {
+	for (int j = 0; j < N; j++) {
+		for (int p = 0; p < k; p++) {
+			applyFilter(i, j, p);
+		}
+	}
+}
+\end{lstlisting}
+
+\end{document}

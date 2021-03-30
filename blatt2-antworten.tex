@@ -5,7 +5,7 @@
 %% gespeichert und Umlaute werden dann nicht richtig erkannt.
 %% Versucht in diesem Fall "utf8" auf "latin1" (ISO 8859-1) wechseln.
 \usepackage[T1]{fontenc} %% Format der Zeichen im erstellten PDF.
-\usepackage[english]{babel} %% Regeln für automatische Worttrennung.
+\usepackage[german]{babel} %% Regeln für automatische Worttrennung.
 \usepackage{fancyhdr} %% Paket um einen Header auf jeder Seite zu erstellen.
 \usepackage{lastpage} %% Wird für "Seite X von Y" im Header benötigt.
                       %% Damit das funktioniert, muss pdflatex zweimal
@@ -22,7 +22,6 @@
 \usepackage{tikz}  %% Paket für Grafiken (Graphen, Automaten, etc.)
 \usetikzlibrary{automata} %% Tikz-Bibliothek für Automaten
 \usetikzlibrary{arrows}   %% Tikz-Bibliothek für Pfeilspitzen
-
 
 %% Linke Seite des Headers
 \lhead{\course\\\semester\\Übungsblatt \homeworkNumber}
@@ -71,13 +70,15 @@
 \section{Seperierbare Filter}
 \subsection{2D Faltung}
 
-Wir können den 2D-Kernel Algorithmus folgen grob in Code schreiben:\\ \\
-Bild der Grösse $M \times N$ und Filtermaske der Grösse $k \times k$.
+Wir können den 2D-Kernel Algorithmus folgend grob in Code schreiben:\\ \\
+Bild der Grösse $M \times N$ und Filtermaske der Grösse $k \times k$
 
 \begin{lstlisting}
 for (int i = 0; i < M; i++) {
 	for (int j = 0; j < N; j++) {
+		// durch jedes Pixel des Bildes iterieren
 		for (int p = 0; p < k * k; p++) {
+			/* auf jedes Pixel muss der Filter angewandt werden, also pro Pixel k * k Operationen (Filtergroesse)*/
 			applyFilter(i, j, p);
 		}
 	}
@@ -85,26 +86,41 @@ for (int i = 0; i < M; i++) {
 \end{lstlisting}
 
 Dabei muss durch jedes Pixel im Originalbild gegangen werden und jeweils $k \cdot k$ Operationen pro Pixel durchgeführt werden (Inhalt des Filter-Kernels). In $\mathcal{O}$-Notation sieht das folgend aus: \\
-$M \cdot N \cdot k^2 = \mathcal{O}(k^2)$
+$\mathcal{O} (M \cdot N \cdot k^2) \geq \mathcal{O}(k^2)$ \\
+Es handelt sich also um eine quadratische Laufzeit.\\
+TODO empirische daten
 
 \subsection{1D Faltung}
 
+Der 1D Algorithmus unterscheidet sich nicht gross von der 2D implementation, er ist jedoch weitaus schneller. Dies kann man im folgenden Pseudo-Code Block und in der darauffolgenden $\mathcal{O}$-Notation sehen:
+
 \begin{lstlisting}
+// zuerst die erste Faltung ausfuehren
 for (int i = 0; i < M; i++) {
 	for (int j = 0; j < N; j++) {
+	// durch jedes Pixel des Bildes iterieren
 		for (int p = 0; p < k; p++) {
+			// 1D Filter anwenden -> p Operationen
 			applyFilter(i, j, p);
 		}
 	}
 }
 
+// dann die zweite Faltung auf das entstandene Bild
 for (int i = 0; i < M; i++) {
 	for (int j = 0; j < N; j++) {
+		// durch jedes Pixel des Bildes iterieren
 		for (int p = 0; p < k; p++) {
+			// 1D Filter anwenden -> p Operationen
 			applyFilter(i, j, p);
 		}
 	}
 }
 \end{lstlisting}
+
+Der grosse Unterschied ist, dass im inneren der beiden Loops, die über die einzelnen Pixel des Bildes iterieren, nicht $p^2$ Operationen ausgeführt werden müssen, sonder nur $p$ (und das zweimal; einmal bei der ersten Faltung und danach in der zweiten). Dies führt jedoch zu einer massiven Verbesserung in der Laufzeit des Algorithmus:
+
+$\mathcal{O} (M \cdot N \cdot k + M \cdot N \cdot k) = \mathcal{O}(2 \cdot M \cdot N \cdot k) \geq \mathcal{O} (1)$ \\
+TODO: empirisch
 
 \end{document}

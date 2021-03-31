@@ -13,6 +13,7 @@ public abstract class Convolution implements ImageAlgorithm, Kernel {
   public Image<RGBA> perform(Image<RGBA> img) {
     Image<RGBA> outImg = new Image<RGBA>(img.cols(), img.rows());
     Image<Float> kernel = getKernel();
+    int iterationCounter = 0;
 
     //TODO: Blatt 2, Aufgabe 1 b)
 
@@ -52,12 +53,15 @@ public abstract class Convolution implements ImageAlgorithm, Kernel {
           // apply kernel to it and add it to the final color
           currentColor = currentColor.times(multiplier);
           finalColor = finalColor.plus(currentColor);
+          iterationCounter++;
         }
 
         // set pixel
         outImg.set(x, y, finalColor);
       }
     }
+
+    System.out.println(iterationCounter + " iterations for input size n = " + img.size());
 
     return outImg;
   }

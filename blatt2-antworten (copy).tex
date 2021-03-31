@@ -77,14 +77,13 @@ Bild der Grösse $M \times N$ und Filtermaske der Grösse $k \times k$
 
 \begin{lstlisting}
 
+// ueber jedes Pixel im Bild iterieren
 for (int i = 0; i < M; i++) {																					
 	for (int j = 0; j < N; j++) {																			
-			// ueber jedes Pixel im Bild iterieren -> N * M Iterierungen
+		// durch jeden Eintrag des Kernels iterieren
 		for (int p = 0; p < k; p++) {																			
-			for (int q = 0; q < k; q++) {	
-											
-				// durch jeden Eintrag des Kernels iterieren -> k *k Iterierungen
-								
+			for (int q = 0; q < k; q++) {																		
+				/* auf jedes Pixel muss der Filter angewandt werden, also pro Pixel k * k Operationen (Filtergroesse)*/
 				applyFilter(i, j, p, q);
 			}
 		}
@@ -92,33 +91,42 @@ for (int i = 0; i < M; i++) {
 }
 \end{lstlisting}
 
+Dabei muss durch jedes Pixel im Originalbild gegangen werden und jeweils $k \cdot k$ Operationen pro Pixel durchgeführt werden (Inhalt des Filter-Kernels). In $\mathcal{O}$-Notation sieht das folgend aus: \\
+$\mathcal{O} (n \cdot n \cdot n \cdot n) = \mathcal{O}(n^4)$ \\
+Es handelt sich also um eine quadrierte Laufzeit.\\
+TODO empirische daten
+
 \subsection{1D Faltung}
 
-Den 1-D Kernel kann folgend grob beschrieben werden, mit einem Bild derselben Grösse und einer Filtermaske der Grösse $k$.
+Der 1D Algorithmus unterscheidet sich nicht gross von der 2D implementation, er ist jedoch weitaus schneller. Dies kann man im folgenden Pseudo-Code Block und in der darauffolgenden $\mathcal{O}$-Notation sehen:
 
 \begin{lstlisting}
 // zuerst die erste Faltung ausfuehren
-for (int i = 0; i < M; i++) {													
-	for (int j = 0; j < N; j++) {												
-	// durch jedes Pixel des Bildes iterieren  -> M * N Iterierungen
-		for (int p = 0; p < k; p++) {											
-			// 1D Filter anwenden -> k Iterierungen
+for (int i = 0; i < M; i++) {													//O(n)
+	for (int j = 0; j < N; j++) {												//O(n)
+	// durch jedes Pixel des Bildes iterieren
+		for (int p = 0; p < k; p++) {											//O(n)
+			// 1D Filter anwenden -> p Operationen
 			applyFilter(i, j, p);
 		}
 	}
 }
 
 // dann die zweite Faltung auf das entstandene Bild
-for (int i = 0; i < M; i++) {												
-	for (int j = 0; j < N; j++) {												
+for (int i = 0; i < M; i++) {													//O(n)
+	for (int j = 0; j < N; j++) {												//O(n)
 		// durch jedes Pixel des Bildes iterieren
-		for (int p = 0; p < k; p++) {											
-			// 1D Filter anwenden -> k Operationen
+		for (int p = 0; p < k; p++) {											//O(n)
+			// 1D Filter anwenden -> p Operationen
 			applyFilter(i, j, p);
 		}
 	}
 }
 \end{lstlisting}
+Der grosse Unterschied ist, dass im inneren der beiden Loops, die über die einzelnen Pixel des Bildes iterieren, nicht $p^2$ Operationen ausgeführt werden müssen, sonder nur $p$ (und das zweimal; einmal bei der ersten Faltung und danach in der zweiten). Dies führt jedoch zu einer massiven Verbesserung in der Laufzeit des Algorithmus:
+
+$\mathcal{O} (n \cdot n \cdot n + n \cdot n \cdot n) = \mathcal{O}(2 \cdot n^3) \geq \mathcal{O} (n^3)$ \\
+Der Algorithmus ist folglich im Eindimensionalem um eine Grössenordnung schneller als im Zweidimensionalem. \\ \\
 Empirisch lässt sich die Laufzeit zeigen, indem wir am Beispiel der Unit-Tests die Iterationen zählen. Da es sich bei beiden Tests um dasselbe Bild handelt, ist bei beiden der Eingabewert $n = M \cdot N = 480 \cdot 500 = 240000$.
 
 Bei der 1D-Faltung wird einmal horizontal und einmal vertikal gefiltert, wobei beide Male über das gesamte Bild, also $n$-Mal iteriert wird, wobei pro Iteration $k = 5$ mal über den Kernel iteriert wird. Dies entspricht gesamthaft $2 \cdot n \cdot k = 2 \cdot 240000 \cdot 5 = 2400000$ Iterationen. Daraus lässt sich eine Laufzeit von $\Theta (2nk)$ ableiten, was $\mathcal{O} (n)$, also einer linearen Laufzeit entspricht, da bei $\mathcal{O}$ Konstanten wie $2k$ ignoriert werden.

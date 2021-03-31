@@ -9,6 +9,7 @@ public abstract class SeparableConvolution extends Convolution {
   @Override
   public Image<RGBA> perform(Image<RGBA> img) {
     Image<Float> kernel = getKernel();
+    int iterationCounter = 0;
 
     if (kernel.cols() != 1 && kernel.rows() != 1) {
       throw new IllegalArgumentException("Kernel cannot be a matrix for separable convolution");
@@ -41,6 +42,7 @@ public abstract class SeparableConvolution extends Convolution {
           // apply filter
           currentColor = currentColor.times(multiplier);
           newColor = newColor.plus(currentColor);
+          iterationCounter++;
         }
 
         halfBaked.set(x, y, newColor);
@@ -66,6 +68,7 @@ public abstract class SeparableConvolution extends Convolution {
           // apply filter
           currentColor = currentColor.times(multiplier);
           newColor = newColor.plus(currentColor);
+          iterationCounter++;
         }
 
         outImg.set(x, y, newColor);
@@ -73,6 +76,7 @@ public abstract class SeparableConvolution extends Convolution {
     }
 
     printKernel();
+    System.out.println(iterationCounter + " iterations for input size n = " + img.size());
 
     return outImg;
   }

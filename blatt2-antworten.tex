@@ -125,4 +125,10 @@ Bei der 1D-Faltung wird einmal horizontal und einmal vertikal gefiltert, wobei b
 
 Bei der 2D-Faltung wird nur einmal über das gesamte Bild iteriert, dabei wird pro Iteration einmal über den Kernel iteriert, also $k \cdot k = 25$ Mal. Somit wird gesamthaft $nk^2 = 480000 \cdot 25 = 6000000$ mal iteriert. Daraus lässt sich die Laufzeit $\Theta (nk^2)$ ableiten, was auch einer linearen Laufzeit von $\mathcal{O} (n)$ entspricht. Da die Konstante $k^2$ für Werte $k > 2$ grösser ist als die Konstante $2k$ handelt es sich bei der 1D-Faltung um eine konstant optimierte Laufzeit.
 
+\section{Filtern im Fourierraum}
+
+Eine Faltung im Ortsraum  entspricht einer Multiplikation im Fourierraum, wie auch andersrum. Dies bedeutet, dass wir die Anwendung der Kernel anstatt durch eine Faltung im Ortsraum (wie in den Übungen implementiert) auch durch eine Multiplikation im Fourierraum implementieren könnten. Dafür müssten wir zuerst das Bild und den Kernel in den Fourierraum transformieren, dort die beiden Funktionen miteinander multiplizieren und die daraus resultierende Funktion zurück in den Ortsraum transportieren. Die absolute Laufzeit des 2DFFT beträgt $(MN)^2 log_2(MN)$, somit beträge die absolute Laufzeit dieses Prozesses $2(MN)^2 log_2(MN) + MN$. Die $\mathcal{O}$-Laufzeit bleibt gleich, da Konstanten ignoriert werden.
+
+Es muss also gelten, dass die Laufzeit der Multiplikation im Fourierraum geringer ist, falls $2(MN)^2 log_2(MN) + MN > MNk^2 \Leftrightarrow 2MN + 1 > k^2$ gilt. Wenn also $2MN + 1 > k^2$ gilt, dann lohnt sich der Umweg über den Fourierraum aus einer Laufzeitorientierten Perspektive, obwohl die $\mathcal{O}$-Notation dies nicht veranschaulicht.
+
 \end{document}

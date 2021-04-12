@@ -39,7 +39,7 @@ public class TurnTable implements MouseListener, MouseMotionListener {
   }
 
   private Matrix4 buildViewMatrix(double azimuth, double elevation, Vector3 translation) {
-    Matrix4 currentView;
+    Matrix4 currentView = null;
 
     //TODO: Blatt 3, Aufgabe 2
 

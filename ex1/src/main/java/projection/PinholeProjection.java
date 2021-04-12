@@ -22,8 +22,12 @@ public class PinholeProjection extends Projection {
     camera = new Matrix4();
 
     //TODO: Blatt 3, Aufgabe 1
+
+    camera.set(0, 0, width);
+    camera.set(1, 1, height);
   }
 
+  // Die Rotationsmatrix als Identitätsmatrix bedeutet, dass nicht rotiert wird, da dabei der Winkel Theta = 0 ist.
   private void initializeView() {
     view = new Matrix4();
   }
@@ -33,7 +37,16 @@ public class PinholeProjection extends Projection {
 
     //TODO: Blatt 3, Aufgabe 1
 
-    return new Vector3(0, 0, 0);
+    // C * (R | T)
+    projection = Matrix4.multiply(camera, view);
+
+    // Dieser vierdimensionale Vektor muss auf drei Dimensionen reduziert werden (als Nebenprodukt davon, dass die Multiplikation
+    // mit einer 4x4 anstatt einer 3x4 Matrix durchgeführt werden muss. Es gilt x4 = 1, wobei dieser Wert entfernt wird.
+    Vector4 homogPt = new Vector4(pt.x, pt.y, pt.z, 1);
+
+    Vector4 extProjection = projection.multiply(homogPt);
+
+    return new Vector3(extProjection.x, extProjection.y, extProjection.z);
   }
 
   @Override

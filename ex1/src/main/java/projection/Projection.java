@@ -20,6 +20,7 @@ public abstract class Projection {
     matrix.set(2, 1, 2 * s * x);
     matrix.set(2, 2, 1 - 2 * Math.pow(x, 2));
 
+
     return matrix;
   }
 
@@ -50,7 +51,7 @@ public abstract class Projection {
     double z = Math.sin(angle / 2);
 
     matrix.set(0, 0, 1 - (2 * Math.pow(z, 2)));
-    matrix.set(0, 1, 2 * -1 * s * z);
+    matrix.set(0, 1, 2 * (-1) * s * z);
     matrix.set(1, 0, 2 * s * z);
     matrix.set(1, 1, 1 - (2 * Math.pow(z, 2)));
 

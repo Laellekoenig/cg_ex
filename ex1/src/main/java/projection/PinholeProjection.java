@@ -25,9 +25,12 @@ public class PinholeProjection extends Projection {
 
     camera.set(0, 0, width);
     camera.set(1, 1, height);
+    camera.set(0, 2, width / 2.0);
+    camera.set(1, 2, height / 2.0);
   }
 
-  // Die Rotationsmatrix als Identitätsmatrix bedeutet, dass nicht rotiert wird, da dabei der Winkel Theta = 0 ist.
+  // Die Rotationsmatrix als Identitätsmatrix bedeutet, dass nicht rotiert wird, da dabei der Winkel Theta = 0 ist und
+  // dass das Auge auf dem Koordinatenursprung bleibt, da der Translationsvektor somit ein Nullvektor ist.
   private void initializeView() {
     view = new Matrix4();
   }
@@ -39,6 +42,13 @@ public class PinholeProjection extends Projection {
 
     // C * (R | T)
     projection = Matrix4.multiply(camera, view);
+    //projection.times(new Vector4(-1, -1/4.0, -1, 1));
+
+    //projection = camera;
+
+    //System.out.printf("camera:\n %s \n", camera);
+    //System.out.printf("view:\n %s \n", view);
+    //System.out.printf("projection:\n %s \n", projection);
 
     // Dieser vierdimensionale Vektor muss auf drei Dimensionen reduziert werden (als Nebenprodukt davon, dass die Multiplikation
     // mit einer 4x4 anstatt einer 3x4 Matrix durchgeführt werden muss. Es gilt x4 = 1, wobei dieser Wert entfernt wird.
@@ -46,6 +56,12 @@ public class PinholeProjection extends Projection {
 
     Vector4 extProjection = projection.multiply(homogPt);
 
+    // The projected coordinates are all negative and absolutely high, this patchwork function shows that the solution can't be far!
+    extProjection = extProjection.times(-1 / 3.0);
+
+    //extProjection = extProjection.times(1 / extProjection.w);
+
+    System.out.printf("(%f, %f, %f, %f) \n", extProjection.x, extProjection.y, extProjection.z, extProjection.w);
     return new Vector3(extProjection.x, extProjection.y, extProjection.z);
   }
 

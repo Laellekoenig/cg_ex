@@ -7,6 +7,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.SwingUtilities;
 
 import testSuite.Scaling;
+import utils.Matrix3;
 import utils.Matrix4;
 import utils.Vector3;
 
@@ -39,11 +40,26 @@ public class TurnTable implements MouseListener, MouseMotionListener {
   }
 
   private Matrix4 buildViewMatrix(double azimuth, double elevation, Vector3 translation) {
-    Matrix4 currentView = null;
+    Matrix4 currentView;
 
     //TODO: Blatt 3, Aufgabe 2
 
-		return currentView;
+    Matrix4 azimuthMatrix = Projection.getRotationZ(azimuth);
+    Matrix4 elevationMatrix = Projection.getRotationY(elevation);
+
+    // Maybe these rotations can be combined by multiplying the matrices?
+    // And can the last column and row of the 4x4 rotation matrix be deleted in order to create the 3x3 rotation matrix asked for?
+    // Anyway: The last row and column are equal to the identity matrix's last row and column. So the rm doesn't have to be inserted,
+    // the 4x4 matrix can be used as a template.
+    currentView = Matrix4.multiply(azimuthMatrix, elevationMatrix);
+
+    currentView.set(0, 3, translation.x);
+    currentView.set(1, 3, translation.y);
+    currentView.set(2, 3, translation.z);
+
+    System.out.println(currentView);
+
+    return currentView;
   }
 
   private void setRendererViewMatrix(Matrix4 currentView) {
@@ -102,6 +118,9 @@ public class TurnTable implements MouseListener, MouseMotionListener {
 
     //TODO: Blatt 3, Aufgabe 2
 
+    if (in)   translation.plus(new Vector3(zoomStep, zoomStep, zoomStep));
+    else      translation.minus(new Vector3(zoomStep, zoomStep, zoomStep));
+
     updateView(azimuth, elevation);
   }
 
@@ -109,12 +128,26 @@ public class TurnTable implements MouseListener, MouseMotionListener {
 
     //TODO: Blatt 3, Aufgabe 2
 
+    double ratio = (float) w / newMouseX;
+
+    double step = Math.PI / ratio;
+
+    if (mouseX < newMouseX)   azimuth += step;
+    else                      azimuth -= step;
+
     return azimuth;
   }
 
   private double handleElevation(int newMouseY, double elevation) {
 
     //TODO: Blatt 3, Aufgabe 2
+
+    double ratio = (float) h / newMouseY;
+
+    double step = Math.PI / ratio;
+
+    if (mouseY < newMouseY)   elevation -= step;
+    else                      elevation += step;
 
     return elevation;
   }

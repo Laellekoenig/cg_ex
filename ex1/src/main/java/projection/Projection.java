@@ -67,7 +67,7 @@ public abstract class Projection {
     matrix.set(1, 3, trans.y);
     matrix.set(2, 3, trans.z);
 
-    return new Matrix4();
+    return matrix;
   }
 
   public static Matrix4 getScaling(Vector3 scale) {

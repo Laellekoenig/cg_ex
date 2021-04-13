@@ -52,6 +52,24 @@ public class MeshRasterizer implements TrianglePixelHandler {
     for (Mesh mesh : meshes) {
       //TODO: Blatt 3, Aufgabe 3 a)
       //TODO: Blatt 3, Aufgabe 4
+
+      currentMesh = mesh;
+
+      for (int i = 0; i < mesh.tvi.length; i++) {
+        currentTriangle = i;
+
+        Vector3 one = mesh.vertices[mesh.tvi[i].get(0)];
+        Vector3 two = mesh.vertices[mesh.tvi[i].get(1)];
+        Vector3 three = mesh.vertices[mesh.tvi[i].get(2)];
+
+        currentDepths[0] = one.z;
+        currentDepths[1] = two.z;
+        currentDepths[2] = three.z;
+
+        p.project(one);
+        p.project(two);
+        p.project(three);
+      }
     }
 
     return correspondenceImage;

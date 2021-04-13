@@ -164,6 +164,9 @@ public class TurnTable implements MouseListener, MouseMotionListener {
     if (mouseX < newMouseX)   azimuth -= Math.PI * percentage;
     else                      azimuth += Math.PI * percentage;
 
+    // store new value
+    mouseX = newMouseX;
+
     return azimuth;
   }
 
@@ -181,6 +184,9 @@ public class TurnTable implements MouseListener, MouseMotionListener {
 
     if (mouseY < newMouseY)   elevation -= Math.PI * percentage;
     else                      elevation += Math.PI * percentage;
+
+    // store value
+    mouseY = newMouseY;
 
     return elevation;
   }

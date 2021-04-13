@@ -92,6 +92,14 @@ public class MeshRasterizer implements TrianglePixelHandler {
   public void handleTrianglePixel(int x, int y, BarycentricCoordinates triCoords) {
 
     //TODO: Blatt 3, Aufgabe 3 b)
+
+    double interpolatedDepth = triCoords.interpolate(currentDepths[0], currentDepths[1], currentDepths[2]);
+
+    interpolatedDepth *= zd;
+
+    if ((correspondenceImage.get(x, y) == null || correspondenceImage.get(x, y).depth > interpolatedDepth) && interpolatedDepth < 0) {
+      correspondenceImage.set(x, y, new Correspondence(currentMesh, currentTriangle, triCoords, interpolatedDepth));
+    }
   }
 
   private BarycentricCoordinates getWorldLambda(BarycentricCoordinates oldLambda) {

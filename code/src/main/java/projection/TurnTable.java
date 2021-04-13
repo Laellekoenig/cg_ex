@@ -153,12 +153,12 @@ public class TurnTable implements MouseListener, MouseMotionListener {
 
     //TODO: Blatt 3, Aufgabe 2
 
-    int difference = mouseX - newMouseX;
+    int difference = Math.abs(newMouseX - mouseX);
 
     double percentage = (float) difference / w;
 
-    azimuth = Math.PI * percentage;
-
+    if (mouseX < newMouseX)   azimuth -= Math.PI * percentage;
+    else                      azimuth += Math.PI * percentage;
     // store new value
     mouseX = newMouseX;
 
@@ -169,11 +169,12 @@ public class TurnTable implements MouseListener, MouseMotionListener {
 
     //TODO: Blatt 3, Aufgabe 2
 
-    int difference = newMouseY - mouseY;
+    int difference = Math.abs(newMouseY - mouseY);
 
     double percentage = (float) difference / h;
 
-    elevation = Math.PI * percentage;
+    if (mouseY < newMouseY)   elevation -= Math.PI * percentage;
+    else                      elevation += Math.PI * percentage;
 
     // store value
     mouseY = newMouseY;

@@ -72,8 +72,8 @@ public class TurnTable implements MouseListener, MouseMotionListener {
     matrix.set(2, 3, translation.z);
     */
 
-    Matrix4 azimuthMatrix = Projection.getRotationZ(azimuth);
-    Matrix4 elevationMatrix = Projection.getRotationY(elevation);
+    Matrix4 azimuthMatrix = Projection.getRotationY(azimuth);
+    Matrix4 elevationMatrix = Projection.getRotationX(elevation);
 
     currentView = Matrix4.multiply(azimuthMatrix, elevationMatrix);
 
@@ -153,16 +153,11 @@ public class TurnTable implements MouseListener, MouseMotionListener {
 
     //TODO: Blatt 3, Aufgabe 2
 
-    int difference = Math.abs(newMouseX - mouseX);
+    int difference = mouseX - newMouseX;
 
     double percentage = (float) difference / w;
 
-    if (percentage > 1) {
-      System.out.println("Error with percentage!");
-    }
-
-    if (mouseX < newMouseX)   azimuth -= Math.PI * percentage;
-    else                      azimuth += Math.PI * percentage;
+    azimuth = Math.PI * percentage;
 
     // store new value
     mouseX = newMouseX;
@@ -174,16 +169,11 @@ public class TurnTable implements MouseListener, MouseMotionListener {
 
     //TODO: Blatt 3, Aufgabe 2
 
-    int difference = Math.abs(newMouseY - mouseY);
+    int difference = newMouseY - mouseY;
 
     double percentage = (float) difference / h;
 
-    if (percentage > 1) {
-      System.out.println("Error with percentage!");
-    }
-
-    if (mouseY < newMouseY)   elevation -= Math.PI * percentage;
-    else                      elevation += Math.PI * percentage;
+    elevation = Math.PI * percentage;
 
     // store value
     mouseY = newMouseY;

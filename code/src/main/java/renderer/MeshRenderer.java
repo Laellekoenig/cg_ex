@@ -64,6 +64,12 @@ public class MeshRenderer implements TurnableRenderer {
   protected void callShader(int x, int y, Correspondence c) {
 
     //TODO: Blatt 3, Aufgabe 3 c)
+
+    Mesh mesh = c.mesh;
+    Triplet vertices = mesh.tvi[c.triangle];
+    RGBA[] colors = new RGBA[]{mesh.colors[vertices.get(0)], mesh.colors[vertices.get(1)], mesh.colors[vertices.get(2)]};
+    shader.setTriangleColors(colors);
+    shader.handleTrianglePixel(x, y, c.triCoords);
   }
 
   public void clearImg() {

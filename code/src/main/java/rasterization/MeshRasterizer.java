@@ -97,7 +97,7 @@ public class MeshRasterizer implements TrianglePixelHandler {
 
     interpolatedDepth *= zd;
 
-    if ((correspondenceImage.get(x, y) == null || correspondenceImage.get(x, y).depth > interpolatedDepth) && interpolatedDepth < 0) {
+    if ((correspondenceImage.get(x, y) == null || correspondenceImage.get(x, y).depth > interpolatedDepth)) {
       correspondenceImage.set(x, y, new Correspondence(currentMesh, currentTriangle, triCoords, interpolatedDepth));
     }
   }

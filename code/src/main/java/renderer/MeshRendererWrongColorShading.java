@@ -13,7 +13,7 @@ public class MeshRendererWrongColorShading extends MeshRenderer {
 
   @Override
   protected void callShader(int x, int y, Correspondence c) {
-    //give each triangle their own grey color:
+    //give each triangle its own grey color:
     //grey = triangle number / number of all triangles
     double greyColor = (double) (c.triangle) / c.mesh.tvi.length;
     RGBA color = new RGBA(greyColor, greyColor, greyColor);

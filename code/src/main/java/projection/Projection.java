@@ -20,7 +20,6 @@ public abstract class Projection {
     matrix.set(2, 1, 2 * s * x);
     matrix.set(2, 2, 1 - 2 * Math.pow(x, 2));
 
-
     return matrix;
   }
 

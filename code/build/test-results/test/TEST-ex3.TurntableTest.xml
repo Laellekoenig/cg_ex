@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ex3.TurntableTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-04-13T12:34:21" hostname="maxja-mint" time="0.097">
+  <properties/>
+  <testcase name="zoomTest" classname="ex3.TurntableTest" time="0.097"/>
+  <system-out><![CDATA[Reading NoGoldStandardFile
+]]></system-out>
+  <system-err><![CDATA[Could not read gold standard image NoGoldStandardFile
+]]></system-err>
+</testsuite>

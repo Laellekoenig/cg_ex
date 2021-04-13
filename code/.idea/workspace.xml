@@ -5,6 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5954850b-22a3-466f-8ca9-a39ba191f926" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries-with-intellij-classes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/ground_truth/projection/PinholeProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/archive/ground_truth/projection/PinholeProjection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/ground_truth/projection/Projection.java" beforeDir="false" afterPath="$PROJECT_DIR$/archive/ground_truth/projection/Projection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/archive/ground_truth/projection/TurnTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/archive/ground_truth/projection/TurnTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/projection/Projection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/projection/Projection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/projection/TurnTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/projection/TurnTable.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -16,6 +22,26 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="code" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -29,8 +55,10 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -39,7 +67,18 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Application.Ex3TestSuite">
+  <component name="RunManager" selected="Gradle.TurntableTest.zoomTest">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Ex1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="exercises.Ex1" />
       <module name="ex1.main" />
@@ -54,25 +93,15 @@
       </method>
     </configuration>
     <configuration name="Ex3TestSuite" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="11" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="exercises.Ex3TestSuite" />
-      <module name="ex1.main" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="exercises.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -98,12 +127,12 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="WarpTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TurntableTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;ex2.WarpTest&quot;" />
+        <option name="scriptParameters" value="--tests &quot;ex3.TurntableTest&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -119,12 +148,12 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="WarpTest.forwardWarpIdentityTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="TurntableTest.zoomTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;ex2.WarpTest.forwardWarpIdentityTest&quot;" />
+        <option name="scriptParameters" value="--tests &quot;ex3.TurntableTest.zoomTest&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -142,11 +171,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.TurntableTest.zoomTest" />
+        <item itemvalue="Gradle.TurntableTest" />
         <item itemvalue="Application.Ex3TestSuite" />
         <item itemvalue="Gradle.KernelTest" />
         <item itemvalue="Application.Ex1" />
-        <item itemvalue="Gradle.WarpTest.forwardWarpIdentityTest" />
-        <item itemvalue="Gradle.WarpTest" />
       </list>
     </recent_temporary>
   </component>
@@ -168,5 +197,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

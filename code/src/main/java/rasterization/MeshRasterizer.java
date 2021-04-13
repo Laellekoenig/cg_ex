@@ -66,9 +66,18 @@ public class MeshRasterizer implements TrianglePixelHandler {
         currentDepths[1] = two.z;
         currentDepths[2] = three.z;
 
-        p.project(one);
-        p.project(two);
-        p.project(three);
+        Vector3 pointOne = p.project(one);
+        Vector3 pointTwo = p.project(two);
+        Vector3 pointThree = p.project(three);
+
+        Vector2[] triangle = new Vector2[]{new Vector2(pointOne.x, pointOne.y), new Vector2(pointTwo.x, pointTwo.y),
+                new Vector2(pointThree.x, pointThree.y)};
+
+        if (pointOne.z != 1) {
+          System.out.println("something wrong");
+        }
+
+        r.rasterTriangle(triangle);
       }
     }
 

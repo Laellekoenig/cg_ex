@@ -78,7 +78,8 @@ Das wesentliche Problem besteht im \textit{Gimbal Lock}. Dieser entsteht, wenn e
 
 \section{Quaternionen}
 
-Wir wissen aus der Vorlesung, dass $q_1 \cdot q_2 = (s_1, \vec{v_1}) \cdot (s_2, \vec{v_2}) = (s_1 s_2 - \vec{v_1} \vec{v_2}, s_1 \vec{v_2} + s_2 \vec{v_1} + \vec{v_1} \times \vec{v_2})$. Wir haben nun $q = (cos(\frac{\pi}{6}), sin(\frac{\pi}{6})\begin{pmatrix}
+Wir wissen aus der Vorlesung, dass $q_1 \cdot q_2 = (s_1, \vec{v_1}) \cdot (s_2, \vec{v_2}) = (s_1 s_2 - \vec{v_1} \vec{v_2}, s_1 \vec{v_2} + s_2 \vec{v_1} + \vec{v_1} \times \vec{v_2})$. Davon abgeleitet wissen wir, dass der um den Winkel $\theta$ um die Achse $\vec{n}$ rotierte Punkt $p = (0, \vec{p})$ mit dem Quaternion $r = (cos(\frac{\theta}{2}), sin(\frac{\theta}{2})\vec{n})$ beschrieben werden kann. Die Formel dazu entnehmen wir der Folie 27 aus der Vorlesung zu den Transformationen: \\\\$p' = qpq^{-1} = cos(\theta)\vec{p} + (1 - cos(\theta))\vec{n}(\vec{p} \cdot \vec{n}) + sin(\theta) (\vec{n} \times \vec{p})$. \\\\
+Wir haben nun $q = (cos(\frac{\pi}{6}), sin(\frac{\pi}{6})\begin{pmatrix}
 sin(\frac{\pi}{6})\\
 cos(\frac{\pi}{6})\\
 0

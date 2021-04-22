@@ -66,19 +66,23 @@ public class MeshRasterizer implements TrianglePixelHandler {
         two = p.project(two);
         three = p.project(three);
 
-        currentDepths[0] = one.z;
-        currentDepths[1] = two.z;
-        currentDepths[2] = three.z;
+        //apply clipping
+        if (!(one.z > (-1 * cNear) || two.z > (-1 * cNear) || three.z > (-1 * cNear))) {
 
-        //now "inhomogenize" z values, since this was not done in projection so z buffer works properly
-        Vector3 pointOne = new Vector3(one.x, one.y, 1);
-        Vector3 pointTwo = new Vector3(two.x, two.y, 1);
-        Vector3 pointThree = new Vector3(three.x, three.y, 1);
+          currentDepths[0] = one.z;
+          currentDepths[1] = two.z;
+          currentDepths[2] = three.z;
 
-        Vector2[] triangle = new Vector2[]{new Vector2(pointOne.x, pointOne.y), new Vector2(pointTwo.x, pointTwo.y),
-                new Vector2(pointThree.x, pointThree.y)};
+          //now "inhomogenize" z values, since this was not done in projection so z buffer works properly
+          Vector3 pointOne = new Vector3(one.x, one.y, 1);
+          Vector3 pointTwo = new Vector3(two.x, two.y, 1);
+          Vector3 pointThree = new Vector3(three.x, three.y, 1);
 
-        r.rasterTriangle(triangle);
+          Vector2[] triangle = new Vector2[] {new Vector2(pointOne.x, pointOne.y), new Vector2(pointTwo.x, pointTwo.y),
+                  new Vector2(pointThree.x, pointThree.y)};
+
+          r.rasterTriangle(triangle);
+        }
       }
     }
 

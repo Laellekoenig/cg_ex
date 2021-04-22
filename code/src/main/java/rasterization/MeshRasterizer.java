@@ -62,33 +62,22 @@ public class MeshRasterizer implements TrianglePixelHandler {
         Vector3 two = mesh.vertices[mesh.tvi[i].get(1)];
         Vector3 three = mesh.vertices[mesh.tvi[i].get(2)];
 
+        one = p.project(one);
+        two = p.project(two);
+        three = p.project(three);
+
         currentDepths[0] = one.z;
         currentDepths[1] = two.z;
         currentDepths[2] = three.z;
 
-        Vector3 pointOne = p.project(one);
-        Vector3 pointTwo = p.project(two);
-        Vector3 pointThree = p.project(three);
-
-
-        //I think we have to take the depth here:
-        
-        //currentDepths[0] = pointOne.z;
-        //currentDepths[1] = pointTwo.z;
-        //currentDepths[2] = pointThree.z;
-
-
-        pointOne = pointOne.times(1 / pointOne.z);
-        pointTwo = pointTwo.times(1 / pointTwo.z);
-        pointThree = pointThree.times(1 / pointThree.z);
+        //now "inhomogenize" z values, since this was not done in projection so z buffer works properly
+        Vector3 pointOne = new Vector3(one.x, one.y, 1);
+        Vector3 pointTwo = new Vector3(two.x, two.y, 1);
+        Vector3 pointThree = new Vector3(three.x, three.y, 1);
 
         Vector2[] triangle = new Vector2[]{new Vector2(pointOne.x, pointOne.y), new Vector2(pointTwo.x, pointTwo.y),
                 new Vector2(pointThree.x, pointThree.y)};
-
-        if (pointOne.z != 1) {
-          System.out.println("something wrong");
-        }
-
+        
         r.rasterTriangle(triangle);
       }
     }

@@ -10,6 +10,7 @@ import testSuite.Scaling;
 import utils.Matrix3;
 import utils.Matrix4;
 import utils.Vector3;
+import utils.Vector4;
 
 public class TurnTable implements MouseListener, MouseMotionListener {
 
@@ -173,8 +174,8 @@ public class TurnTable implements MouseListener, MouseMotionListener {
 
     double percentage = (float) difference / h;
 
-    if (mouseY < newMouseY)   elevation -= Math.PI * percentage;
-    else                      elevation += Math.PI * percentage;
+    if (mouseY < newMouseY)   elevation += Math.PI * percentage;
+    else                      elevation -= Math.PI * percentage;
 
     // store value
     mouseY = newMouseY;

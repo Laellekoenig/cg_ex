@@ -82,9 +82,6 @@ public class TurnTable implements MouseListener, MouseMotionListener {
     currentView.set(1, 3, translation.y);
     currentView.set(2, 3, translation.z);
 
-    //System.out.printf("ViewMatrix by multiplication: \n %s \n", currentView);
-    //System.out.printf("ViewMatrix by quaternion: \n %s \n", matrix);
-
     return currentView;
   }
 
@@ -143,7 +140,6 @@ public class TurnTable implements MouseListener, MouseMotionListener {
   private void zoom(boolean in) {
 
     //TODO: Blatt 3, Aufgabe 2
-
     if (in)   translation = translation.plus(new Vector3(0, 0, zoomStep));
     else      translation = translation.minus(new Vector3(0, 0, zoomStep));
 
@@ -153,14 +149,16 @@ public class TurnTable implements MouseListener, MouseMotionListener {
   private double handleAzimuth(int newMouseX, double azimuth) {
 
     //TODO: Blatt 3, Aufgabe 2
-
     int difference = Math.abs(newMouseX - mouseX);
 
+    //calculate progress
     double percentage = (float) difference / w;
 
+    //apply to azimuth value
     if (mouseX < newMouseX)   azimuth -= Math.PI * percentage;
     else                      azimuth += Math.PI * percentage;
-    // store new value
+
+    // store new mouse position
     mouseX = newMouseX;
 
     return azimuth;
@@ -169,15 +167,16 @@ public class TurnTable implements MouseListener, MouseMotionListener {
   private double handleElevation(int newMouseY, double elevation) {
 
     //TODO: Blatt 3, Aufgabe 2
-
     int difference = Math.abs(newMouseY - mouseY);
 
+    //calculate progress
     double percentage = (float) difference / h;
 
+    //apply to elevation value
     if (mouseY < newMouseY)   elevation += Math.PI * percentage;
     else                      elevation -= Math.PI * percentage;
 
-    // store value
+    // store new mouse value
     mouseY = newMouseY;
 
     return elevation;

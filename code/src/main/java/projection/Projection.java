@@ -74,10 +74,8 @@ public abstract class Projection {
 
     //TODO: Blatt 3, Aufgabe 1
 
-    // Not covered in lecture, this is just a guessed implementation...
-
+    // Not covered in lecture, found on https://en.wikipedia.org/wiki/Scaling_(geometry)
     Matrix4 matrix = new Matrix4();
-
     matrix.set(0, 0, scale.x);
     matrix.set(1, 1, scale.y);
     matrix.set(2, 2, scale.z);

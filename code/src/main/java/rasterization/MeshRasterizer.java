@@ -55,13 +55,16 @@ public class MeshRasterizer implements TrianglePixelHandler {
 
       currentMesh = mesh;
 
+      //go through triangles in mesh
       for (int i = 0; i < mesh.tvi.length; i++) {
         currentTriangle = i;
 
+        //get points of current triangle
         Vector3 one = mesh.vertices[mesh.tvi[i].get(0)];
         Vector3 two = mesh.vertices[mesh.tvi[i].get(1)];
         Vector3 three = mesh.vertices[mesh.tvi[i].get(2)];
 
+        //apply projection
         one = p.project(one);
         two = p.project(two);
         three = p.project(three);
@@ -69,11 +72,13 @@ public class MeshRasterizer implements TrianglePixelHandler {
         //apply clipping
         if (!(one.z > (-1 * cNear) || two.z > (-1 * cNear) || three.z > (-1 * cNear))) {
 
+          //save for z-buffer
           currentDepths[0] = one.z;
           currentDepths[1] = two.z;
           currentDepths[2] = three.z;
 
-          //now "inhomogenize" z values, since this was not done in projection so z buffer works properly
+          //now "inhomogenize" z values, since this was not done in projection -> always = 1
+          //(this was done so the pyramid wireframe would still render)
           Vector3 pointOne = new Vector3(one.x, one.y, 1);
           Vector3 pointTwo = new Vector3(two.x, two.y, 1);
           Vector3 pointThree = new Vector3(three.x, three.y, 1);
@@ -98,12 +103,15 @@ public class MeshRasterizer implements TrianglePixelHandler {
 
     //TODO: Blatt 3, Aufgabe 3 b)
 
+    //interpolate depth as described with the help of the previously saved z values
     double interpolatedDepth = triCoords.interpolate(currentDepths[0], currentDepths[1], currentDepths[2]);
     interpolatedDepth *= zd;
 
     //dont draw behind camera
     if (interpolatedDepth < 0) return;
 
+    //check if pixel is already drawn
+    //if already drawn, compare interpolated z values and keep the one that is closest to the camera
     if ((correspondenceImage.get(x, y) == null || correspondenceImage.get(x, y).depth > interpolatedDepth)) {
       correspondenceImage.set(x, y, new Correspondence(currentMesh, currentTriangle, triCoords, interpolatedDepth));
     }

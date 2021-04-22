@@ -77,7 +77,7 @@ public class MeshRasterizer implements TrianglePixelHandler {
 
         Vector2[] triangle = new Vector2[]{new Vector2(pointOne.x, pointOne.y), new Vector2(pointTwo.x, pointTwo.y),
                 new Vector2(pointThree.x, pointThree.y)};
-        
+
         r.rasterTriangle(triangle);
       }
     }
@@ -95,8 +95,10 @@ public class MeshRasterizer implements TrianglePixelHandler {
     //TODO: Blatt 3, Aufgabe 3 b)
 
     double interpolatedDepth = triCoords.interpolate(currentDepths[0], currentDepths[1], currentDepths[2]);
-
     interpolatedDepth *= zd;
+
+    //dont draw behind camera
+    if (interpolatedDepth < 0) return;
 
     if ((correspondenceImage.get(x, y) == null || correspondenceImage.get(x, y).depth > interpolatedDepth)) {
       correspondenceImage.set(x, y, new Correspondence(currentMesh, currentTriangle, triCoords, interpolatedDepth));

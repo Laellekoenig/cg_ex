@@ -53,6 +53,35 @@ public class LambertMeshRenderer extends MeshRenderer {
 
   private void colorizePixel(int x, int y, Correspondence c) {
     //TODO: Blatt 4, Aufgabe 1
+    // somehow the 2d-coordinates of the camera view must be transformed into 3d world-coordinates, in order to accurately
+    // calculate the vector L. As is we're just picking one of the triangle's vertices in world view, which makes the
+    // triangles visible after rendering.
+
+    // the vertices in world view of the triangle including the current pixel in camera view.
+    Vector3 vertexOne = c.mesh.vertices[c.mesh.tvi[c.triangle].get(0)];
+    Vector3 vertexTwo = c.mesh.vertices[c.mesh.tvi[c.triangle].get(1)];
+    Vector3 vertexThree = c.mesh.vertices[c.mesh.tvi[c.triangle].get(2)];
+
+    // here we just follow the formula
+    Vector3 N = c.mesh.normals[c.mesh.tni[c.triangle].get(0)];
+    Vector3 L = lightSource.position.minus(vertexOne);
+
+    L = L.normalize();
+    N = N.normalize();
+
+    double LN = L.dot(N);
+
+    // check if the angle between the normal vector and the light vector is more than 90 degrees. In that case no light
+    // hits the point and the method returns prematurely.
+    if (LN < 0) {
+      return;
+    }
+
+    RGBA light = lightSource.color;
+
+    RGBA lambert = light.times(LN * MATERIAL_ALBEDO);
+
+    img.set(x, y, lambert);
   }
 
   @Override

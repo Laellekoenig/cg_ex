@@ -5,7 +5,7 @@ plugins {
 group 'ch.unibas.dmi'
 
 // STUDENTS: Update version to exercise number: 1, 2, 3, ...
-version '3'
+version 'EXERCISE_NUMBER'
 
 sourceCompatibility = 1.8
 

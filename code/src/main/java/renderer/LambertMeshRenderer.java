@@ -4,11 +4,11 @@ import illumination.PointLight;
 import image.Image;
 import image.RGBA;
 import rasterization.Correspondence;
-import utils.Matrix4;
-import utils.Triplet;
-import utils.Vector3;
-import utils.Vector4;
+import utils.*;
 import mesh.Mesh;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LambertMeshRenderer extends MeshRenderer {
 
@@ -53,18 +53,19 @@ public class LambertMeshRenderer extends MeshRenderer {
 
   private void colorizePixel(int x, int y, Correspondence c) {
     //TODO: Blatt 4, Aufgabe 1
-    // somehow the 2d-coordinates of the camera view must be transformed into 3d world-coordinates, in order to accurately
-    // calculate the vector L. As is we're just picking one of the triangle's vertices in world view, which makes the
-    // triangles visible after rendering.
 
     // the vertices in world view of the triangle including the current pixel in camera view.
     Vector3 vertexOne = c.mesh.vertices[c.mesh.tvi[c.triangle].get(0)];
     Vector3 vertexTwo = c.mesh.vertices[c.mesh.tvi[c.triangle].get(1)];
     Vector3 vertexThree = c.mesh.vertices[c.mesh.tvi[c.triangle].get(2)];
 
-    // here we just follow the formula
-    Vector3 N = c.mesh.normals[c.mesh.tni[c.triangle].get(0)];
-    Vector3 L = lightSource.position.minus(vertexOne);
+    // by interpolating via the barycentric coordinates of the correspondence we can find the point in world space.
+    Vector3 point = c.triCoords.interpolate(vertexOne, vertexTwo, vertexThree);
+
+    // here we just follow the formula, also interpolating to find the normal of the point.
+    Vector3 N = c.triCoords.interpolate(c.mesh.normals[c.mesh.tni[c.triangle].get(0)]
+            , c.mesh.normals[c.mesh.tni[c.triangle].get(1)], c.mesh.normals[c.mesh.tni[c.triangle].get(2)]);
+    Vector3 L = lightSource.position.minus(point);
 
     L = L.normalize();
     N = N.normalize();

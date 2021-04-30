@@ -52,7 +52,6 @@ public class LambertMeshRenderer extends MeshRenderer {
   }
 
   private void colorizePixel(int x, int y, Correspondence c) {
-    //TODO: Blatt 4, Aufgabe 1
 
     // the vertices in world view of the triangle including the current pixel in camera view.
     Vector3 vertexOne = c.mesh.vertices[c.mesh.tvi[c.triangle].get(0)];

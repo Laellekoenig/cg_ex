@@ -79,6 +79,42 @@ public class PhongMeshRenderer extends MeshRenderer {
   protected void shadePhong(int x, int y, Correspondence c, Vector4 eye) {
 
     //TODO: Blatt 4, Aufgabe 2
+
+    RGBA I_A = lightSource.ambient;
+    RGBA I_C = lightSource.color;
+    RGBA r_A = material.ambient;
+    RGBA r_D = material.diffuseReflectance;
+    RGBA r_S = material.specularReflectance;
+    double m = material.shininess;
+
+    Vector3 vertexOne = c.mesh.vertices[c.mesh.tvi[c.triangle].get(0)];
+    Vector3 vertexTwo = c.mesh.vertices[c.mesh.tvi[c.triangle].get(1)];
+    Vector3 vertexThree = c.mesh.vertices[c.mesh.tvi[c.triangle].get(2)];
+
+    Vector3 point = c.triCoords.interpolate(vertexOne, vertexTwo,vertexThree);
+
+    Vector3 L = lightSource.position.minus(point);
+
+    Vector3 normalOne = c.mesh.normals[c.mesh.tni[c.triangle].get(0)];
+    Vector3 normalTwo = c.mesh.normals[c.mesh.tni[c.triangle].get(1)];
+    Vector3 normalThree = c.mesh.normals[c.mesh.tni[c.triangle].get(2)];
+
+    Vector3 N = c.triCoords.interpolate(normalOne, normalTwo, normalThree);
+
+    L = L.normalize();
+    N = N.normalize();
+
+    // this formula for calculating the reflection vector was found on the internet.
+    Vector3 R = N.times(2 * N.dot(L)).minus(L);
+    R = R.normalize();
+
+    eye = eye.times(1/eye.w);
+    Vector3 V = new Vector3(eye.x, eye.y, eye.z);
+
+    RGBA I_Phong = r_A.multElementWise(I_A).plus(r_D.multElementWise(I_C).times(L.dot(N))).plus(r_S.multElementWise(I_C).times(Math.pow(R.dot(V), m)));
+
+    img.set(x, y, I_Phong);
+
     //TODO: Blatt 4, Aufgabe 6 c)
 
   }

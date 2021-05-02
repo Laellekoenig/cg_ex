@@ -91,7 +91,7 @@ public class PhongMeshRenderer extends MeshRenderer {
     Vector3 vertexTwo = c.mesh.vertices[c.mesh.tvi[c.triangle].get(1)];
     Vector3 vertexThree = c.mesh.vertices[c.mesh.tvi[c.triangle].get(2)];
 
-    Vector3 point = c.triCoords.interpolate(vertexOne, vertexTwo,vertexThree);
+    Vector3 point = c.triCoords.interpolate(vertexOne, vertexTwo, vertexThree);
 
     Vector3 L = lightSource.position.minus(point);
 

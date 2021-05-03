@@ -104,12 +104,14 @@ public class PhongMeshRenderer extends MeshRenderer {
     L = L.normalize();
     N = N.normalize();
 
-    // this formula for calculating the reflection vector was found on the internet.
-    Vector3 R = N.times(2 * N.dot(L)).minus(L);
+    // this formula for calculating the reflection vector was found on slide 42 of the slideset 9.
+    Vector3 R = L.minus(N.times(L.dot(N) * 2));
+    //Vector3 R = N.times(2 * N.dot(L)).minus(L);
     R = R.normalize();
 
     eye = eye.times(1/eye.w);
-    Vector3 V = new Vector3(eye.x, eye.y, eye.z);
+    Vector3 V = new Vector3(eye.x, eye.y, eye.z).minus(point);
+    V = V.normalize();
 
     RGBA I_Phong = r_A.multElementWise(I_A).plus(r_D.multElementWise(I_C).times(L.dot(N))).plus(r_S.multElementWise(I_C).times(Math.pow(R.dot(V), m)));
 

@@ -60,6 +60,29 @@ public class ReflectanceMeshRenderer extends MeshRenderer {
   protected void shade(int x, int y, Correspondence c, Vector4 eye, PointLight lightSource) {
 
     //TODO: Blatt 4, Aufgabe 3 b)
+
+    Vector3 vertexOne = c.mesh.vertices[c.mesh.tvi[c.triangle].get(0)];
+    Vector3 vertexTwo = c.mesh.vertices[c.mesh.tvi[c.triangle].get(1)];
+    Vector3 vertexThree = c.mesh.vertices[c.mesh.tvi[c.triangle].get(2)];
+
+    Vector3 position = c.triCoords.interpolate(vertexOne, vertexTwo, vertexThree);
+
+    Vector3 normalOne = c.mesh.normals[c.mesh.tni[c.triangle].get(0)];
+    Vector3 normalTwo = c.mesh.normals[c.mesh.tni[c.triangle].get(1)];
+    Vector3 normalThree = c.mesh.normals[c.mesh.tni[c.triangle].get(2)];
+
+    Vector3 normal = c.triCoords.interpolate(normalOne, normalTwo, normalThree);
+
+    RGBA color = new RGBA(0, 0, 0, 1);
+
+    for(Brdf brdf : matBrdf) {
+      for(PointLight pointLight : lightSources) {
+        color = color.plus(brdf.getRadiance(eye, position, pointLight, normal));
+      }
+    }
+    
+    img.set(x, y, color);
+
     //TODO: Blatt 4, Aufgabe 6 c)
   }
 

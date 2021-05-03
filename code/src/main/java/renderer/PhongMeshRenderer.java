@@ -113,7 +113,21 @@ public class PhongMeshRenderer extends MeshRenderer {
     Vector3 V = new Vector3(eye.x, eye.y, eye.z).minus(point);
     V = V.normalize();
 
-    RGBA I_Phong = r_A.multElementWise(I_A).plus(r_D.multElementWise(I_C).times(L.dot(N))).plus(r_S.multElementWise(I_C).times(Math.pow(R.dot(V), m)));
+    double LN = L.dot(N);
+    double RV = R.dot(V);
+
+    if (LN < 0) {
+      //img.set(x, y, lightSource.ambient.multElementWise(material.ambient));
+      LN = 0;
+    }
+
+    /*if (Math.abs(Math.acos(V.dot(R))) >= 0 && Math.abs(Math.acos(V.dot(R))) <= 1) {
+      img.set(x, y, lightSource.ambient.multElementWise(material.ambient));
+      return;
+    }*/
+
+
+    RGBA I_Phong = r_A.multElementWise(I_A).plus(r_D.multElementWise(I_C).times(LN)).plus(r_S.multElementWise(I_C).times(Math.pow(RV, m)));
 
     img.set(x, y, I_Phong);
 

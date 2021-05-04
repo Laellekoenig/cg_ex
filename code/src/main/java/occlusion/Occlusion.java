@@ -7,8 +7,8 @@ import projection.PinholeProjection;
 import projection.Projection;
 import rasterization.Correspondence;
 import rasterization.MeshRasterizer;
-import utils.Matrix4;
-import utils.Vector3;
+import rasterization.TriangleRasterizer;
+import utils.*;
 
 public class Occlusion {
 
@@ -32,11 +32,21 @@ public class Occlusion {
 
     //TODO: Blatt 4, Aufgabe 6 b)
 
-    //Matrix4 viewMatrix = projection.getViewMatrixOfLightSource(lightSource);
+    shadowProjection = new PinholeProjection(width, height);
+    shadowProjection.setView(projection.getViewMatrixOfLightSource(lightSource));
 
+    shadowMap = new Image<Correspondence>(width, height);
 
-
-    shadowMap = new Image<Correspondence>(1,1);
+    for(Mesh mesh : meshes) {
+      for(int i = 0; i < mesh.vertices.length; i++) {
+        Vector3 projection3d = shadowProjection.project(mesh.vertices[i]);
+        Correspondence c = new Correspondence();
+        c.depth = projection3d.z;
+        if (projection3d.x < width && projection3d.y < height) {
+          shadowMap.set((int) projection3d.x, (int) projection3d.y, c);
+        }
+      }
+    }
   }
 
   /**

@@ -32,6 +32,10 @@ public class Occlusion {
 
     //TODO: Blatt 4, Aufgabe 6 b)
 
+    //Matrix4 viewMatrix = projection.getViewMatrixOfLightSource(lightSource);
+
+
+
     shadowMap = new Image<Correspondence>(1,1);
   }
 

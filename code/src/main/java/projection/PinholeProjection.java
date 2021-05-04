@@ -8,7 +8,11 @@ import utils.Matrix4;
 
 public class PinholeProjection extends Projection {
 
-  protected Matrix4 camera, view, projection;
+  // Transforms an object in world space such that it's located correctly in relation to the camera.
+  protected Matrix4 camera;
+  // Transforms 3D world-space coordinates into 2D view-space coordinates.
+  protected Matrix4 view;
+  protected Matrix4 projection;
 
   public PinholeProjection(int width, int height) {
     super(width, height);
@@ -83,6 +87,33 @@ public class PinholeProjection extends Projection {
   public Matrix4 getViewMatrixOfLightSource(PointLight lightSource) {
 
     //TODO: Blatt 4, Aufgabe 6 a)
-    return new Matrix4();
+    // The test failIfLightSourceOnXAxisTest still fails, but I don't quite get what that test tests or requires...
+
+    Vector3 l = lightSource.position;
+
+    Vector3 z = l.times(1/l.length());
+
+    Vector3 x0 = new Vector3(1, 0, 0);
+    Vector3 y = z.cross(x0).times(1 / z.cross(x0).length());
+
+    Vector3 x = y.cross(z).times(1 / y.cross(z).length());
+
+    Matrix4 M = new Matrix4();
+
+    M.set(0, 0, x.x);
+    M.set(0, 1, x.y);
+    M.set(0, 2, x.z);
+    M.set(1, 0, y.x);
+    M.set(1, 1, y.y);
+    M.set(1, 2, y.z);
+    M.set(2, 0, z.x);
+    M.set(2, 1, z.y);
+    M.set(2, 2, z.z);
+
+    // The new coordinate system faces the same direction as the light source (due to the rotation) and the z-axis points in that direction.
+    // Therefore the required translation involves moving back along the z-axis as far as the distance of the light source.
+    M.set(2, 3, - l.length());
+
+    return M;
   }
 }

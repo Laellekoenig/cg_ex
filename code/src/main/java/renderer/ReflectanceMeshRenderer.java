@@ -80,7 +80,7 @@ public class ReflectanceMeshRenderer extends MeshRenderer {
         color = color.plus(brdf.getRadiance(eye, position, pointLight, normal));
       }
     }
-    
+
     img.set(x, y, color);
 
     //TODO: Blatt 4, Aufgabe 6 c)

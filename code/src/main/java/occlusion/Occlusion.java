@@ -51,6 +51,7 @@ public class Occlusion {
     //TODO: Blatt 4, Aufgabe 6 c)
     //TODO: Blatt 4, Aufgabe 7
 
+    Vector3 projected = shadowProjection.project(position);
     return 1.0;
   }
 }

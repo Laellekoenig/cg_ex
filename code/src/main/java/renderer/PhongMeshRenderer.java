@@ -61,6 +61,7 @@ public class PhongMeshRenderer extends MeshRenderer {
     if (shadows) {
       shadowSystem = new Occlusion(480, 480, shadowType, shadowBias, pcfMaskSize);
       //TODO: Blatt 4, Aufgabe 6 c)
+      shadowSystem.generateShadowMap(projection, lightSource, meshes);
     }
     
     Vector4 eye = projection.getEye();
@@ -129,9 +130,11 @@ public class PhongMeshRenderer extends MeshRenderer {
 
     RGBA I_Phong = r_A.multElementWise(I_A).plus(r_D.multElementWise(I_C).times(LN)).plus(r_S.multElementWise(I_C).times(Math.pow(RV, m)));
 
-    img.set(x, y, I_Phong);
 
     //TODO: Blatt 4, Aufgabe 6 c)
+    if (shadowSystem.inShadow(point) == 1) {
+      img.set(x, y, I_Phong);
+    }
 
   }
 

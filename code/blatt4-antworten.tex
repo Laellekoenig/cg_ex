@@ -17,6 +17,10 @@
 \usepackage{amsmath} %% Definitionen für mathematische Symbole.
 \usepackage{amsthm}
 \usepackage{gensymb} %% Für das Grad-Zeichen
+\usepackage[export]{adjustbox} %% Für die Positionierung von Bildern
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
 
 \usepackage{stmaryrd}
 
@@ -75,5 +79,24 @@
 Shadow Mapping funktioniert, indem der z-Buffer-Algorithmus aus Sicht der Lichtquelle ausgeführt wird, um ein Korrespondenzbild mit Tiefeninformationen (die Shadow Map) zu berechnen. Anschliessend wird beim Shading bei jedem Punkt in Weltkoordinaten nachgeschaut, ob dessen Tiefe aus Sicht der Lichtquelle grösser ist als der gespeicherte Tiefenwert an derselben Stelle in Kamerakoordinaten. Falls dem so ist, so liegt der Punkt in Weltkoordinaten im Schatten.
 
 Die aus der Perspektive der Lichtquelle betrachteten Punkte entsprechen nicht genau den Pixel aus der Sicht der Kamera. Diese inhärente Ungenauigkeit kann Artefakte zur Folge haben, die sich in Form von Eigenbeschattung äussern. Dieses Problem kann umgangen werden, indem ein Wert (der Shadow Bias) zum Tiefenwert des Shadow Maps hinzu addiert wird.
+
+Die folgenden Beispiele sind Produkte unserer Implementation:
+
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{phong.png}
+         \caption{Artefakte beim Phong'schen Reflektionsmodell ohne hinzuaddierten Shadow Bias.}
+         \label{fig:y equals x}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{reflectance.png}
+         \caption{Artefakte beim perfekten Lambert'schen Strahler ohne hinzuaddierten Shadow Bias.}
+         \label{fig:three sin x}
+     \end{subfigure}
+\end{figure}
 
 \end{document}

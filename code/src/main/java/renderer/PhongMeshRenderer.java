@@ -122,20 +122,13 @@ public class PhongMeshRenderer extends MeshRenderer {
       LN = 0;
     }
 
-    /*if (Math.abs(Math.acos(V.dot(R))) >= 0 && Math.abs(Math.acos(V.dot(R))) <= 1) {
-      img.set(x, y, lightSource.ambient.multElementWise(material.ambient));
-      return;
-    }*/
-
-
-    RGBA I_Phong = r_A.multElementWise(I_A).plus(r_D.multElementWise(I_C).times(LN)).plus(r_S.multElementWise(I_C).times(Math.pow(RV, m)));
-
-
     // If the position in world coordinates is not in shadow, then shade the pixel with the calculated light. If it is
     // in shadow, then shade it only in the ambient light color.
     if (shadows && shadowSystem.inShadow(point) == 0) {
-      img.set(x, y, material.ambient);
+      RGBA shade = material.ambient.multElementWise(lightSource.ambient);
+      img.set(x, y, shade);
     } else {
+      RGBA I_Phong = r_A.multElementWise(I_A).plus(r_D.multElementWise(I_C).times(LN)).plus(r_S.multElementWise(I_C).times(Math.pow(RV, m)));
       img.set(x, y, I_Phong);
     }
   }

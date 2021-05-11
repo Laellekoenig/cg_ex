@@ -45,6 +45,10 @@ public class ReflectanceMeshRenderer extends MeshRenderer {
     Vector4 eye = projection.getEye();
     for (PointLight lightSource : lightSources) {
       //TODO: Blatt 4, Aufgabe 6 c)
+      if (shadows) {
+        shadowSystem.generateShadowMap(projection, lightSource, meshes);
+      }
+
       for (int x = 0; x < correspondence.cols(); x++) {
         for (int y = 0; y < correspondence.rows(); y++) {
           Correspondence c = correspondence.get(x, y);
@@ -81,9 +85,10 @@ public class ReflectanceMeshRenderer extends MeshRenderer {
       }
     }
 
-    img.set(x, y, color);
-
     //TODO: Blatt 4, Aufgabe 6 c)
+    if (shadows && shadowSystem.inShadow(position) == 1 || !shadows) {
+      img.set(x, y, color);
+    }
   }
 
   public void enableShadow() {

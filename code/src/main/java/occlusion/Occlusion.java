@@ -52,13 +52,15 @@ public class Occlusion {
     //TODO: Blatt 4, Aufgabe 6 c)
     //TODO: Blatt 4, Aufgabe 7
 
-    //Vector3 pixel = position.times(1 / position.z);
+    Vector3 tPosition = shadowProjection.project(position);
 
-    Vector3 projected = shadowProjection.project(position);
-    projected = projected.times(1 / projected.z);
+    // point of position in shadow map
+    Correspondence pointInSm = shadowMap.get((int) tPosition.x, (int) tPosition.y);
 
-    if (shadowMap.get((int) projected.x, (int) projected.y) != null && position.z < shadowMap.get((int) projected.x, (int) projected.y).depth) {
-      return 0.0;
+    // if the shadow map has the point and the depth of the analyzed position is greater than that point, the position
+    // isn't lighted up.
+    if (pointInSm != null && pointInSm.depth <= (-1) * tPosition.z) {
+      return 0;
     }
 
     return 1.0;

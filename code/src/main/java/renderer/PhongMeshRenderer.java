@@ -131,11 +131,13 @@ public class PhongMeshRenderer extends MeshRenderer {
     RGBA I_Phong = r_A.multElementWise(I_A).plus(r_D.multElementWise(I_C).times(LN)).plus(r_S.multElementWise(I_C).times(Math.pow(RV, m)));
 
 
-    //TODO: Blatt 4, Aufgabe 6 c)
-    if (shadowSystem.inShadow(point) == 1.0) {
+    // If the position in world coordinates is not in shadow, then shade the pixel with the calculated light. If it is
+    // in shadow, then shade it only in the ambient light color.
+    if (shadows && shadowSystem.inShadow(point) == 0) {
+      img.set(x, y, material.ambient);
+    } else {
       img.set(x, y, I_Phong);
     }
-
   }
 
   public void enableShadow() {

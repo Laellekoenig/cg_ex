@@ -80,17 +80,6 @@ public class MeshRasterizer implements TrianglePixelHandler {
           Vector3 pointTwo = new Vector3(two.x, two.y, 1);
           Vector3 pointThree = new Vector3(three.x, three.y, 1);
 
-          BarycentricCoordinateTransform bct = new BarycentricCoordinateTransform(new Vector2(pointOne.x, pointOne.y), new Vector2(pointTwo.x, pointTwo.y),
-                  new Vector2(pointThree.x, pointThree.y));
-
-          // Terrible runtime, but maybe it works?
-          for(int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-              BarycentricCoordinates bc = bct.getBarycentricCoordinates(x, y);
-              handleTrianglePixel(x, y, bc);
-            }
-          }
-
           Vector2[] triangle = new Vector2[] {new Vector2(pointOne.x, pointOne.y), new Vector2(pointTwo.x, pointTwo.y),
                   new Vector2(pointThree.x, pointThree.y)};
 

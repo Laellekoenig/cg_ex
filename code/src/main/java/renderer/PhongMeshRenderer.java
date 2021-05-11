@@ -132,7 +132,7 @@ public class PhongMeshRenderer extends MeshRenderer {
 
 
     //TODO: Blatt 4, Aufgabe 6 c)
-    if (shadowSystem.inShadow(point) == 1) {
+    if (shadowSystem.inShadow(point) == 1.0) {
       img.set(x, y, I_Phong);
     }
 

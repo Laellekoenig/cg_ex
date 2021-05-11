@@ -8,6 +8,7 @@ import projection.Projection;
 import rasterization.Correspondence;
 import rasterization.MeshRasterizer;
 import rasterization.TriangleRasterizer;
+import renderer.MeshRenderer;
 import utils.*;
 
 public class Occlusion {
@@ -51,7 +52,15 @@ public class Occlusion {
     //TODO: Blatt 4, Aufgabe 6 c)
     //TODO: Blatt 4, Aufgabe 7
 
+    //Vector3 pixel = position.times(1 / position.z);
+
     Vector3 projected = shadowProjection.project(position);
+    projected = projected.times(1 / projected.z);
+
+    if (shadowMap.get((int) projected.x, (int) projected.y) != null && position.z < shadowMap.get((int) projected.x, (int) projected.y).depth) {
+      return 0.0;
+    }
+
     return 1.0;
   }
 }

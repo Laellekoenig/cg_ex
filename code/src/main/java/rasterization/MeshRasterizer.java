@@ -3,10 +3,7 @@ package rasterization;
 import image.Image;
 import mesh.Mesh;
 import projection.Projection;
-import utils.BarycentricCoordinates;
-import utils.Vector2;
-import utils.Vector3;
-import utils.Triplet;
+import utils.*;
 
 /**
  * Rasterizes meshes into correspondence images
@@ -64,7 +61,7 @@ public class MeshRasterizer implements TrianglePixelHandler {
         Vector3 two = mesh.vertices[mesh.tvi[i].get(1)];
         Vector3 three = mesh.vertices[mesh.tvi[i].get(2)];
 
-        //apply projection
+        //apply projection: world space -> screen space
         one = p.project(one);
         two = p.project(two);
         three = p.project(three);
@@ -82,6 +79,17 @@ public class MeshRasterizer implements TrianglePixelHandler {
           Vector3 pointOne = new Vector3(one.x, one.y, 1);
           Vector3 pointTwo = new Vector3(two.x, two.y, 1);
           Vector3 pointThree = new Vector3(three.x, three.y, 1);
+
+          BarycentricCoordinateTransform bct = new BarycentricCoordinateTransform(new Vector2(pointOne.x, pointOne.y), new Vector2(pointTwo.x, pointTwo.y),
+                  new Vector2(pointThree.x, pointThree.y));
+
+          // Terrible runtime, but maybe it works?
+          for(int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+              BarycentricCoordinates bc = bct.getBarycentricCoordinates(x, y);
+              handleTrianglePixel(x, y, bc);
+            }
+          }
 
           Vector2[] triangle = new Vector2[] {new Vector2(pointOne.x, pointOne.y), new Vector2(pointTwo.x, pointTwo.y),
                   new Vector2(pointThree.x, pointThree.y)};

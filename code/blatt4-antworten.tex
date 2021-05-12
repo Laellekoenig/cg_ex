@@ -76,26 +76,60 @@
 \begin{document}
 \section*{Aufgabe 8 - Theoriefragen}
 
-Shadow Mapping funktioniert, indem der z-Buffer-Algorithmus aus Sicht der Lichtquelle ausgeführt wird, um ein Korrespondenzbild mit Tiefeninformationen (die Shadow Map) zu berechnen. Anschliessend wird beim Shading bei jedem Punkt in Weltkoordinaten nachgeschaut, ob dessen Tiefe aus Sicht der Lichtquelle grösser ist als der gespeicherte Tiefenwert an derselben Stelle in Kamerakoordinaten. Falls dem so ist, so liegt der Punkt in Weltkoordinaten im Schatten.
+Shadow Mapping funktioniert, indem der z-Buffer-Algorithmus aus Sicht der Lichtquelle ausgeführt wird, um ein Korrespondenzbild mit Tiefeninformationen (=> die Shadow Map) zu berechnen. Anschliessend wird beim Shading bei jedem Punkt in Weltkoordinaten nachgeschaut, ob dessen Tiefe aus Sicht der Lichtquelle grösser ist als der gespeicherte Tiefenwert an derselben Stelle (in Bildschirmkoordinaten) in der Shadow Map. Falls dem so ist, so liegt der Punkt in Weltkoordinaten im Schatten.
 
-Die aus der Perspektive der Lichtquelle betrachteten Punkte entsprechen nicht genau den Pixel aus der Sicht der Kamera. Diese inhärente Ungenauigkeit kann Artefakte zur Folge haben, die sich in Form von Eigenbeschattung äussern. Dieses Problem kann umgangen werden, indem ein Wert (der Shadow Bias) zum Tiefenwert des Shadow Maps hinzu addiert wird.
+Die aus der Perspektive der Lichtquelle betrachteten Punkte entsprechen nicht genau den Pixel aus der Sicht der Kamera. Diese inhärente Ungenauigkeit kann Artefakte zur Folge haben, die sich in Form von Eigenbeschattung äussern. Dieses Problem kann ausgebügelt oder sogar umgangen werden, indem ein Wert (=> der Shadow Bias $\varepsilon$) zum Tiefenwert des Shadow Maps hinzuaddiert wird.
 
-Die folgenden Beispiele sind Produkte unserer Implementation:
+Die folgenden $3 \times 2$ Beispiele zur Veranschaulichung des Shadow Bias entstammen unserer Implementation:
+
+\vspace{1.5cm}
 
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.4\textwidth}
          \centering
          \includegraphics[width=\textwidth]{phong.png}
-         \caption{Artefakte beim Phong'schen Reflektionsmodell ohne hinzuaddierten Shadow Bias.}
+         \caption{Artefakte beim Phong'schen Reflektionsmodell ohne hinzuaddiertem Shadow Bias, also mit $\varepsilon = 0$.}
          \label{fig:y equals x}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.4\textwidth}
          \centering
          \includegraphics[width=\textwidth]{reflectance.png}
-         \caption{Artefakte beim perfekten Lambert'schen Strahler ohne hinzuaddierten Shadow Bias.}
+         \caption{Artefakte beim perfekten Lambert'schen Strahler ohne hinzuaddiertem Shadow Bias, also auch hier mit $\varepsilon = 0$.}
          \label{fig:three sin x}
+     \end{subfigure}
+\end{figure}
+
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{phong005.png}
+         \caption{Rendering mit dem Phong'schen Modell mit hinzuaddiertem Shadow Bias von $\varepsilon = 0.05$. Die Artefakte sind nun deutlich weniger sichtbar.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{reflectance005.png}
+         \caption{Rendering mit dem perfekten Lambert'schen Strahler auch mit einem hinzuaddierten Shadow Bias von $\varepsilon = 0.05$. Bei diesem Beispiel sind nun gar keine Artefakte mehr zu sehen.}
+     \end{subfigure}
+\end{figure}
+
+\vspace{1.5cm}
+
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{phong06.png}
+         \caption{Rendering mit dem Phong'schen Modell mit hinzuaddiertem Shadow Bias von $\varepsilon = 0.6$. In diesem Beispiel sind die Konsequenzen eines zu hoch gewählten Shadow Bias zu erkennen.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.4\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{reflectance2.png}
+         \caption{Dasselbe beim perfekten Lambert'schen Strahler. Hier gibt es einen grösseren Spielraum, doch ein Shadow Bias von $\varepsilon = 2$ ist zu hoch und macht sich mit zu geringer Schattierung bemerkbar.}
      \end{subfigure}
 \end{figure}
 

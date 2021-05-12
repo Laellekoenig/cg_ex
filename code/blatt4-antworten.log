@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.31)  11 MAY 2021 20:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.31)  12 MAY 2021 10:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -735,47 +735,98 @@ ABD: EveryShipout initializing macros
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \c@lstlisting=\count300
+LaTeX Font Info:    Trying to load font information for U+msa on input line 81.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 81.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+stmry on input line 8
+1.
+
+(/usr/share/texlive/texmf-dist/tex/latex/stmaryrd/Ustmry.fd)
 <phong.png, id=4, 501.875pt x 481.8pt>
 File: phong.png Graphic file (type png)
 <use phong.png>
-Package pdftex.def Info: phong.png  used on input line 89.
+Package pdftex.def Info: phong.png  used on input line 91.
 (pdftex.def)             Requested size: 171.99922pt x 165.11842pt.
 <reflectance.png, id=6, 501.875pt x 481.8pt>
 File: reflectance.png Graphic file (type png)
 <use reflectance.png>
-Package pdftex.def Info: reflectance.png  used on input line 96.
+Package pdftex.def Info: reflectance.png  used on input line 98.
 (pdftex.def)             Requested size: 171.99922pt x 165.11842pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 97--97
+Underfull \hbox (badness 10000) in paragraph at lines 99--99
 []\T1/cmr/m/n/9 (b) |Arte-fakte beim per-fek-ten Lam-
  []
 
+<phong005.png, id=7, 501.875pt x 481.8pt>
+File: phong005.png Graphic file (type png)
+<use phong005.png>
+Package pdftex.def Info: phong005.png  used on input line 108.
+(pdftex.def)             Requested size: 171.99922pt x 165.11842pt.
+<reflectance005.png, id=8, 501.875pt x 481.8pt>
+File: reflectance005.png Graphic file (type png)
+<use reflectance005.png>
+Package pdftex.def Info: reflectance005.png  used on input line 114.
+(pdftex.def)             Requested size: 171.99922pt x 165.11842pt.
 
-Underfull \hbox (badness 1546) in paragraph at lines 97--97
-\T1/cmr/m/n/9 bert'schen Strahler ohne hinzuad-dierter
+Underfull \hbox (badness 10000) in paragraph at lines 115--115
+\T1/cmr/m/n/9 bert'schen Strahler auch mit einem
+ []
+
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+
+ <./phong.png> <./reflectance.png>]
+<phong06.png, id=24, 501.875pt x 481.8pt>
+File: phong06.png Graphic file (type png)
+<use phong06.png>
+Package pdftex.def Info: phong06.png  used on input line 125.
+(pdftex.def)             Requested size: 171.99922pt x 165.11842pt.
+<reflectance2.png, id=25, 501.875pt x 481.8pt>
+File: reflectance2.png Graphic file (type png)
+<use reflectance2.png>
+Package pdftex.def Info: reflectance2.png  used on input line 131.
+(pdftex.def)             Requested size: 171.99922pt x 165.11842pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 132--132
+[]\T1/cmr/m/n/9 (b) |Das-selbe beim per-fek-ten Lam-
+ []
+
+
+Underfull \hbox (badness 1881) in paragraph at lines 132--132
+\T1/cmr/m/n/9 grösseren Spiel-raum, doch ein Shadow
  []
 
 
 AED: lastpage setting LastPage
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
-
- <./phong.png> <./reflectance.png>] (./blatt4-antworten.aux) ) 
+[2 <./phong005.png> <./reflectance005.png> <./phong06.png> <./reflectance2.png>
+] (./blatt4-antworten.aux) ) 
 Here is how much of TeX's memory you used:
- 18475 strings out of 483065
- 355865 string characters out of 5963550
- 760466 words of memory out of 5000000
- 33181 multiletter control sequences out of 15000+600000
- 535409 words of font info for 28 fonts, out of 8000000 for 9000
+ 18565 strings out of 483065
+ 357269 string characters out of 5963550
+ 761466 words of memory out of 5000000
+ 33238 multiletter control sequences out of 15000+600000
+ 541230 words of font info for 53 fonts, out of 8000000 for 9000
  81 hyphenation exceptions out of 8191
- 60i,12n,96p,493b,542s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/maxja/.te
-xlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0900.600pk> </home/maxja/.t
-exlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/maxja/.
-texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk>
-Output written on blatt4-antworten.pdf (1 page, 67467 bytes).
+ 60i,12n,96p,520b,590s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/maxja/.texlive2019/texmf-var/fonts/pk/ljfou
+r/jknappen/ec/ecrm0900.600pk> </home/maxja/.texlive2019/texmf-var/fonts/pk/ljfo
+ur/jknappen/ec/ecbx1440.600pk> </home/maxja/.texlive2019/texmf-var/fonts/pk/ljf
+our/jknappen/ec/ecrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on blatt4-antworten.pdf (2 pages, 177219 bytes).
 PDF statistics:
- 133 PDF objects out of 1000 (max. 8388607)
- 20 compressed objects within 1 object stream
+ 177 PDF objects out of 1000 (max. 8388607)
+ 37 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 23 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 43 words of extra memory for PDF output out of 10000 (max. 10000000)
 

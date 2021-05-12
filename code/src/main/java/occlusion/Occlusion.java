@@ -1,5 +1,6 @@
 package occlusion;
 
+import com.sun.tools.javac.util.Assert;
 import illumination.PointLight;
 import image.Image;
 import mesh.Mesh;
@@ -49,20 +50,45 @@ public class Occlusion {
    */
   public double inShadow(Vector3 position) {
 
-    //TODO: Blatt 4, Aufgabe 6 c)
     //TODO: Blatt 4, Aufgabe 7
+    // Has some artifacts, so it doesn't quite match the gold standard... maybe due to wonky shadow map?
 
+    // Project the position from world space into view space.
     Vector3 tPosition = shadowProjection.project(position);
 
-    // point of position in shadow map
-    Correspondence pointInSm = shadowMap.get((int) tPosition.x, (int) tPosition.y);
+    int offset = pcfMask / 2;
+    double shadowIntensity = 0;
 
-    // if the shadow map has the point and the depth of the analyzed position is greater than that point, the position
-    // isn't lighted up.
-    if (pointInSm != null && pointInSm.depth <= (-1) * tPosition.z) {
-      return 0;
+    if (shadowType.equals(ShadowType.HARD)) {
+      // point of position in shadow map
+      Correspondence pointInSm = shadowMap.get((int) tPosition.x, (int) tPosition.y);
+
+      // if the shadow map has the point and the depth of the analyzed position is greater than that point, the position
+      // isn't lighted up.
+      if (pointInSm != null && pointInSm.depth + shadowBias <= (-1) * tPosition.z) {
+        return 0;
+      }
+
+      return 1.0;
     }
 
-    return 1.0;
+    // If the shadows are soft, then iterate over the filter and add 1 to the intensity for every pixel which is visible.
+    for (int xPos = (int) tPosition.x - offset; xPos <= tPosition.x + offset; xPos++) {
+      for (int yPos = (int) tPosition.y - offset; yPos <= tPosition.y + offset; yPos++) {
+        Correspondence pointInSm = shadowMap.get(xPos, yPos);
+        if (pointInSm != null && pointInSm.depth + shadowBias <= (-1) * tPosition.z) {
+          shadowIntensity += 0;
+        } else {
+          shadowIntensity += 1;
+        }
+      }
+    }
+
+    // Calculate and return the intensity of the light in regard to the filter.
+    if (pcfMask != 0) {
+      shadowIntensity = shadowIntensity / (pcfMask * pcfMask);
+    }
+
+    return shadowIntensity;
   }
 }

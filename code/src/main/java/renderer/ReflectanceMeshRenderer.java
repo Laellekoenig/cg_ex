@@ -86,9 +86,15 @@ public class ReflectanceMeshRenderer extends MeshRenderer {
     }
 
     //TODO: Blatt 4, Aufgabe 6 c)
-    if (shadows && shadowSystem.inShadow(position) == 1 || !shadows) {
+    /*if (shadows && shadowSystem.inShadow(position) == 1 || !shadows) {
       img.set(x, y, color);
+    }*/
+
+    if (shadows) {
+      color = color.times(shadowSystem.inShadow(position));
     }
+
+    img.set(x, y, color);
   }
 
   public void enableShadow() {

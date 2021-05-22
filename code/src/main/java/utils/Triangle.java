@@ -18,6 +18,8 @@ public class Triangle implements Intersectable {
     this.c = c;
 
     //TODO: Blatt 5, Aufgabe 1
+
+
   }
 
   /**

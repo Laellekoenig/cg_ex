@@ -117,6 +117,7 @@ public class RayTracer implements TurnableRenderer {
     }
 
     //TODO: Blatt 5, Aufgabe 6
+    return null;
   }
 
   private double getLightContribution(Vector3 point, Vector3 normal, double eps) {
@@ -127,6 +128,7 @@ public class RayTracer implements TurnableRenderer {
     //TODO: Blatt 5, Aufgabe 2
     //TODO: Blatt 5, Aufgabe 5a)
     //TODO: Blatt 5, Aufgabe 5b)
+    return -1;
   }
 
 

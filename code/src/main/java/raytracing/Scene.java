@@ -32,7 +32,25 @@ public class Scene {
   public Optional<RayCastResult> rayCastScene(Ray ray, double eps) {
     //TODO: Blatt 5, Aufgabe 1
 
-    return Optional.empty();
+    double minT = Double.POSITIVE_INFINITY;
+    SceneObject closestObject = null;
+
+    for (SceneObject object : objects) {
+      Optional<Intersection> optIntersection = object.geometry.intersect(ray, eps);
+
+      if (optIntersection.isPresent() && optIntersection.get().t < minT) {
+        minT = optIntersection.get().t;
+        closestObject = object;
+      }
+    }
+
+    if (closestObject == null) {
+      return Optional.empty();
+    }
+
+    RayCastResult result = new RayCastResult(closestObject, closestObject.geometry.intersect(ray, eps).get());
+
+    return Optional.of(result);
   }
 
   /**

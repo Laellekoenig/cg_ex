@@ -48,10 +48,15 @@ public class Sphere implements Intersectable {
         return Optional.empty();
       }
 
-      // The parametric equation of the ray (ray(t) = ray.origin + t * ray.direction) is used to return the length of the
-      // ray by setting t to the calculated value. This only happens if an intersection was detected, otherwise an empty
-      // Optional object is returned.
-      return Optional.of(new Intersection(t, ray.origin.plus(ray.direction.times(1))));
+      // The normal is calculated by first calculating the vector from the center of the sphere to the point of
+      // intersection calculated via the parametric equation of the ray (ray(t) = ray.origin + t * ray.direction).
+      // The resulting vector is scaled, whereafter it is normalized
+
+      Vector3 pointOfIntersection = ray.origin.plus(ray.direction.times(t));
+      Vector3 normal = pointOfIntersection.minus(center).times(2).normalize();
+
+      return Optional.of(new Intersection(t, normal));
+      //return Optional.of(new Intersection(t, ray.origin.plus(ray.direction.times(t))));
     }
     return Optional.empty();
   }

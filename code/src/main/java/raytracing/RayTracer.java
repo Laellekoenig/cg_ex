@@ -24,7 +24,7 @@ public class RayTracer implements TurnableRenderer {
 
   private double ambientLight = 0.28;
 
-  // Ray Tracing und Rektursionstiefe
+  // Ray Tracing und Rekursionstiefe
   private boolean rayTracingEnabled = false;
   private int rayTraceDepth = 5;
 
@@ -66,6 +66,12 @@ public class RayTracer implements TurnableRenderer {
 
     //TODO: Blatt 5, Aufgabe 2
 
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        framebuffer.set(x, y, followRay(x, y));
+      }
+    }
+
     if (adaptiveSupersamplingEnabled) {
       //TODO: Blatt 5, Aufgabe 7 c)
     }
@@ -78,9 +84,22 @@ public class RayTracer implements TurnableRenderer {
 
     //TODO: Blatt 5, Aufgabe 2
 
-    Ray ray = null;
+    double z = -1;
 
-    RGBA color = RGBA.grey;
+    Vector4 homogPixelLocation = new Vector4(x, y,  z, 1);
+    Vector4 homogPoint = invertedProjection.times(homogPixelLocation);
+    homogPoint = homogPoint.times(1 / homogPoint.w);
+
+
+    Vector3 point = new Vector3(homogPoint.x, homogPoint.y, z);
+
+    Vector3 origin = new Vector3(0, 0, 0);
+
+    Ray ray = new Ray(origin, point);
+
+    RGBA color = followRay(rayTraceDepth, ray);
+
+
     if (depthOfFieldEnabled) {
       //TODO: Blatt 5, Aufgabe 7 b)
     } else {
@@ -96,12 +115,37 @@ public class RayTracer implements TurnableRenderer {
 
   private RGBA followRay(int depth, Ray ray, double eps) {
     //TODO: Blatt 5, Aufgabe 2
+
+    Optional<RayCastResult> optResult = scene.rayCastScene(ray, eps);
+
+    RGBA color;
+
+    if (optResult.isPresent()) {
+      RayCastResult result = optResult.get();
+
+      Intersection intersection = result.intersection;
+
+      SceneObject object = result.object;
+
+      RayTracingMaterial material = object.getMaterial();
+
+      if (lightSource.isPresent()) {
+        color = material.getColor().times(Math.max(- intersection.normal.dot(lightSource.get().direction),0))
+                .plus(material.getAmbientColor().times(ambientLight));
+      } else {
+        color = material.getColor();
+      }
+
+    } else {
+      color = RGBA.grey;
+    }
+
     //TODO: Blatt 5, Aufgabe 3
     //TODO: Blatt 5, Aufgabe 4
     //TODO: Blatt 5, Aufgabe 6
     //TODO: Blatt 5, Aufgabe 7 a)
 
-    return RGBA.grey;
+    return color;
   }
 
   private RGBA getReflectionTerm(Ray ray, Vector3 point, Vector3 normal,
@@ -126,6 +170,7 @@ public class RayTracer implements TurnableRenderer {
     }
 
     //TODO: Blatt 5, Aufgabe 2
+
     //TODO: Blatt 5, Aufgabe 5a)
     //TODO: Blatt 5, Aufgabe 5b)
     return -1;

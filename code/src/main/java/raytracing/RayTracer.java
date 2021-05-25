@@ -84,18 +84,21 @@ public class RayTracer implements TurnableRenderer {
 
     //TODO: Blatt 5, Aufgabe 2
 
+    // arbitrary depth of near-clipping plane in direction of negative z-axis
     double z = -1;
 
-    Vector4 homogPixelLocation = new Vector4(x, y,  z, 1);
+    // transform the 2d pixel space into the near clipping plane in 3d world space
+    Vector4 homogPixelLocation = new Vector4(-x, -y,  z, 1);
     Vector4 homogPoint = invertedProjection.times(homogPixelLocation);
-    homogPoint = homogPoint.times(1 / homogPoint.w);
+    Vector3 point = new Vector3(homogPoint.x, homogPoint.y, homogPoint.z);
 
+    // transform the origin into world space
+    Vector4 screenHomogOrigin = new Vector4(0, 0, 0, 1);
+    Vector4 worldHomogOrigin = invertedProjection.times(screenHomogOrigin);
+    Vector3 origin = new Vector3(worldHomogOrigin.x, worldHomogOrigin.y, worldHomogOrigin.z);
 
-    Vector3 point = new Vector3(homogPoint.x, homogPoint.y, z);
-
-    Vector3 origin = new Vector3(0, 0, 0);
-
-    Ray ray = new Ray(origin, point);
+    // create a ray from the origin to the pixel (x, y) represented on the near clipping plane in world space
+    Ray ray = Ray.fromEndPoints(origin, point);
 
     RGBA color = followRay(rayTraceDepth, ray);
 

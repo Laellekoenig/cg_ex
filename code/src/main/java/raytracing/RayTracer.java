@@ -143,7 +143,7 @@ public class RayTracer implements TurnableRenderer {
       }
 
       if (depth > 0 && rayTracingEnabled) {
-        Vector3 point = ray.origin.plus(ray.direction);
+        Vector3 point = ray.direction.plus(ray.origin);
         color = color.plus(getReflectionTerm(ray, point, intersection.normal, material, depth, eps));
       }
 
@@ -168,15 +168,11 @@ public class RayTracer implements TurnableRenderer {
     if (depth == 0) return new RGBA(0, 0, 0);;
 
     // get outgoing vector
-    //http://particle.uni-wuppertal.de/vorkurse/Physik06/optik1.pdf S. 4
-    double en = ray.direction.dot(normal);
-    double n2 = normal.dot(normal);
-    Vector3 pn = normal.times(en / n2);
-    //vector after perfect reflexion
-    Vector3 r = ray.direction.minus(pn.times(2));
+    //https://wiki.delphigl.com/index.php/Reflexion
+    Vector3 r = normal.normalize().times(-2 * ray.direction.normalize().dot(normal.normalize())).plus(ray.direction.normalize());
 
     // create new ray and cast it
-    Ray nextRay = Ray.fromEndPoints(point, r);
+    Ray nextRay = new Ray(point, r);
     Optional<RayCastResult> optResult = scene.rayCastScene(nextRay, eps);
 
     if (optResult.isPresent()) {
@@ -187,7 +183,8 @@ public class RayTracer implements TurnableRenderer {
 
       RGBA reflectanceColor = nextMaterial.getColor().multElementWise(nextMaterial.getReflectance());
 
-      Vector3 nextPoint = nextRay.origin.plus(nextRay.direction);
+      Vector3 nextPoint = nextRay.direction.plus(nextRay.origin);
+      // recursion
       return reflectanceColor.plus(getReflectionTerm(nextRay, nextPoint, intersection.normal, nextMaterial, depth - 1, eps));
     }
 

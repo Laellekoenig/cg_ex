@@ -131,20 +131,17 @@ public class RayTracer implements TurnableRenderer {
 
       RayTracingMaterial material = object.getMaterial();
 
-      if (lightSource.isPresent()) {
-        RGBA c = material.getColor();
-        Vector3 n = intersection.normal;
-        RGBA a = material.getAmbientColor();
-        double I_a = ambientLight;
-        double I_l = getLightContribution(ray.origin.plus(ray.direction), n, eps);
-        color = c.times(I_l).plus(a.times(I_a));
-      } else {
-        color = material.getColor();
-      }
+      RGBA c = material.getColor();
+      Vector3 n = intersection.normal;
+      RGBA a = material.getAmbientColor();
+      double I_a = ambientLight;
+      double I_l = getLightContribution(ray.origin.plus(ray.direction), n, eps);
+      color = c.times(I_l).plus(a.times(I_a));
 
       //TODO: Blatt 5, Aufgabe 3
       if (depth > 0 && rayTracingEnabled) {
-        Vector3 point = ray.direction.plus(ray.origin);
+        // The point of intersection determined by applying the correct parameter t to the ray's parametric form.
+        Vector3 point = ray.pointAt(intersection.t);
         color = color.plus(getReflectionTerm(ray, point, intersection.normal, material, depth, eps));
       }
 
@@ -170,30 +167,38 @@ public class RayTracer implements TurnableRenderer {
     //TODO: Blatt 5, Aufgabe 3
 
     // breaking conditions
-    if (!rayTracingEnabled) return new RGBA(0, 0, 0);;
-    if (depth == 0) return new RGBA(0, 0, 0);;
+    if (!rayTracingEnabled) return new RGBA(0, 0, 0);
+    if (depth == 0) return new RGBA(0, 0, 0);
 
     // get outgoing vector
     //https://wiki.delphigl.com/index.php/Reflexion
-    Vector3 r = normal.normalize().times(-2 * ray.direction.normalize().dot(normal.normalize())).plus(ray.direction.normalize());
+    Vector3 newRayDirection = normal.normalize().times(-2 * ray.direction.normalize().dot(normal.normalize())).plus(ray.direction.normalize());
 
     // create new ray and cast it
-    Ray nextRay = new Ray(point, r);
+    Ray nextRay = new Ray(point, newRayDirection);
     Optional<RayCastResult> optResult = scene.rayCastScene(nextRay, eps);
 
     if (optResult.isPresent()) {
       // get next intersection from ray
       RayCastResult result = optResult.get();
       Intersection intersection = result.intersection;
+      Vector3 n = intersection.normal;
       SceneObject object = result.object;
       RayTracingMaterial nextMaterial = object.getMaterial();
+      Vector3 nextPoint = nextRay.pointAt(intersection.t);
 
       // calculate r * I_r
-      RGBA reflectanceColor = nextMaterial.getColor().multElementWise(nextMaterial.getReflectance());
+      RGBA I_r = material.getReflectance();
+      RGBA r = nextMaterial.getColor();
 
-      Vector3 nextPoint = nextRay.direction.plus(nextRay.origin);
+      RGBA reflectanceColor = r.multElementWise(I_r).times(ambientLight);
+      //RGBA reflectanceColor = nextMaterial.getColor().multElementWise(nextMaterial.getReflectance());
+
+      //Vector3 nextPoint = nextRay.direction.plus(nextRay.origin);
+
       // recursion
       return reflectanceColor.plus(getReflectionTerm(nextRay, nextPoint, intersection.normal, nextMaterial, depth - 1, eps));
+      //return reflectanceColor;
     }
 
     return new RGBA(0, 0, 0);

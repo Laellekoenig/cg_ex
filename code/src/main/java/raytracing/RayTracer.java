@@ -142,6 +142,11 @@ public class RayTracer implements TurnableRenderer {
         color = material.getColor();
       }
 
+      if (depth > 0 && rayTracingEnabled) {
+        Vector3 point = ray.origin.plus(ray.direction);
+        color.plus(getReflectionTerm(ray, point, intersection.normal, material, depth, eps));
+      }
+
     } else {
       color = RGBA.grey;
     }
@@ -151,10 +156,6 @@ public class RayTracer implements TurnableRenderer {
     //TODO: Blatt 5, Aufgabe 6
     //TODO: Blatt 5, Aufgabe 7 a)
 
-    if (depth > 0 && rayTracingEnabled) {
-      //color.plus(followRay(depth - 1, ray, eps));
-    }
-
     return color;
   }
 
@@ -162,19 +163,35 @@ public class RayTracer implements TurnableRenderer {
       RayTracingMaterial material, int depth, double eps) {
     //TODO: Blatt 5, Aufgabe 3
 
+    // breaking conditions
+    if (!rayTracingEnabled) return new RGBA(0, 0, 0);;
+    if (depth == 0) return new RGBA(0, 0, 0);;
+
+    // get outgoing vector
     //http://particle.uni-wuppertal.de/vorkurse/Physik06/optik1.pdf S. 4
-    /*
     double en = ray.direction.dot(normal);
     double n2 = normal.dot(normal);
     Vector3 pn = normal.times(en / n2);
     //vector after perfect reflexion
     Vector3 r = ray.direction.minus(pn.times(2));
-     */
 
-    RGBA reflectanceTuple = material.getReflectance();
+    // create new ray and cast it
+    Ray nextRay = Ray.fromEndPoints(point, r);
+    Optional<RayCastResult> optResult = scene.rayCastScene(nextRay, eps);
 
+    if (optResult.isPresent()) {
+      RayCastResult result = optResult.get();
+      Intersection intersection = result.intersection;
+      SceneObject object = result.object;
+      RayTracingMaterial nextMaterial = object.getMaterial();
 
-    return null;
+      RGBA reflectanceColor = nextMaterial.getColor().multElementWise(nextMaterial.getReflectance());
+
+      Vector3 nextPoint = nextRay.origin.plus(nextRay.direction);
+      return reflectanceColor.plus(getReflectionTerm(nextRay, nextPoint, intersection.normal, nextMaterial, depth - 1, eps));
+    }
+
+    return new RGBA(0, 0, 0);
   }
 
   private RGBA getRefractionTerm(Ray ray, Vector3 point, Vector3 normal,

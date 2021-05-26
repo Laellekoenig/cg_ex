@@ -136,7 +136,7 @@ public class RayTracer implements TurnableRenderer {
         Vector3 n = intersection.normal;
         RGBA a = material.getAmbientColor();
         double I_a = ambientLight;
-        double I_l = getLightContribution(ray.direction, n, eps);
+        double I_l = getLightContribution(ray.origin.plus(ray.direction), n, eps);
         color = c.times(I_l).plus(a.times(I_a));
       } else {
         color = material.getColor();

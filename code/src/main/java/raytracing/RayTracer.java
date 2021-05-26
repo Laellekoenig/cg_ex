@@ -144,7 +144,7 @@ public class RayTracer implements TurnableRenderer {
 
       if (depth > 0 && rayTracingEnabled) {
         Vector3 point = ray.origin.plus(ray.direction);
-        color.plus(getReflectionTerm(ray, point, intersection.normal, material, depth, eps));
+        color = color.plus(getReflectionTerm(ray, point, intersection.normal, material, depth, eps));
       }
 
     } else {

@@ -223,7 +223,7 @@ public class RayTracer implements TurnableRenderer {
       // create a new ray from point to light source and check if it intersects with an object
       Vector3 lightDirection = lightSource.get().direction;
       Ray toLight = new Ray(point, lightDirection);
-      Optional<RayCastResult> lightOptResult = scene.rayCastScene(toLight, eps);
+      Optional<RayCastResult> lightOptResult = scene.rayCastSceneAny(toLight, eps);
 
       if (lightOptResult.isPresent()) {
         //shadow

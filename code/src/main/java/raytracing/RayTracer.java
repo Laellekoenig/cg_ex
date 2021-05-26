@@ -219,6 +219,17 @@ public class RayTracer implements TurnableRenderer {
     double I_l = Math.max(- normal.dot(lightSource.get().direction), 0);
 
     //TODO: Blatt 5, Aufgabe 5a)
+    if (shadowsEnabled && lightSource.isPresent()) {
+      // create a new ray from point to light source and check if it intersects with an object
+      Vector3 lightDirection = lightSource.get().direction;
+      Ray toLight = new Ray(point, lightDirection);
+      Optional<RayCastResult> lightOptResult = scene.rayCastScene(toLight, eps);
+
+      if (lightOptResult.isPresent()) {
+        //shadow
+        I_l = 0;
+      }
+    }
     //TODO: Blatt 5, Aufgabe 5b)
     return I_l;
   }

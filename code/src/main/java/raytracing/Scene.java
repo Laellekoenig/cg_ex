@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 public class Scene {
 
   private final List<SceneObject> objects = new ArrayList<SceneObject>();
@@ -67,6 +69,16 @@ public class Scene {
    */
   public Optional<RayCastResult> rayCastSceneAny(Ray ray, double eps) {
     //TODO: Blatt 5, Aufgabe 5
+
+    // intersect witrh any object
+    for (SceneObject object : objects) {
+      Optional<Intersection> optIntersection = object.geometry.intersect(ray, eps);
+
+      if (optIntersection.isPresent()) {
+        // first intersection found
+        return Optional.of(new RayCastResult(object, object.geometry.intersect(ray, eps).get()));
+      }
+    }
 
     return Optional.empty();
   }

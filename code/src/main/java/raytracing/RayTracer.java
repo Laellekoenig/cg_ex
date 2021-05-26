@@ -137,7 +137,6 @@ public class RayTracer implements TurnableRenderer {
         RGBA a = material.getAmbientColor();
         double I_a = ambientLight;
         double I_l = getLightContribution(ray.direction, n, eps);
-
         color = c.times(I_l).plus(a.times(I_a));
       } else {
         color = material.getColor();
@@ -152,12 +151,29 @@ public class RayTracer implements TurnableRenderer {
     //TODO: Blatt 5, Aufgabe 6
     //TODO: Blatt 5, Aufgabe 7 a)
 
+    if (depth > 0 && rayTracingEnabled) {
+      //color.plus(followRay(depth - 1, ray, eps));
+    }
+
     return color;
   }
 
   private RGBA getReflectionTerm(Ray ray, Vector3 point, Vector3 normal,
       RayTracingMaterial material, int depth, double eps) {
     //TODO: Blatt 5, Aufgabe 3
+
+    //http://particle.uni-wuppertal.de/vorkurse/Physik06/optik1.pdf S. 4
+    /*
+    double en = ray.direction.dot(normal);
+    double n2 = normal.dot(normal);
+    Vector3 pn = normal.times(en / n2);
+    //vector after perfect reflexion
+    Vector3 r = ray.direction.minus(pn.times(2));
+     */
+
+    RGBA reflectanceTuple = material.getReflectance();
+
+
     return null;
   }
 

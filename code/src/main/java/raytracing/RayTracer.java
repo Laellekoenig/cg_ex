@@ -176,11 +176,13 @@ public class RayTracer implements TurnableRenderer {
     Optional<RayCastResult> optResult = scene.rayCastScene(nextRay, eps);
 
     if (optResult.isPresent()) {
+      // get next intersection from ray
       RayCastResult result = optResult.get();
       Intersection intersection = result.intersection;
       SceneObject object = result.object;
       RayTracingMaterial nextMaterial = object.getMaterial();
 
+      // calculate r * I_r
       RGBA reflectanceColor = nextMaterial.getColor().multElementWise(nextMaterial.getReflectance());
 
       Vector3 nextPoint = nextRay.direction.plus(nextRay.origin);

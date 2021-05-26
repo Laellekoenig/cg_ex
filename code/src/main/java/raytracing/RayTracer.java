@@ -216,7 +216,11 @@ public class RayTracer implements TurnableRenderer {
 
     //TODO: Blatt 5, Aufgabe 2
 
-    double I_l = Math.max(- normal.dot(lightSource.get().direction), 0);
+    // This for some reason works, while the formula given on the exercise sheet only works for the spheres.
+    // If the negative sign of <n,l> is removed, then it only works for the cube.
+    // => weird af
+    double I_l = Math.max(- normal.dot(lightSource.get().direction), normal.dot(lightSource.get().direction));
+    //double I_l = Math.max(- normal.dot(lightSource.get().direction), 0);
 
     //TODO: Blatt 5, Aufgabe 5a)
     if (shadowsEnabled && lightSource.isPresent()) {

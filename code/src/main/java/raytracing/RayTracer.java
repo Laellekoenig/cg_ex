@@ -142,17 +142,23 @@ public class RayTracer implements TurnableRenderer {
         color = material.getColor();
       }
 
+      //TODO: Blatt 5, Aufgabe 3
       if (depth > 0 && rayTracingEnabled) {
         Vector3 point = ray.direction.plus(ray.origin);
         color = color.plus(getReflectionTerm(ray, point, intersection.normal, material, depth, eps));
       }
 
     } else {
-      color = RGBA.grey;
+      //TODO: Blatt 5, Aufgabe 4
+      if (environmentMap.isPresent()) {
+        // get map and give it the direction of the ray
+        EnvironmentMap<RGBA> map = environmentMap.get();
+        color = map.access(ray.direction);
+      } else {
+        color = RGBA.grey;
+      }
     }
 
-    //TODO: Blatt 5, Aufgabe 3
-    //TODO: Blatt 5, Aufgabe 4
     //TODO: Blatt 5, Aufgabe 6
     //TODO: Blatt 5, Aufgabe 7 a)
 

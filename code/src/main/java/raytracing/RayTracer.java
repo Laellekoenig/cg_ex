@@ -102,7 +102,6 @@ public class RayTracer implements TurnableRenderer {
 
     RGBA color = followRay(rayTraceDepth, ray);
 
-
     if (depthOfFieldEnabled) {
       //TODO: Blatt 5, Aufgabe 7 b)
     } else {
@@ -133,8 +132,13 @@ public class RayTracer implements TurnableRenderer {
       RayTracingMaterial material = object.getMaterial();
 
       if (lightSource.isPresent()) {
-        color = material.getColor().times(Math.max(- intersection.normal.dot(lightSource.get().direction),0))
-                .plus(material.getAmbientColor().times(ambientLight));
+        RGBA c = material.getColor();
+        Vector3 n = intersection.normal;
+        RGBA a = material.getAmbientColor();
+        double I_a = ambientLight;
+        double I_l = getLightContribution(ray.direction, n, eps);
+
+        color = c.times(I_l).plus(a.times(I_a));
       } else {
         color = material.getColor();
       }
@@ -174,9 +178,11 @@ public class RayTracer implements TurnableRenderer {
 
     //TODO: Blatt 5, Aufgabe 2
 
+    double I_l = Math.max(- normal.dot(lightSource.get().direction), 0);
+
     //TODO: Blatt 5, Aufgabe 5a)
     //TODO: Blatt 5, Aufgabe 5b)
-    return -1;
+    return I_l;
   }
 
 

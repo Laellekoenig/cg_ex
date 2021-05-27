@@ -100,10 +100,11 @@ public class RayTracer implements TurnableRenderer {
     // create a ray from the origin to the pixel (x, y) represented on the near clipping plane in world space
     Ray ray = Ray.fromEndPoints(origin, point);
 
-    RGBA color = followRay(rayTraceDepth, ray);
+    RGBA color;
 
     if (depthOfFieldEnabled) {
       //TODO: Blatt 5, Aufgabe 7 b)
+      color = new RGBA(0, 0, 0);
     } else {
       color = followRay(rayTraceDepth, ray);
     }

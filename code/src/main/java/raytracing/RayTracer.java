@@ -142,7 +142,8 @@ public class RayTracer implements TurnableRenderer {
       if (depth > 0 && rayTracingEnabled) {
         // The point of intersection determined by applying the correct parameter t to the ray's parametric form.
         Vector3 point = ray.pointAt(intersection.t);
-        color = color.plus(getReflectionTerm(ray, point, intersection.normal, material, depth, eps));
+        RGBA I_r = material.getReflectance();
+        color = color.plus(I_r.multElementWise(getReflectionTerm(ray, point, intersection.normal, material, depth, eps)));
       }
 
     } else {
@@ -182,23 +183,25 @@ public class RayTracer implements TurnableRenderer {
       // get next intersection from ray
       RayCastResult result = optResult.get();
       Intersection intersection = result.intersection;
-      Vector3 n = intersection.normal;
       SceneObject object = result.object;
       RayTracingMaterial nextMaterial = object.getMaterial();
       Vector3 nextPoint = nextRay.pointAt(intersection.t);
 
+      RGBA c = nextMaterial.getColor();
+      double I_l = getLightContribution(nextPoint, intersection.normal, eps);
+
+      RGBA a = nextMaterial.getAmbientColor();
+      double I_a = ambientLight;
       // calculate r * I_r
-      RGBA I_r = material.getReflectance();
-      RGBA r = nextMaterial.getColor();
+      RGBA I_r = nextMaterial.getReflectance();
 
-      RGBA reflectanceColor = r.multElementWise(I_r).times(ambientLight);
-      //RGBA reflectanceColor = nextMaterial.getColor().multElementWise(nextMaterial.getReflectance());
-
-      //Vector3 nextPoint = nextRay.direction.plus(nextRay.origin);
-
-      // recursion
-      return reflectanceColor.plus(getReflectionTerm(nextRay, nextPoint, intersection.normal, nextMaterial, depth - 1, eps));
+      // Defines r recursively
+      return c.times(I_l).plus(a.times(I_a)).plus(I_r.multElementWise(getReflectionTerm(nextRay, nextPoint, intersection.normal
+              , nextMaterial, depth - 1, eps)));
+      //return reflectanceColor.plus(getReflectionTerm(nextRay, nextPoint, intersection.normal, nextMaterial, depth - 1, eps));
       //return reflectanceColor;
+    } else if (environmentMap.isPresent()) {
+      return environmentMap.get().access(ray.direction);
     }
 
     return new RGBA(0, 0, 0);

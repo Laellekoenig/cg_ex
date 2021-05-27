@@ -90,11 +90,13 @@ public class RayTracer implements TurnableRenderer {
     // transform the 2d pixel space into the near clipping plane in 3d world space
     Vector4 homogPixelLocation = new Vector4(-x, -y,  z, 1);
     Vector4 homogPoint = invertedProjection.times(homogPixelLocation);
+    homogPoint = homogPoint.times(1 / homogPoint.w);
     Vector3 point = new Vector3(homogPoint.x, homogPoint.y, homogPoint.z);
 
     // transform the origin into world space
     Vector4 screenHomogOrigin = new Vector4(0, 0, 0, 1);
     Vector4 worldHomogOrigin = invertedProjection.times(screenHomogOrigin);
+    worldHomogOrigin = worldHomogOrigin.times(1 / worldHomogOrigin.w);
     Vector3 origin = new Vector3(worldHomogOrigin.x, worldHomogOrigin.y, worldHomogOrigin.z);
 
     // create a ray from the origin to the pixel (x, y) represented on the near clipping plane in world space
@@ -143,8 +145,7 @@ public class RayTracer implements TurnableRenderer {
       if (depth > 0 && rayTracingEnabled) {
         // The point of intersection determined by applying the correct parameter t to the ray's parametric form.
         Vector3 point = ray.pointAt(intersection.t);
-        RGBA I_r = material.getReflectance();
-        color = color.plus(I_r.multElementWise(getReflectionTerm(ray, point, intersection.normal, material, depth, eps)));
+        color = color.plus(getReflectionTerm(ray, point, intersection.normal, material, depth, eps));
       }
 
     } else {
@@ -152,7 +153,7 @@ public class RayTracer implements TurnableRenderer {
       if (environmentMap.isPresent()) {
         // get map and give it the direction of the ray
         EnvironmentMap<RGBA> map = environmentMap.get();
-        color = map.access(ray.direction);
+        color = map.access(ray.direction.times(-1));
       } else {
         color = RGBA.grey;
       }
@@ -181,26 +182,12 @@ public class RayTracer implements TurnableRenderer {
     Optional<RayCastResult> optResult = scene.rayCastScene(nextRay, eps);
 
     if (optResult.isPresent()) {
-      // get next intersection from ray
-      RayCastResult result = optResult.get();
-      Intersection intersection = result.intersection;
-      SceneObject object = result.object;
-      RayTracingMaterial nextMaterial = object.getMaterial();
-      Vector3 nextPoint = nextRay.pointAt(intersection.t);
 
-      RGBA c = nextMaterial.getColor();
-      double I_l = getLightContribution(nextPoint, intersection.normal, eps);
-
-      RGBA a = nextMaterial.getAmbientColor();
-      double I_a = ambientLight;
       // calculate r * I_r
-      RGBA I_r = nextMaterial.getReflectance();
+      RGBA I_r = material.getReflectance();
 
       // Defines r recursively
-      return c.times(I_l).plus(a.times(I_a)).plus(I_r.multElementWise(getReflectionTerm(nextRay, nextPoint, intersection.normal
-              , nextMaterial, depth - 1, eps)));
-      //return reflectanceColor.plus(getReflectionTerm(nextRay, nextPoint, intersection.normal, nextMaterial, depth - 1, eps));
-      //return reflectanceColor;
+      return I_r.multElementWise(followRay(depth - 1, nextRay, eps));
     } else if (environmentMap.isPresent()) {
       return environmentMap.get().access(ray.direction);
     }
@@ -228,13 +215,13 @@ public class RayTracer implements TurnableRenderer {
     // This for some reason works, while the formula given on the exercise sheet only works for the spheres.
     // If the negative sign of <n,l> is removed, then it only works for the cube.
     // => weird af
-    double I_l = Math.max(- normal.dot(lightSource.get().direction), normal.dot(lightSource.get().direction));
-    //double I_l = Math.max(- normal.dot(lightSource.get().direction), 0);
+    //double I_l = Math.max(- normal.dot(lightSource.get().direction), normal.dot(lightSource.get().direction));
+    double I_l = Math.max(- normal.dot(lightSource.get().direction), 0);
 
     //TODO: Blatt 5, Aufgabe 5a)
     if (shadowsEnabled && lightSource.isPresent()) {
       // create a new ray from point to light source and check if it intersects with an object
-      Vector3 lightDirection = lightSource.get().direction;
+      Vector3 lightDirection = lightSource.get().direction.times(-1);
       Ray toLight = new Ray(point, lightDirection);
       Optional<RayCastResult> lightOptResult = scene.rayCastSceneAny(toLight, eps);
 

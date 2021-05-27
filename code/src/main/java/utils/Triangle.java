@@ -29,7 +29,7 @@ public class Triangle implements Intersectable {
     // The cross product of two sides of the triangle is perpendicular to the plane spanned by the vectors representing
     // those two sides.
     // => The vector perpendicular to that plane is also perpendicular to the triangle and is thereby its normal.
-    normal = A.cross(B).normalize();
+    normal = A.cross(B).normalize().times(-1);
   }
 
   /**

@@ -106,11 +106,28 @@ public class RayTracer implements TurnableRenderer {
 
     if (depthOfFieldEnabled) {
       //TODO: Blatt 5, Aufgabe 7 b)
+
       color = new RGBA(0, 0, 0);
+
+      for (int i = 0; i < depthOfFieldSamples; i++) {
+        // get sample vector and scale it
+        Vector3 sample = RandomHelper.sampleStandardNormal3D().times(depthOfField);
+        // apply to origin
+        Vector3 depthOrigin = origin.plus(sample);
+
+        Ray depthRay = Ray.fromEndPoints(depthOrigin, point);
+        RGBA depthColor = followRay(rayTraceDepth, depthRay);
+        // average color
+        depthColor = depthColor.times((double) (1.0 / depthOfFieldSamples));
+        // add it to sum of colors
+        color = color.plus(depthColor);
+      }
+
     } else {
       color = followRay(rayTraceDepth, ray);
     }
 
+    color.clamp();
     color.pack();
 
     return color;
@@ -164,7 +181,7 @@ public class RayTracer implements TurnableRenderer {
     //TODO: Blatt 5, Aufgabe 6
     //TODO: Blatt 5, Aufgabe 7 a)
 
-    color.clamp();
+    //color.clamp();
     return color;
   }
 

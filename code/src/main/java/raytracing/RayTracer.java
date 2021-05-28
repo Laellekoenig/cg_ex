@@ -214,14 +214,12 @@ public class RayTracer implements TurnableRenderer {
 
     //TODO: Blatt 5, Aufgabe 6
 
-    //normal = normal.neg();
-
     Vector3 invertedRay = ray.origin.minus(point).normalize();
     double n2 = material.getDensity();
     double n1 = 1;
     double n = n1 / n2;
-    double theta1 = Math.abs(Math.acos(invertedRay.dot(normal) / (invertedRay.length() * normal.length())));
-    double theta2 = Math.abs(Math.asin(n * Math.sin(theta1)));
+    double theta1 = Math.acos(invertedRay.dot(normal) / (invertedRay.length() * normal.length()));
+    double theta2 = Math.asin(n * Math.sin(theta1));
 
     // if the ray is exiting an object (which means that the angle of incidence is larger than 90°), then conditions are
     // tested for total reflectance. If that isn't the case, it is tested if the material has a density larger than air
@@ -230,11 +228,11 @@ public class RayTracer implements TurnableRenderer {
       n = n2 / n1;
       double criticalAngle = Math.asin(n);
       if (Math.abs(theta1) > criticalAngle) {
-        Vector3 newRayDirection = normal.normalize().times(-2 * ray.direction.normalize().dot(normal.normalize())).plus(ray.direction.normalize());
+        Vector3 newRayDirection = normal.neg().times(-2 * ray.direction.normalize().dot(normal.neg())).plus(ray.direction.normalize());
         return followRay(depth-1, new Ray(point, newRayDirection));
         //return getReflectionTerm(ray, point, normal.neg(), material, depth - 1, eps);
       } else {
-        return followRay(depth - 1, new Ray(point, ray.direction));
+        return material.getTransparency().multElementWise(followRay(depth - 1, new Ray(point, ray.direction)));
       }
     }
 

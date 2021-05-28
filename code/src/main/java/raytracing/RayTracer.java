@@ -9,7 +9,6 @@ import projection.TurnableRenderer;
 import utils.*;
 
 import java.util.Optional;
-import java.util.function.BiPredicate;
 
 public class RayTracer implements TurnableRenderer {
 
@@ -148,6 +147,7 @@ public class RayTracer implements TurnableRenderer {
         // The point of intersection determined by applying the correct parameter t to the ray's parametric form.
         Vector3 point = ray.pointAt(intersection.t);
         color = color.plus(getReflectionTerm(ray, point, intersection.normal, material, depth, eps));
+        color = color.plus(getRefractionTerm(ray, point, n, material, depth, eps));
       }
 
     } else {
@@ -162,6 +162,7 @@ public class RayTracer implements TurnableRenderer {
     }
 
     //TODO: Blatt 5, Aufgabe 6
+
     //TODO: Blatt 5, Aufgabe 7 a)
 
     color.clamp();
@@ -176,33 +177,16 @@ public class RayTracer implements TurnableRenderer {
     if (!rayTracingEnabled) return new RGBA(0, 0, 0);
     if (depth == 0) return new RGBA(0, 0, 0);
 
-    // get outgoing vector
+    // get outgoing vector, assuming a perfect reflection
     //https://wiki.delphigl.com/index.php/Reflexion
     Vector3 newRayDirection = normal.normalize().times(-2 * ray.direction.normalize().dot(normal.normalize())).plus(ray.direction.normalize());
 
     // create new ray and cast it
     Ray nextRay = new Ray(point, newRayDirection);
-    Optional<RayCastResult> optResult = scene.rayCastScene(nextRay, eps);
 
     // calculate r * I_r
     RGBA I_r = material.getReflectance();
     return I_r.multElementWise(followRay(depth - 1, nextRay, eps));
-
-    /*
-    if (optResult.isPresent()) {
-
-      // calculate r * I_r
-      RGBA I_r = material.getReflectance();
-
-      // Defines r recursively
-      return I_r.multElementWise(followRay(depth - 1, nextRay, eps));
-    } else if (environmentMap.isPresent()) {
-      return environmentMap.get().access(ray.direction);
-    }
-
-     */
-
-    //return new RGBA(0, 0, 0);
   }
 
   private RGBA getRefractionTerm(Ray ray, Vector3 point, Vector3 normal,
@@ -212,7 +196,38 @@ public class RayTracer implements TurnableRenderer {
     }
 
     //TODO: Blatt 5, Aufgabe 6
-    return null;
+
+    Vector3 invertedRay = ray.origin.minus(point).normalize();
+    double n2 = material.getDensity();
+    double n1 = 1;
+    double n = n1 / n2;
+    double theta1 = Math.abs(Math.acos(invertedRay.dot(normal) / (invertedRay.length() * normal.length())));
+    double theta2 = Math.abs(Math.asin(n * Math.sin(theta1)));
+
+    // if the ray is exiting an object (which means that the angle of incidence is larger than 90°), then conditions are
+    // tested for total reflectance. If that isn't the case, it is tested if the material has a density larger than air
+    // and if that isn't the case, then (0, 0, 0) is returned.
+    if (theta1 >= Math.PI / 2) {
+      double criticalAngle = Math.asin(n);
+      if (Math.abs(theta1) > criticalAngle) {
+        return getReflectionTerm(ray, point, normal.neg(), material, depth - 1, eps);
+      } else if (material.getDensity() > 1) {
+        n2 = 1;
+        n1 = material.getDensity();
+      } else {
+        return followRay(depth - 1, new Ray(point, ray.direction));
+      }
+    }
+
+    Vector3 i = point.minus(ray.origin).normalize();
+
+    double sin2theta2 = n * n * (1 - Math.cos(theta1) * Math.cos(theta1));
+
+    Vector3 t = i.times(n).plus(normal.times(n * Math.cos(theta1) - Math.sqrt(1 - sin2theta2))).normalize();
+
+    Ray refractionRay = new Ray(point, t);
+
+    return material.getTransparency().multElementWise(followRay(depth - 1, refractionRay, eps));
   }
 
   private double getLightContribution(Vector3 point, Vector3 normal, double eps) {

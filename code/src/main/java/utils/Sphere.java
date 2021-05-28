@@ -40,7 +40,7 @@ public class Sphere implements Intersectable {
       // we find the closer of the two distances and save that into the variable t, which is used for the return value.
       double t;
 
-      if(t1 <= t2 && t1 >= near) {
+      if(t2 < near && t1 > near) {
         t = t1;
       } else if (t2 < t1 && t2 >= near) {
         t = t2;

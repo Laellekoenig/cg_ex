@@ -153,7 +153,7 @@ public class RayTracer implements TurnableRenderer {
       if (environmentMap.isPresent()) {
         // get map and give it the direction of the ray
         EnvironmentMap<RGBA> map = environmentMap.get();
-        color = map.access(ray.direction.times(-1));
+        color = map.access(ray.direction);
       } else {
         color = RGBA.grey;
       }
@@ -162,6 +162,7 @@ public class RayTracer implements TurnableRenderer {
     //TODO: Blatt 5, Aufgabe 6
     //TODO: Blatt 5, Aufgabe 7 a)
 
+    color.clamp();
     return color;
   }
 

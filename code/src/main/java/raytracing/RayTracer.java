@@ -240,20 +240,18 @@ public class RayTracer implements TurnableRenderer {
 
       for (int i = 0; i < softShadowSamples; i++) {
         Vector3 lightDir = lightSource.get().direction.times(-1);
-        Vector3 sample = RandomHelper.sampleStandardNormal3D();
+        // get sample and scale it by shadow softness
+        Vector3 sample = RandomHelper.sampleStandardNormal3D().times(shadowSoftness);
 
         //apply to light direction
         lightDir = lightDir.plus(sample);
-
-        //scale lightDir
-        lightDir = lightDir.times(shadowSoftness);
 
         Ray toLight = new Ray(point, lightDir);
         Optional<RayCastResult> lightOptResult = scene.rayCastSceneAny(toLight, eps);
 
         if (!lightOptResult.isPresent()) {
-          // if we did not hit anything, add one
-          I_l += 1;
+          // if we did not hit anything
+          I_l += Math.max(- normal.dot(lightSource.get().direction), 0);
         }
       }
       // average result
@@ -262,7 +260,7 @@ public class RayTracer implements TurnableRenderer {
 
     return I_l;
   }
-  
+
   // TurnableRenderer Interface methods
   @Override
   public void setProjectionView(Matrix4 currentView) {

@@ -199,10 +199,7 @@ public class RayTracer implements TurnableRenderer {
     } else if (environmentMap.isPresent()) {
       return environmentMap.get().access(ray.direction);
     }
-
      */
-
-    //return new RGBA(0, 0, 0);
   }
 
   private RGBA getRefractionTerm(Ray ray, Vector3 point, Vector3 normal,
@@ -240,7 +237,28 @@ public class RayTracer implements TurnableRenderer {
         I_l = 0;
       }
     }
+
     //TODO: Blatt 5, Aufgabe 5b)
+    if (softShadowsEnabled) {
+      //used for averaging light
+      I_l = 0;
+
+      for (int i = 0; i < softShadowSamples; i++) {
+        Vector3 softDirToLight = lightSource.get().direction.times(-1);
+        Vector3 sample = RandomHelper.sampleStandardNormal3D();
+
+        Ray toLight = new Ray(point, softDirToLight);
+        Optional<RayCastResult> lightOptResult = scene.rayCastSceneAny(toLight, eps);
+
+        if (!lightOptResult.isPresent()) {
+          // if we did not hit anything, add one
+          I_l += 1;
+        }
+      }
+      // average result
+      I_l /= softShadowSamples;
+    }
+
     return I_l;
   }
 

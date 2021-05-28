@@ -105,11 +105,28 @@ public class RayTracer implements TurnableRenderer {
 
     if (depthOfFieldEnabled) {
       //TODO: Blatt 5, Aufgabe 7 b)
+
       color = new RGBA(0, 0, 0);
+
+      for (int i = 0; i < depthOfFieldSamples; i++) {
+        // get sample vector and scale it
+        Vector3 sample = RandomHelper.sampleStandardNormal3D().times(depthOfField);
+        // apply to origin
+        Vector3 depthOrigin = origin.plus(sample);
+
+        Ray depthRay = Ray.fromEndPoints(depthOrigin, point);
+        RGBA depthColor = followRay(rayTraceDepth, depthRay);
+        // average color
+        depthColor = depthColor.times((double) (1.0 / depthOfFieldSamples));
+        // add it to sum of colors
+        color = color.plus(depthColor);
+      }
+
     } else {
       color = followRay(rayTraceDepth, ray);
     }
 
+    color.clamp();
     color.pack();
 
     return color;
@@ -197,6 +214,8 @@ public class RayTracer implements TurnableRenderer {
 
     //TODO: Blatt 5, Aufgabe 6
 
+    //normal = normal.neg();
+
     Vector3 invertedRay = ray.origin.minus(point).normalize();
     double n2 = material.getDensity();
     double n1 = 1;
@@ -208,12 +227,12 @@ public class RayTracer implements TurnableRenderer {
     // tested for total reflectance. If that isn't the case, it is tested if the material has a density larger than air
     // and if that isn't the case, then (0, 0, 0) is returned.
     if (theta1 >= Math.PI / 2) {
+      n = n2 / n1;
       double criticalAngle = Math.asin(n);
       if (Math.abs(theta1) > criticalAngle) {
-        return getReflectionTerm(ray, point, normal.neg(), material, depth - 1, eps);
-      } else if (material.getDensity() > 1) {
-        n2 = 1;
-        n1 = material.getDensity();
+        Vector3 newRayDirection = normal.normalize().times(-2 * ray.direction.normalize().dot(normal.normalize())).plus(ray.direction.normalize());
+        return followRay(depth-1, new Ray(point, newRayDirection));
+        //return getReflectionTerm(ray, point, normal.neg(), material, depth - 1, eps);
       } else {
         return followRay(depth - 1, new Ray(point, ray.direction));
       }
@@ -236,15 +255,10 @@ public class RayTracer implements TurnableRenderer {
     }
 
     //TODO: Blatt 5, Aufgabe 2
-
-    // This for some reason works, while the formula given on the exercise sheet only works for the spheres.
-    // If the negative sign of <n,l> is removed, then it only works for the cube.
-    // => weird af
-    //double I_l = Math.max(- normal.dot(lightSource.get().direction), normal.dot(lightSource.get().direction));
     double I_l = Math.max(- normal.dot(lightSource.get().direction), 0);
 
     //TODO: Blatt 5, Aufgabe 5a)
-    if (shadowsEnabled && lightSource.isPresent()) {
+    if (shadowsEnabled && lightSource.isPresent() && !softShadowsEnabled) {
       // create a new ray from point to light source and check if it intersects with an object
       Vector3 lightDirection = lightSource.get().direction.times(-1);
       Ray toLight = new Ray(point, lightDirection);
@@ -255,10 +269,34 @@ public class RayTracer implements TurnableRenderer {
         I_l = 0;
       }
     }
+
     //TODO: Blatt 5, Aufgabe 5b)
+    if (softShadowsEnabled) {
+      //used for averaging light
+      I_l = 0;
+
+      for (int i = 0; i < softShadowSamples; i++) {
+        Vector3 lightDir = lightSource.get().direction.times(-1);
+        // get sample and scale it by shadow softness
+        Vector3 sample = RandomHelper.sampleStandardNormal3D().times(shadowSoftness);
+
+        //apply to light direction
+        lightDir = lightDir.plus(sample);
+
+        Ray toLight = new Ray(point, lightDir);
+        Optional<RayCastResult> lightOptResult = scene.rayCastSceneAny(toLight, eps);
+
+        if (!lightOptResult.isPresent()) {
+          // if we did not hit anything
+          I_l += Math.max(- normal.dot(lightSource.get().direction), 0);
+        }
+      }
+      // average result
+      I_l /= softShadowSamples;
+    }
+
     return I_l;
   }
-
 
   // TurnableRenderer Interface methods
   @Override

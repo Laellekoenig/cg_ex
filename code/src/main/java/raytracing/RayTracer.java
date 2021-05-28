@@ -111,6 +111,8 @@ public class RayTracer implements TurnableRenderer {
       color = followRay(rayTraceDepth, ray);
     }
 
+    color.pack();
+
     return color;
   }
 
@@ -182,6 +184,11 @@ public class RayTracer implements TurnableRenderer {
     Ray nextRay = new Ray(point, newRayDirection);
     Optional<RayCastResult> optResult = scene.rayCastScene(nextRay, eps);
 
+    // calculate r * I_r
+    RGBA I_r = material.getReflectance();
+    return I_r.multElementWise(followRay(depth - 1, nextRay, eps));
+
+    /*
     if (optResult.isPresent()) {
 
       // calculate r * I_r
@@ -193,7 +200,9 @@ public class RayTracer implements TurnableRenderer {
       return environmentMap.get().access(ray.direction);
     }
 
-    return new RGBA(0, 0, 0);
+     */
+
+    //return new RGBA(0, 0, 0);
   }
 
   private RGBA getRefractionTerm(Ray ray, Vector3 point, Vector3 normal,

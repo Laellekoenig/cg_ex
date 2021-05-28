@@ -218,15 +218,10 @@ public class RayTracer implements TurnableRenderer {
     }
 
     //TODO: Blatt 5, Aufgabe 2
-
-    // This for some reason works, while the formula given on the exercise sheet only works for the spheres.
-    // If the negative sign of <n,l> is removed, then it only works for the cube.
-    // => weird af
-    //double I_l = Math.max(- normal.dot(lightSource.get().direction), normal.dot(lightSource.get().direction));
     double I_l = Math.max(- normal.dot(lightSource.get().direction), 0);
 
     //TODO: Blatt 5, Aufgabe 5a)
-    if (shadowsEnabled && lightSource.isPresent()) {
+    if (shadowsEnabled && lightSource.isPresent() && !softShadowsEnabled) {
       // create a new ray from point to light source and check if it intersects with an object
       Vector3 lightDirection = lightSource.get().direction.times(-1);
       Ray toLight = new Ray(point, lightDirection);
@@ -244,10 +239,16 @@ public class RayTracer implements TurnableRenderer {
       I_l = 0;
 
       for (int i = 0; i < softShadowSamples; i++) {
-        Vector3 softDirToLight = lightSource.get().direction.times(-1);
+        Vector3 lightDir = lightSource.get().direction.times(-1);
         Vector3 sample = RandomHelper.sampleStandardNormal3D();
 
-        Ray toLight = new Ray(point, softDirToLight);
+        //apply to light direction
+        lightDir = lightDir.plus(sample);
+
+        //scale lightDir
+        lightDir = lightDir.times(shadowSoftness);
+
+        Ray toLight = new Ray(point, lightDir);
         Optional<RayCastResult> lightOptResult = scene.rayCastSceneAny(toLight, eps);
 
         if (!lightOptResult.isPresent()) {
@@ -261,8 +262,7 @@ public class RayTracer implements TurnableRenderer {
 
     return I_l;
   }
-
-
+  
   // TurnableRenderer Interface methods
   @Override
   public void setProjectionView(Matrix4 currentView) {
